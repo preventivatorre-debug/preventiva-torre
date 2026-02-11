@@ -13,11 +13,13 @@ h3 { margin-top: 15px; }
 ul { list-style: none; padding-left: 0; }
 li { margin-bottom: 5px; }
 .tools, .critical-points { background: #eef; padding: 10px; border-left: 4px solid #0056b3; margin: 10px 0; }
-textarea { width: 100%; height: 400px; margin-top: 20px; }
+textarea { width: 100%; margin-top: 10px; padding: 10px; box-sizing: border-box; }
+textarea#relatorio { height: 400px; }
 button { margin-top: 10px; padding: 10px 15px; background: #0056b3; color: white; border: none; cursor: pointer; }
 button:hover { background: #003f7f; }
-label { cursor: pointer; }
+label { cursor: pointer; display: block; margin-bottom: 5px; }
 .local { margin: 10px 0; }
+.observacoes { margin: 10px 0; }
 </style>
 </head>
 <body>
@@ -26,6 +28,12 @@ label { cursor: pointer; }
 
 <div class="local">
     <label>Local da Inspeção: <input type="text" id="local" placeholder="Digite o local"></label>
+</div>
+
+<div class="observacoes">
+    <label>Observações:
+        <textarea id="observacoes" placeholder="Digite aqui suas observações..."></textarea>
+    </label>
 </div>
 
 <!-- ===================== TORRES ===================== -->
@@ -75,7 +83,7 @@ label { cursor: pointer; }
   <li><label><input type="checkbox" class="torre"> Fixação adequada dos cabos</label></li>
   <li><label><input type="checkbox" class="torre"> Ausência de atrito com a estrutura</label></li>
   <li><label><input type="checkbox" class="torre"> Isolamento ressecado ou rompido</label></li>
- <li><label><input type="checkbox" class="torre"> Conferir emendas e insolar</label></li>
+  <li><label><input type="checkbox" class="torre"> Conferir emendas e insolar</label></li>
   <li><label><input type="checkbox" class="torre"> Curvaturas adequadas</label></li>
   <li><label><input type="checkbox" class="torre"> Identificação dos cabos</label></li>
 </ul>
@@ -217,16 +225,21 @@ label { cursor: pointer; }
 <script>
 function gerarRelatorio() {
     const local = document.getElementById('local').value || "Local não informado";
+    const observacoes = document.getElementById('observacoes').value || "Nenhuma observação.";
+
     let texto = `📋 Relatório de Manutenção Preventiva - Local: ${local}\n\n`;
 
     const checkboxesMarcados = document.querySelectorAll('input[type="checkbox"]:checked');
     if(checkboxesMarcados.length === 0){
-        texto += "Nenhum item marcado.";
+        texto += "Nenhum item marcado.\n\n";
     } else {
         checkboxesMarcados.forEach((item) => {
             texto += "✔ " + item.parentElement.textContent.trim() + "\n";
         });
+        texto += "\n";
     }
+
+    texto += `📝 Observações:\n${observacoes}`;
 
     document.getElementById('relatorio').value = texto;
 }
@@ -242,5 +255,3 @@ function copiarRelatorio() {
 
 </body>
 </html>
-
-
