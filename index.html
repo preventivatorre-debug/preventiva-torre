@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checklist Manutenção Preventiva</title>
+<style>
+body { font-family: Arial, sans-serif; margin: 20px; background: #f9f9f9; color: #333; }
+h1, h2 { color: #0056b3; }
+h1 { border-bottom: 2px solid #0056b3; padding-bottom: 5px; }
+h2 { margin-top: 20px; }
+h3 { margin-top: 15px; }
+ul { list-style: none; padding-left: 0; }
+li { margin-bottom: 5px; }
+.tools, .critical-points { background: #eef; padding: 10px; border-left: 4px solid #0056b3; margin: 10px 0; }
+textarea { width: 100%; height: 400px; margin-top: 20px; }
+button { margin-top: 10px; padding: 10px 15px; background: #0056b3; color: white; border: none; cursor: pointer; }
+button:hover { background: #003f7f; }
+label { cursor: pointer; }
+.local { margin: 10px 0; }
+</style>
+</head>
+<body>
+
+<h1>Checklist Manutenção Preventiva – Torres e POP</h1>
+
+<div class="local">
+    <label>Local da Inspeção: <input type="text" id="local" placeholder="Digite o local"></label>
+</div>
+
+<!-- ===================== TORRES ===================== -->
+<h2>Manutenção Preventiva – Torres</h2>
+
+<h3>1. Estrutura da Torre</h3>
+<ul>
+  <li><label><input type="checkbox" class="torre"> Verificar alinhamento e prumo da torre à distância</label></li>
+  <li><label><input type="checkbox" class="torre"> Corrosão visível na estrutura</label></li>
+  <li><label><input type="checkbox" class="torre"> Parafusos aparentes (soltos, faltando ou oxidados)</label></li>
+  <li><label><input type="checkbox" class="torre"> Soldas visíveis com trincas ou ferrugem</label></li>
+  <li><label><input type="checkbox" class="torre"> Estado da pintura / galvanização</label></li>
+</ul>
+<div class="tools">
+<strong>Ferramentas indicadas:</strong> Kit de Chave Catraca, Baterias extras, Parafusos, Estaios, Cabos de aço.
+</div>
+
+<h3>2. Base e Fundação</h3>
+<ul>
+  <li><label><input type="checkbox" class="torre"> Trincas no concreto</label></li>
+  <li><label><input type="checkbox" class="torre"> Afundamento ou recalque</label></li>
+  <li><label><input type="checkbox" class="torre"> Exposição de ferragens</label></li>
+  <li><label><input type="checkbox" class="torre"> Chumbadores oxidados ou frouxos</label></li>
+  <li><label><input type="checkbox" class="torre"> Acúmulo de água ao redor da base</label></li>
+</ul>
+
+<h3>3. Estais e Ancoragens</h3>
+<ul>
+  <li><label><input type="checkbox" class="torre"> Tensão visual dos estais</label></li>
+  <li><label><input type="checkbox" class="torre"> Cabos desfiados, rompidos ou oxidados</label></li>
+  <li><label><input type="checkbox" class="torre"> Esticadores travados ou frouxos</label></li>
+  <li><label><input type="checkbox" class="torre"> Bases de ancoragem firmes</label></li>
+  <li><label><input type="checkbox" class="torre"> Alinhamento geral da torre</label></li>
+</ul>
+
+<h3>4. Antenas e Suportes</h3>
+<ul>
+  <li><label><input type="checkbox" class="torre"> Antenas firmes e bem posicionadas</label></li>
+  <li><label><input type="checkbox" class="torre"> Suportes sem empenamento</label></li>
+  <li><label><input type="checkbox" class="torre"> Abraçadeiras aparentes</label></li>
+  <li><label><input type="checkbox" class="torre"> Cabos soltos ou pendurados</label></li>
+  <li><label><input type="checkbox" class="torre"> Radomes íntegros</label></li>
+</ul>
+
+<h3>5. Cabos Externos</h3>
+<ul>
+  <li><label><input type="checkbox" class="torre"> Fixação adequada dos cabos</label></li>
+  <li><label><input type="checkbox" class="torre"> Ausência de atrito com a estrutura</label></li>
+  <li><label><input type="checkbox" class="torre"> Isolamento ressecado ou rompido</label></li>
+  <li><label><input type="checkbox" class="torre"> Curvaturas adequadas</label></li>
+  <li><label><input type="checkbox" class="torre"> Identificação dos cabos</label></li>
+</ul>
+
+<h3>6. Sistema Solar</h3>
+<ul>
+  <li><label><input type="checkbox" class="torre"> Painéis limpos e sem trincas</label></li>
+  <li><label><input type="checkbox" class="torre"> Fixação e inclinação corretas</label></li>
+  <li><label><input type="checkbox" class="torre"> Estrutura de suporte sem corrosão</label></li>
+  <li><label><input type="checkbox" class="torre"> Cabos solares protegidos</label></li>
+  <li><label><input type="checkbox" class="torre"> Conectores firmes</label></li>
+</ul>
+
+<h3>7. Banco de Baterias</h3>
+<ul>
+  <li><label><input type="checkbox" class="torre"> Estado físico das baterias</label></li>
+  <li><label><input type="checkbox" class="torre"> Vazamento ou estufamento</label></li>
+  <li><label><input type="checkbox" class="torre"> Terminais limpos e apertados</label></li>
+  <li><label><input type="checkbox" class="torre"> Medição de tensão juntas e individual</label></li>
+</ul>
+
+<h3>8. Controlador de Carga / Energia</h3>
+<ul>
+  <li><label><input type="checkbox" class="torre"> Funcionamento do controlador</label></li>
+  <li><label><input type="checkbox" class="torre"> Alarmes ou falhas indicadas</label></li>
+  <li><label><input type="checkbox" class="torre"> Disjuntores e fusíveis</label></li>
+  <li><label><input type="checkbox" class="torre"> Organização dos cabos</label></li>
+  <li><label><input type="checkbox" class="torre"> Aquecimento excessivo</label></li>
+</ul>
+
+<h3>9. Aterramento</h3>
+<ul>
+  <li><label><input type="checkbox" class="torre"> Conexões firmes e visíveis</label></li>
+  <li><label><input type="checkbox" class="torre"> Oxidação nos terminais</label></li>
+  <li><label><input type="checkbox" class="torre"> Aterramento da torre</label></li>
+</ul>
+
+<h3>10. Registro e Evidências</h3>
+<ul>
+  <li><label><input type="checkbox" class="torre"> Checklist preenchido</label></li>
+  <li><label><input type="checkbox" class="torre"> Fotos gerais da torre</label></li>
+  <li><label><input type="checkbox" class="torre"> Fotos da base e estais</label></li>
+  <li><label><input type="checkbox" class="torre"> Registro das medições</label></li>
+  <li><label><input type="checkbox" class="torre"> Fotos de todos os patrimônios dos equipamentos</label></li>
+  <li><label><input type="checkbox" class="torre"> Relato de não conformidades</label></li>
+</ul>
+
+<!-- ===================== POP ===================== -->
+<h2>Manutenção Preventiva – POP (Casinha) – Porte Médio / Grande</h2>
+
+<h3>1. Estrutura Física do POP</h3>
+<ul>
+  <li><label><input type="checkbox" class="pop"> Paredes, portas e telhado (trincas, infiltração)</label></li>
+  <li><label><input type="checkbox" class="pop"> Fechaduras, cadeados e dobradiças</label></li>
+  <li><label><input type="checkbox" class="pop"> Piso (rachaduras, umidade)</label></li>
+  <li><label><input type="checkbox" class="pop"> Vedação contra poeira e insetos</label></li>
+  <li><label><input type="checkbox" class="pop"> Iluminação interna</label></li>
+</ul>
+
+<h3>2. Sistema Elétrico (AC / DC)</h3>
+<ul>
+  <li><label><input type="checkbox" class="pop"> Quadro de distribuição organizado</label></li>
+  <li><label><input type="checkbox" class="pop"> Disjuntores identificados e funcionais</label></li>
+  <li><label><input type="checkbox" class="pop"> Fusíveis adequados</label></li>
+  <li><label><input type="checkbox" class="pop"> Cabos sem aquecimento ou ressecamento</label></li>
+  <li><label><input type="checkbox" class="pop"> Aterramento do quadro</label></li>
+</ul>
+
+<h3>4. Banco de Baterias</h3>
+<ul>
+  <li><label><input type="checkbox" class="pop"> Tensão individual e do banco</label></li>
+  <li><label><input type="checkbox" class="pop"> Estado físico (estufamento/vazamento)</label></li>
+  <li><label><input type="checkbox" class="pop"> Terminais limpos e apertados</label></li>
+  <li><label><input type="checkbox" class="pop"> Oxidação nos polos</label></li>
+  <li><label><input type="checkbox" class="pop"> Ventilação adequada</label></li>
+</ul>
+
+<h3>5. Racks e Equipamentos</h3>
+<ul>
+  <li><label><input type="checkbox" class="pop"> Fixação correta dos racks</label></li>
+  <li><label><input type="checkbox" class="pop"> Equipamentos bem presos</label></li>
+  <li><label><input type="checkbox" class="pop"> Identificação dos equipamentos</label></li>
+  <li><label><input type="checkbox" class="pop"> LEDs e status operacional</label></li>
+  <li><label><input type="checkbox" class="pop"> Organização interna</label></li>
+</ul>
+
+<h3>6. Climatização e Ventilação</h3>
+<ul>
+  <li><label><input type="checkbox" class="pop"> Ar-condicionado funcionando</label></li>
+  <li><label><input type="checkbox" class="pop"> Filtros limpos</label></li>
+  <li><label><input type="checkbox" class="pop"> Temperatura interna adequada</label></li>
+  <li><label><input type="checkbox" class="pop"> Sensores funcionando</label></li>
+</ul>
+
+<h3>7. Aterramento</h3>
+<ul>
+  <li><label><input type="checkbox" class="pop"> Barramento de terra organizado</label></li>
+  <li><label><input type="checkbox" class="pop"> Continuidade elétrica</label></li>
+  <li><label><input type="checkbox" class="pop"> Conexões firmes e sem oxidação</label></li>
+  <li><label><input type="checkbox" class="pop"> Identificação dos condutores</label></li>
+</ul>
+
+<h3>8. Limpeza e Organização</h3>
+<ul>
+  <li><label><input type="checkbox" class="pop"> POP limpo (sem poeira excessiva)</label></li>
+  <li><label><input type="checkbox" class="pop"> Ausência de insetos/roedores</label></li>
+  <li><label><input type="checkbox" class="pop"> Cabos organizados e identificados</label></li>
+  <li><label><input type="checkbox" class="pop"> Sem materiais soltos no chão</label></li>
+  <li><label><input type="checkbox" class="pop"> Descarte correto de resíduos</label></li>
+</ul>
+
+<h3>9. Segurança Patrimonial</h3>
+<ul>
+  <li><label><input type="checkbox" class="pop"> Cercamento do local se houver</label></li>
+  <li><label><input type="checkbox" class="pop"> Câmeras de segurança</label></li>
+  <li><label><input type="checkbox" class="pop"> Iluminação externa</label></li>
+</ul>
+
+<h3>10. Registro da Manutenção</h3>
+<ul>
+  <li><label><input type="checkbox" class="pop"> Checklist preenchido</label></li>
+  <li><label><input type="checkbox" class="pop"> Medições elétricas registradas</label></li>
+  <li><label><input type="checkbox" class="pop"> Fotos internas e externas</label></li>
+  <li><label><input type="checkbox" class="pop"> Fotos dos patrimônios dos equipamentos do POP</label></li>
+  <li><label><input type="checkbox" class="pop"> Não conformidades anotadas</label></li>
+  <li><label><input type="checkbox" class="pop"> Recomendações técnicas</label></li>
+</ul>
+
+<div class="critical-points">
+<strong>Pontos críticos em POP grande:</strong> Aquecimento excessivo, Falha em climatização, Oxidação em baterias, Aterramento deficiente
+</div>
+
+<!-- Botões -->
+<button onclick="gerarRelatorio()">Gerar Relatório</button>
+<button onclick="copiarRelatorio()">Copiar Relatório</button>
+
+<textarea id="relatorio" readonly placeholder="O relatório gerado aparecerá aqui..."></textarea>
+
+<script>
+function gerarRelatorio() {
+    const local = document.getElementById('local').value || "Local não informado";
+    let texto = `📋 Relatório de Manutenção Preventiva - Local: ${local}\n\n`;
+
+    const checkboxesMarcados = document.querySelectorAll('input[type="checkbox"]:checked');
+    if(checkboxesMarcados.length === 0){
+        texto += "Nenhum item marcado.";
+    } else {
+        checkboxesMarcados.forEach((item) => {
+            texto += "✔ " + item.parentElement.textContent.trim() + "\n";
+        });
+    }
+
+    document.getElementById('relatorio').value = texto;
+}
+
+function copiarRelatorio() {
+    const textarea = document.getElementById('relatorio');
+    textarea.select();
+    textarea.setSelectionRange(0, 99999);
+    document.execCommand('copy');
+    alert('Relatório copiado para a área de transferência!');
+}
+</script>
+
+</body>
+</html>
