@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<title>Gerador de Script Técnico - SPE (com fila)</title>
+<style>
+ body { font-family: Arial, sans-serif; background: #f4f4f9; padding: 20px; color: #333; }
+ h1 { text-align: center; margin-bottom: 20px; }
+ .card { max-width: 900px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 0 12px rgba(0,0,0,0.1); }
+ label { display: block; margin-top: 10px; font-weight: bold; }
+ textarea, input, select {
+  width: 100%; padding: 8px; margin-top: 6px;
+  border: 1px solid #ccc; border-radius: 6px; resize: vertical;
+ }
+ button {
+  margin-top: 12px; padding: 10px 14px;
+  background: #007bff; color: #fff; border: none;
+  border-radius: 6px; cursor: pointer; font-size: 16px;
+ }
+ button:hover { background: #0056b3; }
+ .script-box {
+  white-space: pre-wrap; background: #fff; padding: 16px;
+  border-radius: 8px; margin-top: 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+ }
+ .fila-container { margin-top: 30px; }
+ .fila-item {
+  background: #fff; padding: 15px; border-radius: 8px;
+  margin-bottom: 15px; box-shadow: 0 0 8px rgba(0,0,0,0.05);
+ }
+ .fila-actions { display: flex; gap: 8px; margin-top: 8px; }
+</style>
+</head>
+<body>
+
+<h1>Gerador de Script Técnico (com fila)</h1>
+
+<div class="card">
+  <label>Texto SPE:</label>
+  <textarea id="textoSPE" rows="12" placeholder="Cole o SPE..."></textarea>
+
+  <label>Data:</label>
+  <input id="data" placeholder="25/11/2025">
+
+  <label>Protocolo Oxentenet:</label>
+  <input id="protocoloOxente" placeholder="656856">
+
+  <div style="display:flex; gap:10px;">
+    <div style="flex:1;">
+      <label>Técnico:</label>
+      <select id="tecnico">
+        <option value="">Selecione...</option>
+        <option>Deilson</option>
+        <option>João Roberto</option>
+      </select>
+    </div>
+    <div style="flex:1;">
+      <label>Auxiliar:</label>
+      <select id="auxiliar">
+        <option value="">Selecione...</option>
+        <option>Josafa</option>
+        <option>Wanderson</option>
+      </select>
+    </div>
+  </div>
+
+  <label>Hora do Acionamento:</label>
+  <input id="horaAcionamento" placeholder="14:11">
+
+  <label>Carro:</label>
+  <select id="carro">
+    <option value="">Selecione...</option>
+    <option>STRADA SLO2B54</option>
+    <option>STRADA SLO2B53</option>
+    <option>Amarok</option>
+  </select>
+
+  <label>Início Deslocamento:</label>
+  <input id="inicioDeslocamento" placeholder="14:20">
+
+  <label>Fim Deslocamento:</label>
+  <input id="fimDeslocamento" placeholder="14:50">
+
+  <button onclick="gerarScript()">Gerar Script e Adicionar à Fila</button>
+</div>
+
+<div class="fila-container">
+  <h2>Fila de Scripts Gerados</h2>
+  <div id="filaScripts"></div>
+</div>
+
+<script>
+function gerarScript() {
+  const limp = (a) => (a || "").trim();
+  const texto = limp(document.getElementById('textoSPE').value);
+  if (!texto) return alert("Cole o SPE primeiro!");
+
+  const pegar = (regex) => {
+    const m = texto.match(regex);
+    return m ? m[1].trim() : "";
+  };
+
+  const data = limp(document.getElementById('data').value);
+  const protocoloOxente = limp(document.getElementById('protocoloOxente').value);
+  const tecnico = limp(document.getElementById('tecnico').value);
+  const auxiliar = limp(document.getElementById('auxiliar').value);
+  const horaAcionamento = limp(document.getElementById('horaAcionamento').value);
+  const carro = limp(document.getElementById('carro').value);
+  const inicioDeslocamento = limp(document.getElementById('inicioDeslocamento').value);
+  const fimDeslocamento = limp(document.getElementById('fimDeslocamento').value);
+
+  const protocolo = pegar(/protocolo[:\s]*([A-Z0-9-]+)/i);
+  const setor = pegar(/setor solicitante[:\s]*([^\n]+)/i);
+  const resumoSPE = pegar(/resumo (?:solicitação|motivo)?[:\s]*([^\n]+)/i);
+  const cidade = pegar(/cidade[:\s]*([^\n]+)/i);
+  const localEndereco = pegar(/local[:\s]*([^\n]+)/i);
+  const linkMaps = pegar(/(https?:\/\/www\.google\.com\/maps\/[^\s]+)/i);
+  const horario = pegar(/hor[áa]rio de funcionamento[:\s]*([^\n]+)/i);
+  const responsavel = pegar(/responsável local[:\s]*([^\n]+)/i);
+  const nivel = pegar(/nível de prioridade[:\s]*([0-9]+)/i);
+  const motivo = pegar(/motivo[:\s]*([^\n]+)/i);
+
+  const causaServico = motivo ? `Causa do Serviço: ${motivo}` : `Causa do Serviço: ${resumoSPE}`;
+  const localAtividade = `${cidade} - ${localEndereco}`;
+  const horarioAtendimento = horario || "Não informado";
+  const respLocal = responsavel || "Não informado";
+
+  const scriptFinal = `Data: ${data}
+Técnico: ${tecnico}
+Auxiliar: ${auxiliar}
+Protocolo Oxentenet: ${protocoloOxente}
+Protocolo SPE: ${protocolo}
+Ordem de Serviço
+Setor Solicitante: ${setor}
+Local da Atividade: ${localAtividade}
+${causaServico}
+NÍVEL DE PRIORIDADE: ${nivel}
+
+📍Local: ${localEndereco}
+🕒 Horário de funcionamento: ${horarioAtendimento}
+Responsável local (nome/telefone): ${respLocal}
+
+Início Acionamento: ${horaAcionamento}
+Carro: ${carro}
+KM Inicial:
+KM Final:
+
+Deslocamento Inicial: ${inicioDeslocamento}
+Fim Deslocamento: ${fimDeslocamento}
+
+Início da Atividade:
+Início Intervalo:
+Final Intervalo:
+Fim da Atividade:
+
+Relatório:
+
+Material utilizado:
+
+Localização: ${linkMaps}`;
+
+  adicionarNaFila(scriptFinal);
+  salvarFila();
+}
+
+function copiarTexto(texto) {
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(texto)
+      .then(() => alert("Copiado com sucesso!"))
+      .catch(() => fallbackCopiar(texto));
+  } else {
+    fallbackCopiar(texto);
+  }
+}
+
+function fallbackCopiar(texto) {
+  const textarea = document.createElement("textarea");
+  textarea.value = texto;
+  textarea.style.position = "fixed";
+  textarea.style.left = "-9999px";
+  document.body.appendChild(textarea);
+  textarea.focus();
+  textarea.select();
+
+  try {
+    document.execCommand("copy");
+    alert("Copiado com sucesso!");
+  } catch (err) {
+    alert("Não foi possível copiar automaticamente. Copie manualmente.");
+  }
+
+  document.body.removeChild(textarea);
+}
+
+function adicionarNaFila(texto) {
+  const fila = document.getElementById('filaScripts');
+
+  const box = document.createElement('div');
+  box.className = 'fila-item';
+
+  const pre = document.createElement('div');
+  pre.className = 'script-box';
+  pre.textContent = texto;
+
+  const botoes = document.createElement('div');
+  botoes.className = 'fila-actions';
+
+  const btnCopiar = document.createElement('button');
+  btnCopiar.textContent = '📋 Copiar';
+  btnCopiar.onclick = () => copiarTexto(texto);
+
+  const btnExcluir = document.createElement('button');
+  btnExcluir.textContent = '❌ Remover';
+  btnExcluir.onclick = () => {
+    box.remove();
+    salvarFila();
+  };
+
+  botoes.appendChild(btnCopiar);
+  botoes.appendChild(btnExcluir);
+
+  box.appendChild(pre);
+  box.appendChild(botoes);
+  fila.appendChild(box);
+}
+
+function salvarFila() {
+  const itens = Array.from(document.querySelectorAll('.script-box')).map(e => e.textContent);
+  localStorage.setItem('filaScripts', JSON.stringify(itens));
+}
+
+function carregarFila() {
+  const dados = JSON.parse(localStorage.getItem('filaScripts') || '[]');
+  dados.forEach(txt => adicionarNaFila(txt));
+}
+
+carregarFila();
+</script>
+
+</body>
+</html>
