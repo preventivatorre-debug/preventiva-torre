@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gerador de Script Técnico</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 20px; background-color: #f5f5f5; }
+  label { display: block; margin-top: 10px; }
+  input, select, textarea { width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box; }
+  button { margin-top: 10px; padding: 10px 20px; background-color: #0b76d1; color: white; border: none; cursor: pointer; }
+  button:hover { background-color: #095a9a; }
+  pre { background: #fff; padding: 15px; border: 1px solid #ccc; white-space: pre-wrap; margin-top: 20px; }
+  .nova-equipe { margin-top: 15px; padding: 10px; background: #e3e3e3; }
+  h2, h3 { color: #0b76d1; }
+</style>
+</head>
+<body>
+
+<h2>Gerador de Script Técnico</h2>
+
+<label for="colarScript">📋 Colar Script Recebido:</label>
+<textarea id="colarScript" placeholder="Cole aqui o texto recebido..." rows="10"></textarea>
+<button onclick="preencherCampos()">Preencher Campos</button>
+
+<hr>
+
+<label for="equipe">Selecionar Equipe:</label>
+<select id="equipe" onchange="verificarEquipe()">
+  <option value="Deilson_Wanderson">Deilson + Wanderson (STRADA SLO2B54)</option>
+  <option value="Joao_Josafa">João Roberto + Josafa (STRADA SLO2B53)</option>
+  <option value="outra">Adicionar nova equipe</option>
+</select>
+
+<div id="novaEquipe" class="nova-equipe" style="display:none;">
+  <label for="novoTecnico">Técnico:</label>
+  <input type="text" id="novoTecnico" placeholder="Nome do técnico">
+  
+  <label for="novoAuxiliar">Auxiliar:</label>
+  <input type="text" id="novoAuxiliar" placeholder="Nome do auxiliar">
+  
+  <label for="novoCarro">Carro:</label>
+  <input type="text" id="novoCarro" placeholder="Placa ou modelo do carro">
+</div>
+
+<label for="kmInicial">📍 KM Inicial:</label>
+<input type="number" id="kmInicial" placeholder="Digite o KM inicial">
+
+<label for="kmFinal">🏁 KM Final:</label>
+<input type="number" id="kmFinal" placeholder="Digite o KM final">
+
+<!-- HORA DO ACIONAMENTO -->
+<label for="horaAcionamento">⏰ Hora do Acionamento:</label>
+<input type="time" id="horaAcionamento">
+
+<label for="inicioDeslocamento">🕒 Início do Deslocamento:</label>
+<input type="datetime-local" id="inicioDeslocamento">
+
+<label for="inicioAtividade">🕒 Início da Atividade:</label>
+<input type="datetime-local" id="inicioAtividade">
+
+<label for="fimAtividade">🕒 Fim da Atividade:</label>
+<input type="datetime-local" id="fimAtividade">
+
+<label for="fimDeslocamento">🕒 Fim do Deslocamento:</label>
+<input type="datetime-local" id="fimDeslocamento">
+
+<label for="protocoloOxente">Protocolo OxenteNet:</label>
+<input type="text" id="protocoloOxente" placeholder="Opcional">
+
+<label for="protocoloSPE">Protocolo SPE:</label>
+<input type="text" id="protocoloSPE" placeholder="Opcional">
+
+<label for="local">Local da Atividade:</label>
+<input type="text" id="local" placeholder="Informe o local">
+
+<label for="causa">⚙️ Causa do Serviço:</label>
+<textarea id="causa" placeholder="Descreva a causa"></textarea>
+
+<label for="ocorrencia">🧭 O que ocasionou o serviço:</label>
+<textarea id="ocorrencia" placeholder="Descreva o que ocasionou"></textarea>
+
+<label for="relato">📋 Como resolveu (Relato Final):</label>
+<textarea id="relato" placeholder="Descreva como resolveu"></textarea>
+
+<label for="localFinal">📌 Localização Final:</label>
+<input type="text" id="localFinal" placeholder="Cole o link do Google Maps">
+
+<button onclick="gerarScript()">Gerar Script</button>
+<button onclick="copiarScript()">Copiar para Telegram</button>
+
+<pre id="resultado"></pre>
+
+<h3>📚 Fila de Scripts Gerados</h3>
+<div id="filaScripts"></div>
+<button onclick="limparFila()">🗑 Limpar Fila</button>
+
+<script>
+// ---------------- FUNÇÕES ---------------- //
+
+function verificarEquipe() {
+  const equipe = document.getElementById('equipe').value;
+  document.getElementById('novaEquipe').style.display = equipe === 'outra' ? 'block' : 'none';
+  carregarKmInicial();
+}
+
+function carregarKmInicial() {
+  let carro;
+  const equipe = document.getElementById('equipe').value;
+  if (equipe === 'Deilson_Wanderson') carro = 'STRADA_SLO2B54';
+  else if (equipe === 'Joao_Josafa') carro = 'STRADA_SLO2B53';
+  else carro = document.getElementById('novoCarro').value.trim().replace(/\s+/g, '_');
+
+  const ultimoKm = localStorage.getItem(`kmFinal_${carro}`);
+  document.getElementById('kmInicial').value = ultimoKm ? ultimoKm : '';
+}
+
+function preencherCampos() {
+  const texto = document.getElementById('colarScript').value;
+  const clean = texto.replace(/\r?\n|\r/g, '\n').trim();
+  document.getElementById('local').value = (clean.match(/Local da Atividade:\s*(.*)/i) || ['', ''])[1].trim();
+}
+
+// ---------------- GERAR SCRIPT ---------------- //
+
+function gerarScript() {
+  const data = new Date();
+  const dataFormatada = data.toLocaleDateString('pt-BR');
+
+  let tecnico, auxiliar, carro;
+  const equipe = document.getElementById('equipe').value;
+  if (equipe === 'Deilson_Wanderson') {
+    tecnico = 'Deilson';
+    auxiliar = 'Wanderson';
+    carro = 'STRADA_SLO2B54';
+  } else if (equipe === 'Joao_Josafa') {
+    tecnico = 'João Roberto';
+    auxiliar = 'Josafa';
+    carro = 'STRADA_SLO2B53';
+  } else {
+    tecnico = document.getElementById('novoTecnico').value || '';
+    auxiliar = document.getElementById('novoAuxiliar').value || '';
+    carro = document.getElementById('novoCarro').value || '';
+  }
+
+  const kmInicial = document.getElementById('kmInicial').value || '';
+  const kmFinal = document.getElementById('kmFinal').value || '';
+  const horaAcionamento = document.getElementById('horaAcionamento').value || '';
+  const inicioDeslocamento = document.getElementById('inicioDeslocamento').value || '';
+  const inicioAtividade = document.getElementById('inicioAtividade').value || '';
+  const fimAtividade = document.getElementById('fimAtividade').value || '';
+  const fimDeslocamento = document.getElementById('fimDeslocamento').value || '';
+  const protocoloOxente = document.getElementById('protocoloOxente').value || '';
+  const protocoloSPE = document.getElementById('protocoloSPE').value || '';
+  const local = document.getElementById('local').value || '';
+  const localFinal = document.getElementById('localFinal').value || '';
+  const causa = document.getElementById('causa').value || '';
+  const ocorrencia = document.getElementById('ocorrencia').value || '';
+  const relato = document.getElementById('relato').value || '';
+
+  if (carro && kmFinal) {
+    const key = `kmFinal_${carro.replace(/\s+/g, '_')}`;
+    localStorage.setItem(key, kmFinal);
+  }
+
+  const script = `
+**📅 Data:** ${dataFormatada}
+**👨‍🔧 Técnico:** ${tecnico}
+**🧰 Auxiliar:** ${auxiliar}
+**🚗 Carro:** ${carro}
+**📍 KM Inicial:** ${kmInicial}
+**🏁 KM Final:** ${kmFinal}
+**⏰ Hora do Acionamento:** ${horaAcionamento}
+**🕒 Início do Deslocamento:** ${inicioDeslocamento}
+**🕒 Início da Atividade:** ${inicioAtividade}
+**🕒 Fim da Atividade:** ${fimAtividade}
+**🕒 Fim do Deslocamento:** ${fimDeslocamento}
+
+**📄 Protocolo OxenteNet:** ${protocoloOxente}
+**📄 Protocolo SPE:** ${protocoloSPE}
+
+**📍 Local da Atividade:** ${local}
+
+**⚙️ Causa do Serviço:**
+${causa}
+
+**🧭 O que ocasionou o serviço:**
+${ocorrencia}
+
+**📋 Como resolveu (Relato Final):**
+${relato}
+
+**📌 Localização:** ${localFinal}
+  `;
+
+  // SALVAR NA FILA
+  salvarNaFila(script.trim());
+
+  // EXIBIR APENAS O ÚLTIMO SCRIPT
+  const fila = JSON.parse(localStorage.getItem("filaScripts")) || [];
+  document.getElementById('resultado').textContent = fila[fila.length - 1].texto;
+}
+
+function copiarScript() {
+  const texto = document.getElementById('resultado').textContent;
+  navigator.clipboard.writeText(texto)
+    .then(() => alert('Mensagem copiada!'))
+    .catch(err => alert('Erro ao copiar: ' + err));
+}
+
+// ---------------- FILA DE SCRIPTS ---------------- //
+
+function salvarNaFila(script) {
+  let fila = JSON.parse(localStorage.getItem("filaScripts")) || [];
+  fila.push({ texto: script, data: new Date().toLocaleString("pt-BR") });
+  localStorage.setItem("filaScripts", JSON.stringify(fila));
+  atualizarFila();
+}
+
+function atualizarFila() {
+  const filaDiv = document.getElementById("filaScripts");
+  const fila = JSON.parse(localStorage.getItem("filaScripts")) || [];
+
+  if (fila.length === 0) {
+    filaDiv.innerHTML = "<p>Nenhum script salvo ainda.</p>";
+    return;
+  }
+
+  filaDiv.innerHTML = "";
+
+  fila.forEach((item) => {
+    const bloco = document.createElement("pre");
+    bloco.style.border = "1px solid #aaa";
+    bloco.style.padding = "10px";
+    bloco.style.background = "#fff";
+    bloco.textContent = `📅 ${item.data}\n\n${item.texto}`;
+
+    const botao = document.createElement("button");
+    botao.textContent = "📋 Copiar";
+    botao.style.marginBottom = "20px";
+    botao.onclick = () => navigator.clipboard.writeText(item.texto);
+
+    filaDiv.appendChild(bloco);
+    filaDiv.appendChild(botao);
+  });
+}
+
+function limparFila() {
+  if (confirm("Tem certeza que quer apagar toda a fila?")) {
+    localStorage.removeItem("filaScripts");
+    atualizarFila();
+  }
+}
+
+window.onload = function() {
+  carregarKmInicial();
+  atualizarFila();
+};
+</script>
+</body>
+</html>
