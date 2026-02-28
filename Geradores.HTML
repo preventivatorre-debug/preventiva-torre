@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checklist de Geradores</title>
+
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; padding: 20px; }
+    .container { background: white; border-radius: 12px; padding: 20px; max-width: 800px; margin: auto; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+    h1 { text-align: center; color: #333; }
+    label { font-weight: bold; }
+    select, input[type="text"], textarea { width: 100%; padding: 10px; margin: 10px 0 20px; border-radius: 6px; border: 1px solid #ccc; font-size: 16px; }
+    .checklist-item { margin: 10px 0; font-size: 16px; }
+    input[type="checkbox"] { margin-right: 8px; transform: scale(1.3); }
+    button { width: 100%; background: #007bff; color: white; border: none; padding: 15px; border-radius: 6px; cursor: pointer; font-size: 18px; }
+    button:hover { background: #0056b3; }
+    .assinatura { margin-top: 30px; text-align: center; }
+    .assinatura input { border: none; border-bottom: 1px solid #000; width: 70%; text-align: center; font-size: 18px; }
+    .copiado { color: green; font-weight: bold; display: none; text-align: center; margin-top: 15px; font-size: 18px; }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Checklist de Geradores</h1>
+
+    <label for="protocolo">Número do Protocolo:</label>
+    <input type="text" id="protocolo" placeholder="Digite o número do protocolo">
+
+    <label for="geradorSelect">Selecione o Gerador:</label>
+    <select id="geradorSelect" onchange="carregarChecklist();">
+      <option value="">-- Escolha o gerador --</option>
+      <option value="tg3100">TG3100CXR</option>
+      <option value="vge8100">VGE8100</option>
+      <option value="tg2500">TG 2500</option>
+      <option value="bd19000">BD-19.000</option>
+    </select>
+
+    <label for="tecnico">Nome do Técnico:</label>
+    <input type="text" id="tecnico" placeholder="Digite o nome do técnico">
+
+    <label for="cidade">Cidade:</label>
+    <input type="text" id="cidade" placeholder="Digite a cidade">
+
+    <label for="novoGerador">Adicionar Novo Gerador:</label>
+    <input type="text" id="novoGerador" placeholder="Digite o nome do novo gerador">
+    <button onclick="adicionarGerador()">➕ Adicionar Gerador</button>
+
+    <div id="checklist" class="checklist"></div>
+
+    <label for="obs">Observações:</label>
+    <textarea id="obs" placeholder="Digite aqui qualquer observação..." rows="4"></textarea>
+
+    <div class="assinatura">
+      <p>Assinatura do Técnico:</p>
+      <input type="text" readonly>
+    </div>
+
+    <button onclick="enviarTelegram()">📨 Enviar para Telegram</button>
+    <p id="msgCopiado" class="copiado">✅ Enviado com sucesso!</p>
+  </div>
+
+<script>
+  const checklistPorGerador = {
+    tg3100: ["Conferir o nível de óleo do motor","Conferir o nível de combustível (gasolina)","Verificar possíveis vazamentos","Analisar o funcionamento dos instrumentos do painel","Conferir se a fiação elétrica está conforme","Conferir as abraçadeiras nas mangueiras de combustível","Averiguar o estado e conservação da carcaça","Realizar a limpeza do equipamento","Analisar o funcionamento do equipamento por 5 minutos","Conferir a corrente e cadeado"],
+    vge8100: ["Conferir o nível de óleo do motor","Conferir o nível de combustível (gasolina)","Verificar possíveis vazamentos","Analisar o funcionamento dos instrumentos do painel","Conferir se a fiação elétrica está conforme","Conferir as abraçadeiras nas mangueiras de combustível","Averiguar o estado e conservação da carcaça","Realizar a limpeza do equipamento","Analisar o funcionamento do equipamento por 5 minutos","Conferir a corrente e cadeado"],
+    tg2500: ["Conferir o nível de óleo do motor","Conferir o nível de combustível (gasolina)","Verificar possíveis vazamentos","Analisar o funcionamento dos instrumentos do painel","Conferir se a fiação elétrica está conforme","Conferir as abraçadeiras nas mangueiras de combustível","Averiguar o estado e conservação da carcaça","Realizar a limpeza do equipamento","Analisar o funcionamento do equipamento por 5 minutos","Conferir a corrente e cadeado"],
+    bd19000: ["Conferir o nível de óleo do motor","Conferir o nível de água do radiador","Conferir o nível do óleo diesel comum","Averiguar possíveis vazamentos","Analisar o funcionamento dos instrumentos do painel","Verificar se a carcaça do motor está aterrada eletricamente","Conferir se a fiação elétrica está conforme","Conferir se existe extintor de incêndio carregado nas proximidades","Verificar se a carga do extintor está dentro do prazo de validade","Conferir as abraçadeiras nas mangueiras de combustível","Averiguar o estado e conservação da carcaça","Realizar a limpeza do equipamento"]
+  };
+
+  function adicionarGerador() {
+    const nome = document.getElementById("novoGerador").value.trim();
+    if (!nome) { alert("Digite um nome válido!"); return; }
+
+    const select = document.getElementById("geradorSelect");
+    const option = document.createElement("option");
+    const chave = nome.toLowerCase().replace(/[^a-z0-9]/g, "");
+
+    option.value = chave;
+    option.textContent = nome;
+    select.appendChild(option);
+
+    checklistPorGerador[chave] = [...checklistPorGerador["tg3100"]];
+
+    select.value = chave;
+    carregarChecklist();
+
+    document.getElementById("novoGerador").value = "";
+  }
+
+  function carregarChecklist() {
+    const gerador = document.getElementById("geradorSelect").value;
+    const div = document.getElementById("checklist");
+    div.innerHTML = "";
+
+    if (checklistPorGerador[gerador]) {
+      const lista = checklistPorGerador[gerador];
+      lista.forEach(item => {
+        const divItem = document.createElement("div");
+        divItem.className = "checklist-item";
+        divItem.innerHTML = `<label><input type="checkbox"> ${item}</label>`;
+        div.appendChild(divItem);
+      });
+    }
+  }
+
+  document.getElementById("tecnico").addEventListener("input", function() {
+    document.querySelector(".assinatura input").value = this.value;
+  });
+
+  function enviarTelegram() {
+    const protocolo = document.getElementById("protocolo").value || "Não informado";
+    const tecnico = document.getElementById("tecnico").value || "Não informado";
+    const cidade = document.getElementById("cidade").value || "Não informada";
+
+    const select = document.getElementById("geradorSelect");
+    const gerador = select.options[select.selectedIndex].text;
+
+    const itens = document.querySelectorAll(".checklist-item input[type='checkbox']");
+    const observacao = document.getElementById("obs").value || "Nenhuma observação";
+
+    const lista = checklistPorGerador[select.value] || [];
+
+    let texto = `🧾 *Checklist de Gerador*\n\n#️⃣ *Protocolo:* ${protocolo}\n🔌 *Gerador:* ${gerador}\n👷 *Técnico:* ${tecnico}\n🏙️ *Cidade:* ${cidade}\n📅 Data: ${new Date().toLocaleDateString('pt-BR')}\n\n*Itens Verificados:*\n`;
+
+    itens.forEach((item, i) => {
+      texto += `${item.checked ? "✅" : "❌"} ${lista[i]}\n`;
+    });
+
+    texto += `\n📝 *Observações:* ${observacao}`;
+
+    const botToken = "8401740337:AAFxWCHx8M8Mc8Z-WHhhT-nfGlhAGP9L4dA";
+    const chatId = "-4860857271";
+
+    fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ chat_id: chatId, text: texto, parse_mode: "Markdown" })
+    }).then(() => {
+      const msg = document.getElementById("msgCopiado");
+      msg.style.display = "block";
+      setTimeout(() => msg.style.display = "none", 3000);
+    });
+  }
+</script>
+
+</body>
+</html>
