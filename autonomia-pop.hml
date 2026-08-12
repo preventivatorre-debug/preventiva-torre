@@ -1,0 +1,971 @@
+\<!DOCTYPE html>
+\<html lang="pt-BR">
+\<head>
+\<meta charset="UTF-8">
+\<title>Controle de POPs - Autonomia\</title>
+\<meta name="viewport" content="width=device-width, initial-scale=1">
+
+\<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f2f4f6;
+  padding: 20px;
+  margin: 0;
+}
+
+h1 {
+  text-align: center;
+  color: #1f6f43;
+}
+
+#busca {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.form-pop {
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,.1);
+}
+
+.form-pop input {
+  padding: 9px;
+  margin: 4px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.pop {
+  display: none;
+  background: #fff;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 25px;
+  box-shadow: 0 2px 6px rgba(0,0,0,.1);
+}
+
+.pop h2 {
+  color: #1f6f43;
+  margin-top: 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+th,
+td {
+  border: 1px solid #ccc;
+  padding: 7px;
+  text-align: center;
+}
+
+th {
+  background: #e7f3ec;
+}
+
+input {
+  width: 95%;
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  padding: 7px 11px;
+  border: none;
+  background: #1f6f43;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-top: 8px;
+}
+
+button:hover {
+  opacity: .9;
+}
+
+.remove {
+  background: #c0392b;
+}
+
+.total {
+  background: #fff3a0;
+  font-weight: bold;
+}
+
+.info {
+  margin-top: 15px;
+  padding: 12px;
+  background: #f7f7f7;
+  border-radius: 6px;
+  line-height: 1.7;
+}
+
+.banco {
+  margin-top: 15px;
+  padding: 15px;
+  background: #eef8f2;
+  border-left: 5px solid #1f6f43;
+  border-radius: 6px;
+}
+
+.banco-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.banco label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.status {
+  font-weight: bold;
+  padding: 7px;
+  border-radius: 5px;
+}
+
+.status-ok {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status-alerta {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.status-vencida {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.autonomia {
+  font-size: 18px;
+  font-weight: bold;
+  color: #1f6f43;
+}
+
+@media(max-width:800px) {
+  .banco-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  table {
+    font-size: 13px;
+  }
+}
+
+@media(max-width:500px) {
+  .banco-grid {
+    grid-template-columns: 1fr;
+  }
+}
+\</style>
+\</head>
+
+\<body>
+
+\<h1>🔋 Controle de Autonomia dos POPs\</h1>
+
+\<input
+  id="busca"
+  placeholder="🔍 Buscar POP..."
+  oninput="buscarPOP()"
+>
+
+\<div class="form-pop">
+
+  \<h3>➕ Novo POP\</h3>
+
+  \<input
+    id="novoNome"
+    placeholder="Nome do POP"
+  >
+
+  \<input
+    id="novoAh"
+    type="number"
+    step="0.01"
+    placeholder="Banco de baterias (Ah)"
+  >
+
+  \<input
+    id="novaData"
+    type="date"
+    title="Data de instalação das baterias"
+  >
+
+  \<input
+    id="novaValidade"
+    type="date"
+    title="Data de validade das baterias"
+  >
+
+  \<button onclick="criarPOP()">
+    Salvar POP
+  \</button>
+
+\</div>
+
+\<div id="pops">\</div>
+
+\<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+
+/* =========================================================
+   SUPABASE
+========================================================= */
+
+/*
+  1. Crie a tabela usando o SQL fornecido junto deste arquivo.
+  2. Troque os dois valores abaixo pelos dados do seu projeto.
+*/
+const SUPABASE_URL = "https://idzteltrnttmwzqjlkgj.supabase.co/rest/v1/";
+const SUPABASE_ANON_KEY = "sb_publishable_R4WcR-nhwErOjdW-cByXmw_RCGI4aix";
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
+);
+
+/* =========================================================
+   POPs INICIAIS
+========================================================= */
+
+const popsPadrao = [
+  {
+    nome: "POP LAGOA FUNDA",
+    ah: 200,
+    dataInstalacao: "2023-12-04",
+    validade: "2026-12-04",
+    equipamentos: [
+      ["PAC SWITCH 910","INTELBRAS",2,1],
+      ["NET PROBE","VOLT",0.2,1],
+      ["PATCH PANEL","VOLT",0.2,1],
+      ["RB 912","MIKROTIK",5,5]
+    ]
+  },
+  {
+    nome: "POP PAU DE RATO",
+    ah: 200,
+    dataInstalacao: "2023-12-04",
+    validade: "2026-12-04",
+    equipamentos: [
+      ["RB3011","MIKROTIK",1.25,1],
+      ["MIMOSA","C5C",0.6,1],
+      ["RB 912","MIKROTIK",2.5,5]
+    ]
+  },
+  {
+    nome: "POP ZABELE",
+    ah: 200,
+    dataInstalacao: "2023-12-04",
+    validade: "2026-12-04",
+    equipamentos: [
+      ["RB CCR 1009","MIKROTIK",1.625,1],
+      ["OLT DIGISTAR","1408",1.875,1],
+      ["ROCKET M5","UBIQUITI",0.9,3]
+    ]
+  },
+  {
+    nome: "POP DIRCEU",
+    ah: 400,
+    dataInstalacao: "2023-12-04",
+    validade: "2026-12-04",
+    equipamentos: [
+      ["SWITCH DM4370","DATACOM",0.6875,1],
+      ["OLT FIBERHOME","AN5516",2.4,2]
+    ]
+  },
+  {
+    nome: "POP SERRA NOVA",
+    ah: 200,
+    dataInstalacao: "2023-12-04",
+    validade: "2026-12-04",
+    equipamentos: [
+      ["RB3011","MIKROTIK",1.25,1],
+      ["MIMOSA","C5C",0.6,1],
+      ["RB 912","MIKROTIK",3.75,5]
+    ]
+  }
+];
+
+/* =========================================================
+   CONVERSÃO / BANCO
+========================================================= */
+
+function novoId() {
+  return crypto.randomUUID();
+}
+
+function popParaBanco(pop) {
+  return {
+    id: pop.id || novoId(),
+    nome: pop.nome,
+    ah: Number(pop.ah) || 0,
+    data_instalacao: pop.dataInstalacao || null,
+    validade: pop.validade || null,
+    equipamentos: pop.equipamentos || []
+  };
+}
+
+function bancoParaPop(row) {
+  return {
+    id: row.id,
+    nome: row.nome,
+    ah: Number(row.ah) || 0,
+    dataInstalacao: row.data_instalacao || "",
+    validade: row.validade || "",
+    equipamentos: Array.isArray(row.equipamentos)
+      ? row.equipamentos
+      : []
+  };
+}
+
+let pops = [];
+
+async function carregarDados() {
+  const { data, error } = await supabaseClient
+    .from("pops_autonomia")
+    .select("*")
+    .order("nome", { ascending: true });
+
+  if (error) {
+    console.error(error);
+    alert("Erro ao carregar os POPs do banco: " + error.message);
+    return;
+  }
+
+  if (data && data.length > 0) {
+    pops = data.map(bancoParaPop);
+  } else {
+    pops = popsPadrao.map(pop => ({
+      ...pop,
+      id: novoId()
+    }));
+
+    const { error: insertError } = await supabaseClient
+      .from("pops_autonomia")
+      .insert(pops.map(popParaBanco));
+
+    if (insertError) {
+      console.error(insertError);
+      alert("Os POPs padrão foram carregados na tela, mas não foi possível gravá-los no banco: " + insertError.message);
+      return;
+    }
+  }
+
+  render();
+}
+
+/* Salva todos os POPs atuais */
+async function salvar() {
+  if (!pops.length) return;
+
+  const registros = pops.map(popParaBanco);
+
+  const { error } = await supabaseClient
+    .from("pops_autonomia")
+    .upsert(registros, { onConflict: "id" });
+
+  if (error) {
+    console.error("Erro ao salvar:", error);
+    alert("Erro ao salvar no banco: " + error.message);
+  }
+}
+
+/* Salva apenas um POP */
+async function salvarPOP(pop) {
+  const registro = popParaBanco(pop);
+
+  const { error } = await supabaseClient
+    .from("pops_autonomia")
+    .upsert(registro, { onConflict: "id" });
+
+  if (error) {
+    console.error("Erro ao salvar POP:", error);
+    alert("Erro ao salvar o POP no banco: " + error.message);
+  }
+}
+
+/* Exclui também do banco */
+async function excluirPOP(i) {
+  const pop = pops[i];
+
+  if (!pop) return;
+
+  if (!confirm("Deseja excluir este POP?")) return;
+
+  const { error } = await supabaseClient
+    .from("pops_autonomia")
+    .delete()
+    .eq("id", pop.id);
+
+  if (error) {
+    console.error(error);
+    alert("Erro ao excluir o POP do banco: " + error.message);
+    return;
+  }
+
+  pops.splice(i, 1);
+  render();
+}
+
+/* =========================================================
+   RENDERIZAR / CRIAR / EDITAR
+========================================================= */
+
+/* =========================================================
+   FORMATAR DATA
+========================================================= */
+
+function formatarData(data) {
+
+  if (!data) return "--";
+
+  const partes = data.split("-");
+
+  if (partes.length !== 3) return data;
+
+  return `${partes[2]}/${partes[1]}/${partes[0]}`;
+
+}
+
+
+/* =========================================================
+   STATUS DA BATERIA
+========================================================= */
+
+function statusBateria(validade) {
+
+  if (!validade) {
+
+    return {
+      texto: "⚪ Sem validade cadastrada",
+      classe: ""
+    };
+
+  }
+
+  const hoje = new Date();
+
+  hoje.setHours(0,0,0,0);
+
+  const dataValidade = new Date(validade + "T00:00:00");
+
+  const diferenca =
+    Math.ceil(
+      (dataValidade - hoje) /
+      (1000 * 60 * 60 * 24)
+    );
+
+  if (diferenca < 0) {
+
+    return {
+      texto: "🔴 BATERIA VENCIDA",
+      classe: "status-vencida"
+    };
+
+  }
+
+  if (diferenca <= 90) {
+
+    return {
+      texto: `🟡 Vence em ${diferenca} dias`,
+      classe: "status-alerta"
+    };
+
+  }
+
+  return {
+    texto: "🟢 Bateria dentro da validade",
+    classe: "status-ok"
+  };
+
+}
+
+
+/* =========================================================
+   RENDER
+========================================================= */
+
+function render() {
+
+  const c = document.getElementById("pops");
+
+  c.innerHTML = "";
+
+  pops.forEach((pop,i) => {
+
+    let consumo = 0;
+
+    let linhas = "";
+
+
+    /* EQUIPAMENTOS */
+
+    pop.equipamentos.forEach((e,j) => {
+
+      consumo +=
+        (Number(e[2]) || 0) *
+        (Number(e[3]) || 0);
+
+
+      linhas += `
+
+      \<tr>
+
+        \<td>
+          \<input
+            value="${e[0]}"
+            oninput="
+              pops[${i}].equipamentos[${j}][0]=this.value;
+              salvar();
+            "
+          >
+        \</td>
+
+        \<td>
+          \<input
+            value="${e[1]}"
+            oninput="
+              pops[${i}].equipamentos[${j}][1]=this.value;
+              salvar();
+            "
+          >
+        \</td>
+
+        \<td>
+          \<input
+            type="number"
+            step="0.01"
+            value="${e[2]}"
+            oninput="
+              pops[${i}].equipamentos[${j}][2]=+this.value;
+              salvar();
+              renderVisivel(${i});
+            "
+          >
+        \</td>
+
+        \<td>
+          \<input
+            type="number"
+            value="${e[3]}"
+            oninput="
+              pops[${i}].equipamentos[${j}][3]=+this.value;
+              salvar();
+              renderVisivel(${i});
+            "
+          >
+        \</td>
+
+        \<td>
+
+          \<button
+            class="remove"
+            onclick="
+              pops[${i}].equipamentos.splice(${j},1);
+              salvar();
+              render();
+            "
+          >
+            X
+          \</button>
+
+        \</td>
+
+      \</tr>
+
+      `;
+
+    });
+
+
+    /* AUTONOMIA */
+
+    const horas =
+      consumo > 0
+        ? Number(pop.ah) / consumo
+        : 0;
+
+
+    const h = Math.floor(horas);
+
+    const m =
+      Math.round(
+        (horas - h) * 60
+      );
+
+
+    /* STATUS */
+
+    const status =
+      statusBateria(pop.validade);
+
+
+    /* HTML DO POP */
+
+    c.innerHTML += `
+
+    \<div
+      class="pop"
+      data-nome="${pop.nome.toLowerCase()}"
+    >
+
+      \<h2>
+        ${pop.nome}
+      \</h2>
+
+
+      \<!-- BANCO DE BATERIAS -->
+
+      \<div class="banco">
+
+        \<h3>🔋 Banco de Baterias\</h3>
+
+        \<div class="banco-grid">
+
+
+          \<div>
+
+            \<label>
+              Capacidade do Banco
+            \</label>
+
+            \<input
+              type="number"
+              step="0.01"
+              value="${pop.ah}"
+              onchange="
+                pops[${i}].ah=+this.value;
+                salvar();
+                renderVisivel(${i});
+              "
+            >
+
+            \<small>Ah\</small>
+
+          \</div>
+
+
+          \<div>
+
+            \<label>
+              Data de Instalação
+            \</label>
+
+            \<input
+              type="date"
+              value="${pop.dataInstalacao || ""}"
+              onchange="
+                pops[${i}].dataInstalacao=this.value;
+                salvar();
+                renderVisivel(${i});
+              "
+            >
+
+          \</div>
+
+
+          \<div>
+
+            \<label>
+              Data de Validade
+            \</label>
+
+            \<input
+              type="date"
+              value="${pop.validade || ""}"
+              onchange="
+                pops[${i}].validade=this.value;
+                salvar();
+                renderVisivel(${i});
+              "
+            >
+
+          \</div>
+
+
+          \<div>
+
+            \<label>
+              Situação
+            \</label>
+
+            \<div
+              class="status ${status.classe}"
+            >
+              ${status.texto}
+            \</div>
+
+          \</div>
+
+
+        \</div>
+
+
+        \<div class="info">
+
+          📅 Instalação:
+          \<strong>
+            ${formatarData(pop.dataInstalacao)}
+          \</strong>
+
+          \
+
+          📅 Validade:
+          \<strong>
+            ${formatarData(pop.validade)}
+          \</strong>
+
+        \</div>
+
+      \</div>
+
+
+      \<!-- EQUIPAMENTOS -->
+
+      \<h3>📡 Equipamentos\</h3>
+
+      \<table>
+
+        \<tr>
+
+          \<th>
+            Equipamento
+          \</th>
+
+          \<th>
+            Modelo
+          \</th>
+
+          \<th>
+            Ampere
+          \</th>
+
+          \<th>
+            Qt
+          \</th>
+
+          \<th>
+          \</th>
+
+        \</tr>
+
+        ${linhas}
+
+
+        \<tr class="total">
+
+          \<td colspan="2">
+            Consumo Total
+          \</td>
+
+          \<td colspan="3">
+            ${consumo.toFixed(2)} A
+          \</td>
+
+        \</tr>
+
+      \</table>
+
+
+      \<button
+        onclick="
+          pops[${i}].equipamentos.push(['','',0,1]);
+          salvar();
+          renderVisivel(${i});
+        "
+      >
+        ➕ Adicionar Equipamento
+      \</button>
+
+
+      \<!-- AUTONOMIA -->
+
+      \<div class="info">
+
+        🔋 Banco:
+        \<strong>
+          ${Number(pop.ah).toFixed(2)} Ah
+        \</strong>
+
+        \
+
+        ⚡ Consumo:
+        \<strong>
+          ${consumo.toFixed(2)} A
+        \</strong>
+
+        \
+
+        ⏱️ Autonomia estimada:
+
+        \<span class="autonomia">
+          ${h}h ${m}min
+        \</span>
+
+      \</div>
+
+
+      \<button
+        class="remove"
+        onclick="excluirPOP(${i})"
+      >
+        🗑️ Excluir POP
+      \</button>
+
+    \</div>
+
+    `;
+
+  });
+
+}
+
+
+/* =========================================================
+   RENDERIZAR POP ESPECÍFICO
+========================================================= */
+
+function renderVisivel(i) {
+
+  render();
+
+  const popsTela =
+    document.querySelectorAll(".pop");
+
+  if (popsTela[i]) {
+
+    popsTela[i].style.display = "block";
+
+  }
+
+}
+
+
+/* =========================================================
+   CRIAR POP
+========================================================= */
+
+async function criarPOP() {
+
+  const nome =
+    document.getElementById("novoNome").value.trim();
+
+  const ah =
+    document.getElementById("novoAh").value;
+
+  const data =
+    document.getElementById("novaData").value;
+
+  const validade =
+    document.getElementById("novaValidade").value;
+
+
+  if (!nome || !ah) {
+
+    alert(
+      "Preencha o nome do POP e a capacidade do banco."
+    );
+
+    return;
+
+  }
+
+
+  pops.push({
+
+    nome: nome,
+
+    ah: Number(ah),
+
+    dataInstalacao: data,
+
+    validade: validade,
+
+    equipamentos: []
+
+  });
+
+
+  salvar();
+
+
+  document.getElementById("novoNome").value = "";
+
+  document.getElementById("novoAh").value = "";
+
+  document.getElementById("novaData").value = "";
+
+  document.getElementById("novaValidade").value = "";
+
+
+  render();
+
+}
+
+
+/* =========================================================
+   BUSCAR POP
+========================================================= */
+
+function buscarPOP() {
+
+  const texto =
+    document
+      .getElementById("busca")
+      .value
+      .toLowerCase();
+
+
+  document
+    .querySelectorAll(".pop")
+    .forEach(p => {
+
+      if (
+        texto &&
+        p.dataset.nome.includes(texto)
+      ) {
+
+        p.style.display = "block";
+
+      } else {
+
+        p.style.display = "none";
+
+      }
+
+    });
+
+}
+
+
+/* =========================================================
+   INICIALIZAR
+========================================================= */
+
+carregarDados();
+
+\</script>
+
+\</body>
+\</html>
