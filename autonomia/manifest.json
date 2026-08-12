@@ -1,7 +1,7 @@
 {
   "name": "Controle de Autonomia dos POPs",
   "short_name": "Autonomia POPs",
-  "description": "Controle de autonomia, baterias e equipamentos dos POPs",
+  "description": "Controle de autonomia das baterias dos POPs",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#f2f4f6",
