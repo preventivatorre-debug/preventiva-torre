@@ -22,11 +22,16 @@ h1 {
   color: #1f6f43;
 }
 
+.busca-container {
+  position: relative;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
 #busca {
   width: 100%;
   padding: 12px;
   font-size: 16px;
-  margin-bottom: 15px;
   border: 1px solid #ccc;
   border-radius: 6px;
 }
@@ -184,11 +189,17 @@ button:hover {
 
 <h1>🔋 Controle de Autonomia dos POPs</h1>
 
-<input
-  id="busca"
-  placeholder="🔍 Buscar POP..."
-  oninput="buscarPOP()"
->
+<div class="busca-container">
+  <input
+    id="busca"
+    list="listaPOPs"
+    autocomplete="off"
+    placeholder="🔍 Digite ou selecione um POP..."
+    oninput="buscarPOP()"
+  >
+
+  <datalist id="listaPOPs"></datalist>
+</div>
 
 <div class="form-pop">
 
@@ -839,6 +850,8 @@ function render() {
 
   });
 
+  atualizarListaPOPs();
+
 }
 
 
@@ -921,17 +934,34 @@ async function criarPOP() {
 
 
 /* =========================================================
+   LISTA DE POPs NA PESQUISA
+========================================================= */
+
+function atualizarListaPOPs() {
+  const lista = document.getElementById("listaPOPs");
+
+  if (!lista) return;
+
+  lista.innerHTML = "";
+
+  pops
+    .slice()
+    .sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"))
+    .forEach(pop => {
+      const option = document.createElement("option");
+      option.value = pop.nome;
+      lista.appendChild(option);
+    });
+}
+
+/* =========================================================
    BUSCAR POP
 ========================================================= */
 
 function buscarPOP() {
 
-  const texto =
-    document
-      .getElementById("busca")
-      .value
-      .toLowerCase();
-
+  const campo = document.getElementById("busca");
+  const texto = campo.value.trim().toLowerCase();
 
   document
     .querySelectorAll(".pop")
@@ -941,13 +971,9 @@ function buscarPOP() {
         texto &&
         p.dataset.nome.includes(texto)
       ) {
-
         p.style.display = "block";
-
       } else {
-
         p.style.display = "none";
-
       }
 
     });
