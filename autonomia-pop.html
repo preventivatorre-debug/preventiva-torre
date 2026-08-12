@@ -5,7 +5,7 @@
 <title>Controle de POPs - Autonomia\</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-\<style>
+<style>
 * {
   box-sizing: border-box;
 }
@@ -177,66 +177,66 @@ button:hover {
     grid-template-columns: 1fr;
   }
 }
-\</style>
-\</head>
+</style>
+</head>
 
-\<body>
+<body>
 
-\<h1>🔋 Controle de Autonomia dos POPs\</h1>
+<h1>🔋 Controle de Autonomia dos POPs\</h1>
 
-\<input
+<input
   id="busca"
   placeholder="🔍 Buscar POP..."
   oninput="buscarPOP()"
 >
 
-\<div class="form-pop">
+<div class="form-pop">
 
-  \<h3>➕ Novo POP\</h3>
+  <h3>➕ Novo POP\</h3>
 
-  \<input
+  <input
     id="novoNome"
     placeholder="Nome do POP"
   >
 
-  \<input
+  <input
     id="novoAh"
     type="number"
     step="0.01"
     placeholder="Banco de baterias (Ah)"
   >
 
-  \<input
+  <input
     id="novaData"
     type="date"
     title="Data de instalação das baterias"
   >
 
-  \<input
+  <input
     id="novaValidade"
     type="date"
     title="Data de validade das baterias"
   >
 
-  \<button onclick="criarPOP()">
+  <button onclick="criarPOP()">
     Salvar POP
-  \</button>
+  </button>
 
-\</div>
+</div>
 
-\<div id="pops">\</div>
+<div id="pops">\</div>
 
-\<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 
-/* =========================================================
+* =========================================================
    SUPABASE
 ========================================================= */
 
-/*
+*
   1. Crie a tabela usando o SQL fornecido junto deste arquivo.
   2. Troque os dois valores abaixo pelos dados do seu projeto.
-*/
+*
 const SUPABASE_URL = "https://idzteltrnttmwzqjlkgj.supabase.co/rest/v1/";
 const SUPABASE_ANON_KEY = "sb_publishable_R4WcR-nhwErOjdW-cByXmw_RCGI4aix";
 
@@ -245,7 +245,7 @@ const supabaseClient = window.supabase.createClient(
   SUPABASE_ANON_KEY
 );
 
-/* =========================================================
+* =========================================================
    POPs INICIAIS
 ========================================================= */
 
