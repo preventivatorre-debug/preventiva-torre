@@ -65,6 +65,23 @@ h1 {
   margin-top: 0;
 }
 
+.nome-pop-edicao {
+  margin-bottom: 15px;
+}
+
+.nome-pop-edicao label {
+  display: block;
+  margin-bottom: 5px;
+  color: #1f6f43;
+}
+
+.nome-pop-edicao input {
+  width: 100%;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 9px;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
@@ -641,9 +658,24 @@ function render() {
       data-nome="${pop.nome.toLowerCase()}"
     >
 
-      <h2>
-        ${pop.nome}
-      </h2>
+      <div class="nome-pop-edicao">
+        <label><strong>Nome do POP</strong></label>
+        <input
+          type="text"
+          value="${pop.nome}"
+          title="Editar nome do POP"
+          onchange="
+            const novoNome = this.value.trim();
+            if (novoNome) {
+              pops[${i}].nome = novoNome;
+              salvarPOP(pops[${i}]);
+              renderVisivel(${i});
+            } else {
+              this.value = pops[${i}].nome;
+            }
+          "
+        >
+      </div>
 
 
       <!-- BANCO DE BATERIAS -->
