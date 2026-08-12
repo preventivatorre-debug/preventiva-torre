@@ -267,6 +267,7 @@ button:hover {
 */
 const SUPABASE_URL = "https://idzteltrnttmwzqjlkgj.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_R4WcR-nhwErOjdW-cByXmw_RCGI4aix";
+const SENHA_EDICAO = "1234";
 
 const supabaseClient = window.supabase.createClient(
   SUPABASE_URL,
@@ -439,6 +440,7 @@ async function excluirPOP(i) {
 
   if (!pop) return;
 
+  if (!pedirSenhaEdicao()) return;
   if (!confirm("Deseja excluir este POP?")) return;
 
   const { error } = await supabaseClient
@@ -454,6 +456,16 @@ async function excluirPOP(i) {
 
   pops.splice(i, 1);
   render();
+}
+
+/* =========================================================
+   PROTEÇÃO CONTRA EDIÇÃO ACIDENTAL
+========================================================= */
+function pedirSenhaEdicao() {
+  const senha = prompt("🔐 Digite a senha para editar:");
+  if (senha === SENHA_EDICAO) return true;
+  if (senha !== null) alert("❌ Senha incorreta. A alteração não foi realizada.");
+  return false;
 }
 
 /* =========================================================
@@ -507,8 +519,8 @@ function statusBateria(validade) {
   if (diferenca < 0) {
 
     return {
-      texto: "🔴 BATERIA VENCIDA",
-      classe: "status-vencida"
+      texto: "🔴 BATERIA FORA DA GARANTIA",
+      classe: "status-sem garantia"
     };
 
   }
@@ -523,7 +535,7 @@ function statusBateria(validade) {
   }
 
   return {
-    texto: "🟢 Bateria dentro da validade",
+    texto: "🟢 Bateria dentro da Garantia",
     classe: "status-ok"
   };
 
@@ -563,7 +575,8 @@ function render() {
         <td>
           <input
             value="${e[0]}"
-            oninput="
+            onchange="
+              if (!pedirSenhaEdicao()) { this.value = pops[${i}].equipamentos[${j}][0]; return; }
               pops[${i}].equipamentos[${j}][0]=this.value;
               salvarPOP(pops[${i}]);
             "
@@ -573,7 +586,8 @@ function render() {
         <td>
           <input
             value="${e[1]}"
-            oninput="
+            onchange="
+              if (!pedirSenhaEdicao()) { this.value = pops[${i}].equipamentos[${j}][1]; return; }
               pops[${i}].equipamentos[${j}][1]=this.value;
               salvarPOP(pops[${i}]);
             "
@@ -585,7 +599,8 @@ function render() {
             type="number"
             step="0.01"
             value="${e[2]}"
-            oninput="
+            onchange="
+              if (!pedirSenhaEdicao()) { this.value = pops[${i}].equipamentos[${j}][2]; return; }
               pops[${i}].equipamentos[${j}][2]=+this.value;
               salvarPOP(pops[${i}]);
               renderVisivel(${i});
@@ -597,7 +612,8 @@ function render() {
           <input
             type="number"
             value="${e[3]}"
-            oninput="
+            onchange="
+              if (!pedirSenhaEdicao()) { this.value = pops[${i}].equipamentos[${j}][3]; return; }
               pops[${i}].equipamentos[${j}][3]=+this.value;
               salvarPOP(pops[${i}]);
               renderVisivel(${i});
@@ -610,6 +626,7 @@ function render() {
           <button
             class="remove"
             onclick="
+              if (!pedirSenhaEdicao()) return;
               pops[${i}].equipamentos.splice(${j},1);
               salvarPOP(pops[${i}]);
               render();
@@ -666,7 +683,8 @@ function render() {
           title="Editar nome do POP"
           onchange="
             const novoNome = this.value.trim();
-            if (novoNome) {
+            if (novoNome && novoNome !== pops[${i}].nome) {
+              if (!pedirSenhaEdicao()) { this.value = pops[${i}].nome; return; }
               pops[${i}].nome = novoNome;
               salvarPOP(pops[${i}]);
               renderVisivel(${i});
@@ -698,6 +716,7 @@ function render() {
               step="0.01"
               value="${pop.ah}"
               onchange="
+                if (!pedirSenhaEdicao()) { this.value = pops[${i}].ah; return; }
                 pops[${i}].ah=+this.value;
                 salvarPOP(pops[${i}]);
                 renderVisivel(${i});
@@ -719,6 +738,7 @@ function render() {
               type="date"
               value="${pop.dataInstalacao || ""}"
               onchange="
+                if (!pedirSenhaEdicao()) { this.value = pops[${i}].dataInstalacao || ''; return; }
                 pops[${i}].dataInstalacao=this.value;
                 salvarPOP(pops[${i}]);
                 renderVisivel(${i});
@@ -738,6 +758,7 @@ function render() {
               type="date"
               value="${pop.validade || ""}"
               onchange="
+                if (!pedirSenhaEdicao()) { this.value = pops[${i}].validade || ''; return; }
                 pops[${i}].validade=this.value;
                 salvarPOP(pops[${i}]);
                 renderVisivel(${i});
@@ -833,6 +854,7 @@ function render() {
 
       <button
         onclick="
+          if (!pedirSenhaEdicao()) return;
           pops[${i}].equipamentos.push(['','',0,1]);
           salvarPOP(pops[${i}]);
           renderVisivel(${i});
