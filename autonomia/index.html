@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Controle de POPs - Autonomia\</title>
+<title>Controle de POPs - Autonomia</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
@@ -182,7 +182,7 @@ button:hover {
 
 <body>
 
-<h1>🔋 Controle de Autonomia dos POPs\</h1>
+<h1>🔋 Controle de Autonomia dos POPs</h1>
 
 <input
   id="busca"
@@ -192,7 +192,7 @@ button:hover {
 
 <div class="form-pop">
 
-  <h3>➕ Novo POP\</h3>
+  <h3>➕ Novo POP</h3>
 
   <input
     id="novoNome"
@@ -224,20 +224,20 @@ button:hover {
 
 </div>
 
-<div id="pops">\</div>
+<div id="pops"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 
-* =========================================================
+/* =========================================================
    SUPABASE
 ========================================================= */
 
-*
+/*
   1. Crie a tabela usando o SQL fornecido junto deste arquivo.
   2. Troque os dois valores abaixo pelos dados do seu projeto.
-*
-const SUPABASE_URL = "https://idzteltrnttmwzqjlkgj.supabase.co/rest/v1/";
+*/
+const SUPABASE_URL = "https://idzteltrnttmwzqjlkgj.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_R4WcR-nhwErOjdW-cByXmw_RCGI4aix";
 
 const supabaseClient = window.supabase.createClient(
@@ -245,7 +245,7 @@ const supabaseClient = window.supabase.createClient(
   SUPABASE_ANON_KEY
 );
 
-* =========================================================
+/* =========================================================
    POPs INICIAIS
 ========================================================= */
 
@@ -530,69 +530,69 @@ function render() {
 
       linhas += `
 
-      \<tr>
+      <tr>
 
-        \<td>
-          \<input
+        <td>
+          <input
             value="${e[0]}"
             oninput="
               pops[${i}].equipamentos[${j}][0]=this.value;
-              salvar();
+              salvarPOP(pops[${i}]);
             "
           >
-        \</td>
+        </td>
 
-        \<td>
-          \<input
+        <td>
+          <input
             value="${e[1]}"
             oninput="
               pops[${i}].equipamentos[${j}][1]=this.value;
-              salvar();
+              salvarPOP(pops[${i}]);
             "
           >
-        \</td>
+        </td>
 
-        \<td>
-          \<input
+        <td>
+          <input
             type="number"
             step="0.01"
             value="${e[2]}"
             oninput="
               pops[${i}].equipamentos[${j}][2]=+this.value;
-              salvar();
+              salvarPOP(pops[${i}]);
               renderVisivel(${i});
             "
           >
-        \</td>
+        </td>
 
-        \<td>
-          \<input
+        <td>
+          <input
             type="number"
             value="${e[3]}"
             oninput="
               pops[${i}].equipamentos[${j}][3]=+this.value;
-              salvar();
+              salvarPOP(pops[${i}]);
               renderVisivel(${i});
             "
           >
-        \</td>
+        </td>
 
-        \<td>
+        <td>
 
-          \<button
+          <button
             class="remove"
             onclick="
               pops[${i}].equipamentos.splice(${j},1);
-              salvar();
+              salvarPOP(pops[${i}]);
               render();
             "
           >
             X
-          \</button>
+          </button>
 
-        \</td>
+        </td>
 
-      \</tr>
+      </tr>
 
       `;
 
@@ -625,215 +625,215 @@ function render() {
 
     c.innerHTML += `
 
-    \<div
+    <div
       class="pop"
       data-nome="${pop.nome.toLowerCase()}"
     >
 
-      \<h2>
+      <h2>
         ${pop.nome}
-      \</h2>
+      </h2>
 
 
-      \<!-- BANCO DE BATERIAS -->
+      <!-- BANCO DE BATERIAS -->
 
-      \<div class="banco">
+      <div class="banco">
 
-        \<h3>🔋 Banco de Baterias\</h3>
+        <h3>🔋 Banco de Baterias</h3>
 
-        \<div class="banco-grid">
+        <div class="banco-grid">
 
 
-          \<div>
+          <div>
 
-            \<label>
+            <label>
               Capacidade do Banco
-            \</label>
+            </label>
 
-            \<input
+            <input
               type="number"
               step="0.01"
               value="${pop.ah}"
               onchange="
                 pops[${i}].ah=+this.value;
-                salvar();
+                salvarPOP(pops[${i}]);
                 renderVisivel(${i});
               "
             >
 
-            \<small>Ah\</small>
+            <small>Ah</small>
 
-          \</div>
+          </div>
 
 
-          \<div>
+          <div>
 
-            \<label>
+            <label>
               Data de Instalação
-            \</label>
+            </label>
 
-            \<input
+            <input
               type="date"
               value="${pop.dataInstalacao || ""}"
               onchange="
                 pops[${i}].dataInstalacao=this.value;
-                salvar();
+                salvarPOP(pops[${i}]);
                 renderVisivel(${i});
               "
             >
 
-          \</div>
+          </div>
 
 
-          \<div>
+          <div>
 
-            \<label>
+            <label>
               Data de Validade
-            \</label>
+            </label>
 
-            \<input
+            <input
               type="date"
               value="${pop.validade || ""}"
               onchange="
                 pops[${i}].validade=this.value;
-                salvar();
+                salvarPOP(pops[${i}]);
                 renderVisivel(${i});
               "
             >
 
-          \</div>
+          </div>
 
 
-          \<div>
+          <div>
 
-            \<label>
+            <label>
               Situação
-            \</label>
+            </label>
 
-            \<div
+            <div
               class="status ${status.classe}"
             >
               ${status.texto}
-            \</div>
+            </div>
 
-          \</div>
-
-
-        \</div>
+          </div>
 
 
-        \<div class="info">
+        </div>
+
+
+        <div class="info">
 
           📅 Instalação:
-          \<strong>
+          <strong>
             ${formatarData(pop.dataInstalacao)}
-          \</strong>
+          </strong>
 
-          \
+          
 
           📅 Validade:
-          \<strong>
+          <strong>
             ${formatarData(pop.validade)}
-          \</strong>
+          </strong>
 
-        \</div>
+        </div>
 
-      \</div>
+      </div>
 
 
-      \<!-- EQUIPAMENTOS -->
+      <!-- EQUIPAMENTOS -->
 
-      \<h3>📡 Equipamentos\</h3>
+      <h3>📡 Equipamentos</h3>
 
-      \<table>
+      <table>
 
-        \<tr>
+        <tr>
 
-          \<th>
+          <th>
             Equipamento
-          \</th>
+          </th>
 
-          \<th>
+          <th>
             Modelo
-          \</th>
+          </th>
 
-          \<th>
+          <th>
             Ampere
-          \</th>
+          </th>
 
-          \<th>
+          <th>
             Qt
-          \</th>
+          </th>
 
-          \<th>
-          \</th>
+          <th>
+          </th>
 
-        \</tr>
+        </tr>
 
         ${linhas}
 
 
-        \<tr class="total">
+        <tr class="total">
 
-          \<td colspan="2">
+          <td colspan="2">
             Consumo Total
-          \</td>
+          </td>
 
-          \<td colspan="3">
+          <td colspan="3">
             ${consumo.toFixed(2)} A
-          \</td>
+          </td>
 
-        \</tr>
+        </tr>
 
-      \</table>
+      </table>
 
 
-      \<button
+      <button
         onclick="
           pops[${i}].equipamentos.push(['','',0,1]);
-          salvar();
+          salvarPOP(pops[${i}]);
           renderVisivel(${i});
         "
       >
         ➕ Adicionar Equipamento
-      \</button>
+      </button>
 
 
-      \<!-- AUTONOMIA -->
+      <!-- AUTONOMIA -->
 
-      \<div class="info">
+      <div class="info">
 
         🔋 Banco:
-        \<strong>
+        <strong>
           ${Number(pop.ah).toFixed(2)} Ah
-        \</strong>
+        </strong>
 
-        \
+        
 
         ⚡ Consumo:
-        \<strong>
+        <strong>
           ${consumo.toFixed(2)} A
-        \</strong>
+        </strong>
 
-        \
+        
 
         ⏱️ Autonomia estimada:
 
-        \<span class="autonomia">
+        <span class="autonomia">
           ${h}h ${m}min
-        \</span>
+        </span>
 
-      \</div>
+      </div>
 
 
-      \<button
+      <button
         class="remove"
         onclick="excluirPOP(${i})"
       >
         🗑️ Excluir POP
-      \</button>
+      </button>
 
-    \</div>
+    </div>
 
     `;
 
@@ -892,22 +892,18 @@ async function criarPOP() {
   }
 
 
-  pops.push({
-
+  const novoPOP = {
+    id: novoId(),
     nome: nome,
-
     ah: Number(ah),
-
     dataInstalacao: data,
-
     validade: validade,
-
     equipamentos: []
+  };
 
-  });
+  pops.push(novoPOP);
 
-
-  salvar();
+  await salvarPOP(novoPOP);
 
 
   document.getElementById("novoNome").value = "";
@@ -965,7 +961,7 @@ function buscarPOP() {
 
 carregarDados();
 
-\</script>
+</script>
 
-\</body>
-\</html>
+</body>
+</html>
