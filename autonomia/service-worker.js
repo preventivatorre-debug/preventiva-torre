@@ -1,4 +1,4 @@
-const CACHE_NAME = "autonomia-pops-v1";
+const CACHE_NAME = "autonomia-pops-v2";
 
 const ARQUIVOS = [
   "./",
