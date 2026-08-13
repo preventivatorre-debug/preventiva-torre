@@ -1048,41 +1048,34 @@ function atualizarCampos() {
    POP -> BANCO
 ========================================================= */
 
-function popParaBanco(pop) {
+function bancoParaPop(row) {
 
   return {
 
-    id:
-      pop.id || novoId(),
+    id: row.id,
 
-    nome:
-      pop.nome || "",
+    nome: row.nome || "",
 
-    // IMPORTANTE:
-    // mantém casas decimais do banco
-    ah:
-      Number(pop.ah) || 0,
+    ah: Number(row.ah) || 0,
 
-    data_instalacao:
-      pop.dataInstalacao || null,
+    dataInstalacao:
+      row.data_instalacao || "",
 
     validade:
-      pop.validade || null,
+      row.validade || "",
 
-    ultima_preventiva:
-      pop.ultimaPreventiva || null,
+    ultimaPreventiva:
+      row.ultima_preventiva || "",
 
-    proxima_preventiva:
-      pop.proximaPreventiva || null,
+    proximaPreventiva:
+      row.proxima_preventiva || "",
 
-    periodicidade_preventiva:
-      Math.round(
-        Number(pop.periodicidadePreventiva) || 30
-      ),
+    periodicidadePreventiva:
+      Number(row.periodicidade_preventiva) || 30,
 
     equipamentos:
-      Array.isArray(pop.equipamentos)
-        ? pop.equipamentos
+      Array.isArray(row.equipamentos)
+        ? row.equipamentos
         : []
 
   };
@@ -1518,51 +1511,65 @@ function atualizarListaEquipamentos() {
    PREVENTIVA
 ========================================================= */
 
-function calcularProximaPreventiva(
-  data,
-  dias
-) {
+function calcularProximaPreventiva(data, dias) {
 
-  if (!data)
+  if (!data) {
     return "";
+  }
 
-  dias =
-    Number(dias) || 30;
-
-  const partes =
-    data.split("-");
-
-  if (
-    partes.length !== 3
-  )
-    return "";
-
-  const dataObj =
-    new Date(
-      Number(partes[0]),
-      Number(partes[1]) - 1,
-      Number(partes[2])
-    );
-
-  dataObj.setDate(
-    dataObj.getDate() + dias
+  const quantidadeDias = Math.round(
+    Number(dias)
   );
 
-  const ano =
+  if (
+    !Number.isFinite(quantidadeDias) ||
+    quantidadeDias <= 0
+  ) {
+    return "";
+  }
+
+  const partes = String(data).split("-");
+
+  if (partes.length !== 3) {
+    return "";
+  }
+
+  const ano = Number(partes[0]);
+  const mes = Number(partes[1]);
+  const dia = Number(partes[2]);
+
+  if (
+    !ano ||
+    !mes ||
+    !dia
+  ) {
+    return "";
+  }
+
+  const dataObj = new Date(
+    ano,
+    mes - 1,
+    dia
+  );
+
+  dataObj.setDate(
+    dataObj.getDate() + quantidadeDias
+  );
+
+  const novoAno =
     dataObj.getFullYear();
 
-  const mes =
+  const novoMes =
     String(
       dataObj.getMonth() + 1
     ).padStart(2, "0");
 
-  const dia =
+  const novoDia =
     String(
       dataObj.getDate()
     ).padStart(2, "0");
 
-  return `${ano}-${mes}-${dia}`;
-
+  return `${novoAno}-${novoMes}-${novoDia}`;
 }
 
 
@@ -2892,24 +2899,23 @@ function render() {
 
                   onchange="
 
-pops[i]
+pops[${i}]
   .periodicidadePreventiva =
   Math.round(Number(this.value) || 30);
 
-                    pops[${i}]
-                      .proximaPreventiva =
-                      calcularProximaPreventiva(
-                        pops[${i}]
-                          .ultimaPreventiva,
-                        this.value
-                      );
+pops[${i}]
+  .proximaPreventiva =
+  calcularProximaPreventiva(
+    pops[${i}].ultimaPreventiva,
+    pops[${i}].periodicidadePreventiva
+  );
 
-                    existemAlteracoes =
-                      true;
+existemAlteracoes =
+  true;
 
-                    renderVisivel(${i});
+renderVisivel(${i});
 
-                  "
+"
 
                 >
 
