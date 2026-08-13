@@ -2498,7 +2498,46 @@ atualizarModoEdicao();
 }
 
 iniciar();
+/* =========================================================
+   RENDERIZAR SOMENTE O POP ALTERADO
+========================================================= */
 
+function renderVisivel(i) {
+
+  render();
+
+  const textoBusca =
+    document.getElementById("busca").value
+      .trim()
+      .toLowerCase();
+
+  const popsTela =
+    document.querySelectorAll(".pop");
+
+  if (popsTela[i]) {
+
+    // Se não existe busca, mostra o POP alterado
+    if (!textoBusca) {
+
+      popsTela[i].style.display = "block";
+
+    } else {
+
+      // Mantém a pesquisa funcionando
+      if (
+        popsTela[i].dataset.nome
+          .includes(textoBusca)
+      ) {
+
+        popsTela[i].style.display = "block";
+
+      }
+
+    }
+
+  }
+
+}
 </script>
 
 </body>
