@@ -1261,6 +1261,18 @@ function preencherEquipamento(i,j,input){
     true
   );
 
+  // Garante que o bloco permaneça aberto após o novo render.
+  // O render recria o HTML e o <details> pode ser fechado pelo navegador.
+  requestAnimationFrame(()=>{
+    const detalhe=document.querySelector(
+      `.detalhes-equipamentos[data-pop-id="${CSS.escape(String(pops[i].id))}"]`
+    );
+
+    if(detalhe){
+      detalhe.open=true;
+    }
+  });
+
 }
 
 
@@ -3165,13 +3177,19 @@ function renderVisivel(
    */
   if(abrirEquipamentos){
 
-    const detalhes=
-      document.querySelectorAll(
-        ".detalhes-equipamentos"
+    // Usa o ID do POP em vez do índice, evitando que o bloco errado
+    // seja aberto quando a lista estiver filtrada/pesquisada.
+    const popAlvo=pops[i];
+
+    if(popAlvo){
+      const detalhe=document.querySelector(
+        `.detalhes-equipamentos[data-pop-id="${CSS.escape(String(popAlvo.id))}"]`
       );
 
-    if(detalhes[i])
-      detalhes[i].open=true;
+      if(detalhe){
+        detalhe.open=true;
+      }
+    }
 
   }
 
