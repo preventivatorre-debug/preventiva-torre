@@ -37,9 +37,9 @@ h1 {
   margin: auto;
 }
 
-/* ================================
-   CONTROLE DE EDIÇÃO
-================================ */
+/* =========================
+   CONTROLE
+========================= */
 
 .controle-edicao {
   background: #fff;
@@ -70,9 +70,9 @@ h1 {
   color: #155724;
 }
 
-/* ================================
+/* =========================
    BOTÕES
-================================ */
+========================= */
 
 button {
   padding: 8px 12px;
@@ -111,9 +111,9 @@ button:disabled {
   background: #2980b9;
 }
 
-/* ================================
+/* =========================
    BUSCA
-================================ */
+========================= */
 
 .busca-container {
   width: 100%;
@@ -128,9 +128,9 @@ button:disabled {
   border-radius: 6px;
 }
 
-/* ================================
+/* =========================
    RESUMO
-================================ */
+========================= */
 
 .resumo {
   display: grid;
@@ -165,9 +165,9 @@ button:disabled {
   border-left: 5px solid #dc3545;
 }
 
-/* ================================
+/* =========================
    FORMULÁRIOS
-================================ */
+========================= */
 
 .form-pop,
 .form-equipamento {
@@ -199,9 +199,9 @@ input:disabled {
   cursor: not-allowed;
 }
 
-/* ================================
+/* =========================
    POP
-================================ */
+========================= */
 
 .pop {
   display: none;
@@ -228,9 +228,9 @@ input:disabled {
   font-weight: bold;
 }
 
-/* ================================
+/* =========================
    BANCO
-================================ */
+========================= */
 
 .banco {
   margin-top: 15px;
@@ -253,9 +253,9 @@ input:disabled {
   margin-bottom: 5px;
 }
 
-/* ================================
-   BATERIAS INDIVIDUAIS
-================================ */
+/* =========================
+   BATERIAS
+========================= */
 
 .baterias-box {
   margin-top: 15px;
@@ -290,9 +290,9 @@ input:disabled {
   margin: 0;
 }
 
-/* ================================
+/* =========================
    MONITORAMENTO
-================================ */
+========================= */
 
 .monitor-bateria {
   margin-top: 15px;
@@ -372,9 +372,9 @@ input:disabled {
   font-weight: bold;
 }
 
-/* ================================
+/* =========================
    PREVENTIVA
-================================ */
+========================= */
 
 .preventiva {
   margin-top: 15px;
@@ -390,9 +390,9 @@ input:disabled {
   gap: 10px;
 }
 
-/* ================================
+/* =========================
    STATUS
-================================ */
+========================= */
 
 .status {
   font-weight: bold;
@@ -421,9 +421,9 @@ input:disabled {
   color: #666;
 }
 
-/* ================================
+/* =========================
    TABELAS
-================================ */
+========================= */
 
 table {
   width: 100%;
@@ -447,9 +447,9 @@ th {
   font-weight: bold;
 }
 
-/* ================================
+/* =========================
    INFO
-================================ */
+========================= */
 
 .info {
   margin-top: 15px;
@@ -465,13 +465,28 @@ th {
   color: #1f6f43;
 }
 
-/* ================================
-   EQUIPAMENTOS
-================================ */
+/* =========================
+   CADASTRO EQUIPAMENTOS
+========================= */
 
 .cadastro-equipamento-grid {
   display: grid;
-  grid-template-columns: 2fr 2fr 1fr auto;
+
+  /*
+    EQUIPAMENTO
+    MODELO
+    PATRIMÔNIO
+    AMPERE
+    BOTÃO
+  */
+
+  grid-template-columns:
+    2fr
+    1.5fr
+    1.5fr
+    1fr
+    auto;
+
   gap: 8px;
   align-items: center;
 }
@@ -520,9 +535,17 @@ details[open] > summary::before {
   padding-top: 10px;
 }
 
-/* ================================
+/* =========================
    RESPONSIVO
-================================ */
+========================= */
+
+@media(max-width: 1100px) {
+
+  .cadastro-equipamento-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+}
 
 @media(max-width: 900px) {
 
@@ -533,10 +556,6 @@ details[open] > summary::before {
   .banco-grid,
   .preventiva-grid,
   .monitor-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .cadastro-equipamento-grid {
     grid-template-columns: 1fr 1fr;
   }
 
@@ -714,7 +733,7 @@ details[open] > summary::before {
 
 </div>
 
-<!-- CADASTRO DE EQUIPAMENTOS RECOLHIDO -->
+<!-- CADASTRO GLOBAL -->
 
 <div class="form-equipamento">
 
@@ -728,8 +747,9 @@ details[open] > summary::before {
 
       <p>
         Cadastre cada equipamento uma única vez.
-        Depois, ao digitar o nome dentro do POP,
-        modelo/patrimônio e consumo serão preenchidos.
+        Depois, ao selecionar o equipamento dentro do POP,
+        <strong>Modelo, Patrimônio e Ampere</strong>
+        serão preenchidos automaticamente.
       </p>
 
       <div class="cadastro-equipamento-grid">
@@ -742,7 +762,13 @@ details[open] > summary::before {
 
         <input
           id="novoModelo"
-          placeholder="Modelo / Patrimônio"
+          placeholder="Modelo"
+          disabled
+        >
+
+        <input
+          id="novoPatrimonio"
+          placeholder="Patrimônio"
           disabled
         >
 
@@ -777,7 +803,7 @@ details[open] > summary::before {
 
 <datalist id="listaEquipamentos"></datalist>
 
-<!-- POPs -->
+<!-- POPS -->
 
 <div id="pops"></div>
 
@@ -827,7 +853,9 @@ let detalhesEquipamentosAbertos = {};
 ========================================================= */
 
 function novoId() {
+
   return crypto.randomUUID();
+
 }
 
 
@@ -868,7 +896,7 @@ function formatarData(data) {
 
 
 /* =========================================================
-   CALCULAR DATA
+   CALCULAR PREVENTIVA
 ========================================================= */
 
 function calcularProximaPreventiva(data, dias) {
@@ -924,6 +952,7 @@ function ativarEdicao() {
     alert("❌ Senha incorreta.");
 
     return;
+
   }
 
   modoEdicao = true;
@@ -1008,8 +1037,11 @@ function atualizarCampos() {
     .forEach(campo => {
 
       if (campo.id === "busca") {
+
         campo.disabled = false;
+
         return;
+
       }
 
       if (
@@ -1017,13 +1049,17 @@ function atualizarCampos() {
           "campo-proxima-preventiva"
         )
       ) {
+
         campo.disabled = true;
+
         return;
+
       }
 
       campo.disabled = !modoEdicao;
 
     });
+
 
   document
     .querySelectorAll(".btn-edicao")
@@ -1034,6 +1070,7 @@ function atualizarCampos() {
 
     });
 
+
   const btnCadastro =
     document.getElementById(
       "btnCadastrarEquipamento"
@@ -1042,6 +1079,7 @@ function atualizarCampos() {
   if (btnCadastro)
     btnCadastro.disabled =
       !modoEdicao;
+
 
   const btnCriar =
     document.getElementById(
@@ -1067,8 +1105,7 @@ function bancoParaPop(row) {
 
     if (Array.isArray(row.baterias)) {
 
-      baterias =
-        row.baterias;
+      baterias = row.baterias;
 
     }
 
@@ -1090,6 +1127,41 @@ function bancoParaPop(row) {
   }
 
 
+  let equipamentos = [];
+
+  try {
+
+    if (Array.isArray(row.equipamentos)) {
+
+      equipamentos =
+        row.equipamentos.map(e => {
+
+          if (!Array.isArray(e))
+            return ["","","",1];
+
+          return [
+
+            e[0] || "",
+            e[1] || "",
+            e[2] || 0,
+            e[3] || 1,
+            e[4] || ""
+
+          ];
+
+        });
+
+    }
+
+  }
+
+  catch(e) {
+
+    equipamentos = [];
+
+  }
+
+
   return {
 
     id: row.id,
@@ -1105,7 +1177,6 @@ function bancoParaPop(row) {
       row.validade || "",
 
     baterias:
-
       Array.isArray(baterias)
         ? baterias
         : [],
@@ -1124,9 +1195,7 @@ function bancoParaPop(row) {
       ),
 
     equipamentos:
-      Array.isArray(row.equipamentos)
-        ? row.equipamentos
-        : []
+      equipamentos
 
   };
 
@@ -1135,7 +1204,6 @@ function bancoParaPop(row) {
 
 /* =========================================================
    POP -> BANCO
-   CORRIGIDO
 ========================================================= */
 
 function popParaBanco(pop) {
@@ -1186,7 +1254,7 @@ function popParaBanco(pop) {
 
 
 /* =========================================================
-   EQUIPAMENTOS
+   CARREGAR EQUIPAMENTOS
 ========================================================= */
 
 async function carregarEquipamentos() {
@@ -1198,6 +1266,7 @@ async function carregarEquipamentos() {
       .order("nome", {
         ascending: true
       });
+
 
   if (error) {
 
@@ -1214,8 +1283,10 @@ async function carregarEquipamentos() {
 
   }
 
+
   equipamentosCadastro =
     data || [];
+
 
   criarListaEquipamentos();
 
@@ -1233,15 +1304,24 @@ async function cadastrarEquipamento() {
   if (!modoEdicao)
     return;
 
+
   const nome =
     document.getElementById(
       "novoEquipamento"
     ).value.trim();
 
+
   const modelo =
     document.getElementById(
       "novoModelo"
     ).value.trim();
+
+
+  const patrimonio =
+    document.getElementById(
+      "novoPatrimonio"
+    ).value.trim();
+
 
   const ampere =
     Number(
@@ -1249,6 +1329,7 @@ async function cadastrarEquipamento() {
         "novoAmpere"
       ).value
     );
+
 
   if (!nome) {
 
@@ -1260,7 +1341,8 @@ async function cadastrarEquipamento() {
 
   }
 
-  if (Number.isNaN(ampere)) {
+
+  if (!Number.isFinite(ampere)) {
 
     alert(
       "Digite o consumo em Ampere."
@@ -1270,8 +1352,10 @@ async function cadastrarEquipamento() {
 
   }
 
+
   const existente =
     encontrarEquipamento(nome);
+
 
   if (existente) {
 
@@ -1282,6 +1366,7 @@ async function cadastrarEquipamento() {
     return;
 
   }
+
 
   const { data, error } =
     await supabaseClient
@@ -1294,6 +1379,9 @@ async function cadastrarEquipamento() {
         modelo:
           modelo,
 
+        patrimonio:
+          patrimonio,
+
         ampere:
           ampere
 
@@ -1301,7 +1389,10 @@ async function cadastrarEquipamento() {
       .select()
       .single();
 
+
   if (error) {
+
+    console.error(error);
 
     alert(
       "Erro ao cadastrar equipamento: " +
@@ -1312,7 +1403,9 @@ async function cadastrarEquipamento() {
 
   }
 
+
   equipamentosCadastro.push(data);
+
 
   document.getElementById(
     "novoEquipamento"
@@ -1323,12 +1416,18 @@ async function cadastrarEquipamento() {
   ).value = "";
 
   document.getElementById(
+    "novoPatrimonio"
+  ).value = "";
+
+  document.getElementById(
     "novoAmpere"
   ).value = "";
+
 
   criarListaEquipamentos();
 
   atualizarListaEquipamentos();
+
 
   alert(
     "✅ Equipamento cadastrado."
@@ -1347,6 +1446,7 @@ function encontrarEquipamento(nome) {
     String(nome || "")
       .trim()
       .toLowerCase();
+
 
   return equipamentosCadastro.find(
     equipamento =>
@@ -1374,10 +1474,12 @@ function preencherEquipamento(
   if (!modoEdicao)
     return;
 
+
   const encontrado =
     encontrarEquipamento(
       input.value
     );
+
 
   if (encontrado) {
 
@@ -1385,15 +1487,22 @@ function preencherEquipamento(
       .equipamentos[j][0] =
       encontrado.nome;
 
+
     pops[i]
       .equipamentos[j][1] =
       encontrado.modelo || "";
+
 
     pops[i]
       .equipamentos[j][2] =
       Number(
         encontrado.ampere
       ) || 0;
+
+
+    pops[i]
+      .equipamentos[j][4] =
+      encontrado.patrimonio || "";
 
   }
 
@@ -1405,10 +1514,13 @@ function preencherEquipamento(
 
   }
 
+
   existemAlteracoes = true;
+
 
   renderVisivel(
     i,
+    false,
     true
   );
 
@@ -1426,10 +1538,13 @@ function criarListaEquipamentos() {
       "listaEquipamentos"
     );
 
+
   if (!lista)
     return;
 
+
   lista.innerHTML = "";
+
 
   equipamentosCadastro.forEach(
     equipamento => {
@@ -1439,8 +1554,10 @@ function criarListaEquipamentos() {
           "option"
         );
 
+
       option.value =
         equipamento.nome;
+
 
       lista.appendChild(option);
 
@@ -1450,6 +1567,10 @@ function criarListaEquipamentos() {
 }
 
 
+/* =========================================================
+   LISTA VISUAL
+========================================================= */
+
 function atualizarListaEquipamentos() {
 
   const div =
@@ -1457,22 +1578,29 @@ function atualizarListaEquipamentos() {
       "listaEquipamentosCadastrados"
     );
 
+
   if (!div)
     return;
+
 
   if (
     equipamentosCadastro.length === 0
   ) {
 
     div.innerHTML = `
+
       <div class="info">
+
         ⚪ Nenhum equipamento cadastrado.
+
       </div>
+
     `;
 
     return;
 
   }
+
 
   let html = `
 
@@ -1489,7 +1617,11 @@ function atualizarListaEquipamentos() {
         </th>
 
         <th>
-          Modelo / Patrimônio
+          Modelo
+        </th>
+
+        <th>
+          Patrimônio
         </th>
 
         <th>
@@ -1499,6 +1631,7 @@ function atualizarListaEquipamentos() {
       </tr>
 
   `;
+
 
   equipamentosCadastro.forEach(
     equipamento => {
@@ -1520,10 +1653,19 @@ function atualizarListaEquipamentos() {
           </td>
 
           <td>
+            ${escapeHtml(
+              equipamento.patrimonio || ""
+            )}
+          </td>
+
+          <td>
+
             ${Number(
               equipamento.ampere || 0
             ).toFixed(2)}
+
             A
+
           </td>
 
         </tr>
@@ -1533,6 +1675,7 @@ function atualizarListaEquipamentos() {
     }
   );
 
+
   html += `
 
     </table>
@@ -1540,6 +1683,7 @@ function atualizarListaEquipamentos() {
     <div class="equipamento-status">
 
       Total de equipamentos:
+
       <strong>
         ${equipamentosCadastro.length}
       </strong>
@@ -1547,6 +1691,7 @@ function atualizarListaEquipamentos() {
     </div>
 
   `;
+
 
   div.innerHTML =
     html;
@@ -1577,6 +1722,7 @@ function statusPreventiva(pop) {
 
   }
 
+
   const hoje =
     new Date();
 
@@ -1587,11 +1733,13 @@ function statusPreventiva(pop) {
     0
   );
 
+
   const proxima =
     new Date(
       pop.proximaPreventiva +
       "T00:00:00"
     );
+
 
   const dias =
     Math.ceil(
@@ -1599,6 +1747,7 @@ function statusPreventiva(pop) {
         proxima - hoje
       ) / 86400000
     );
+
 
   if (dias < 0) {
 
@@ -1617,6 +1766,7 @@ function statusPreventiva(pop) {
 
   }
 
+
   if (dias <= 7) {
 
     return {
@@ -1633,6 +1783,7 @@ function statusPreventiva(pop) {
     };
 
   }
+
 
   return {
 
@@ -1670,6 +1821,7 @@ function statusBateria(validade) {
 
   }
 
+
   const hoje =
     new Date();
 
@@ -1680,10 +1832,12 @@ function statusBateria(validade) {
     0
   );
 
+
   const dataValidade =
     new Date(
       validade + "T00:00:00"
     );
+
 
   const diferenca =
     Math.ceil(
@@ -1691,6 +1845,7 @@ function statusBateria(validade) {
         dataValidade - hoje
       ) / 86400000
     );
+
 
   if (diferenca < 0) {
 
@@ -1706,6 +1861,7 @@ function statusBateria(validade) {
 
   }
 
+
   if (diferenca <= 90) {
 
     return {
@@ -1719,6 +1875,7 @@ function statusBateria(validade) {
     };
 
   }
+
 
   return {
 
@@ -1752,13 +1909,17 @@ function calcularIdadeBateria(dataInstalacao) {
 
   }
 
+
   const inicio =
     new Date(
-      dataInstalacao + "T00:00:00"
+      dataInstalacao +
+      "T00:00:00"
     );
+
 
   const hoje =
     new Date();
+
 
   if (
     isNaN(inicio.getTime()) ||
@@ -1776,20 +1937,25 @@ function calcularIdadeBateria(dataInstalacao) {
 
   }
 
+
   let anos =
     hoje.getFullYear() -
     inicio.getFullYear();
+
 
   let meses =
     hoje.getMonth() -
     inicio.getMonth();
 
+
   let dias =
     hoje.getDate() -
     inicio.getDate();
 
+
   if (dias < 0)
     meses--;
+
 
   if (meses < 0) {
 
@@ -1799,17 +1965,21 @@ function calcularIdadeBateria(dataInstalacao) {
 
   }
 
+
   const totalMeses =
     Math.max(
       0,
       anos * 12 + meses
     );
 
+
   let texto = "";
+
 
   if (anos > 0)
     texto =
       `${anos} ano${anos > 1 ? "s" : ""}`;
+
 
   if (meses > 0) {
 
@@ -1821,9 +1991,11 @@ function calcularIdadeBateria(dataInstalacao) {
 
   }
 
+
   if (!texto)
     texto =
       "Menos de 1 mês";
+
 
   return {
 
@@ -1850,10 +2022,13 @@ function calcularCapacidadeUtil(
       dataInstalacao
     );
 
+
   const meses =
     idade.totalMeses;
 
+
   let percentual = 100;
+
 
   if (meses < 24)
     percentual = 100;
@@ -1869,6 +2044,7 @@ function calcularCapacidadeUtil(
 
   else
     percentual = 45;
+
 
   return {
 
@@ -1910,6 +2086,7 @@ function statusMonitoramento(
 
   }
 
+
   if (
     autonomia > 0 &&
     autonomia < 2
@@ -1929,6 +2106,7 @@ function statusMonitoramento(
     };
 
   }
+
 
   if (
     autonomia > 0 &&
@@ -1950,6 +2128,7 @@ function statusMonitoramento(
 
   }
 
+
   if (percentual <= 45) {
 
     return {
@@ -1966,6 +2145,7 @@ function statusMonitoramento(
     };
 
   }
+
 
   if (percentual <= 60) {
 
@@ -1984,6 +2164,7 @@ function statusMonitoramento(
 
   }
 
+
   if (percentual <= 75) {
 
     return {
@@ -2000,6 +2181,7 @@ function statusMonitoramento(
     };
 
   }
+
 
   return {
 
@@ -2030,20 +2212,25 @@ function formatarAutonomia(horas) {
   )
     return "Sem cálculo";
 
+
   let h =
     Math.floor(horas);
+
 
   let m =
     Math.round(
       (horas - h) * 60
     );
 
+
   if (m >= 60) {
 
     h++;
+
     m = 0;
 
   }
+
 
   return `${h}h ${m}min`;
 
@@ -2051,7 +2238,7 @@ function formatarAutonomia(horas) {
 
 
 /* =========================================================
-   ADICIONAR BATERIA
+   BATERIA
 ========================================================= */
 
 function adicionarBateria(i) {
@@ -2059,8 +2246,10 @@ function adicionarBateria(i) {
   if (!modoEdicao)
     return;
 
+
   if (!Array.isArray(pops[i].baterias))
     pops[i].baterias = [];
+
 
   pops[i].baterias.push({
 
@@ -2075,23 +2264,27 @@ function adicionarBateria(i) {
 
   });
 
+
   existemAlteracoes = true;
 
-  renderVisivel(i, false, true);
+
+  renderVisivel(
+    i,
+    false,
+    true
+  );
 
 }
 
-
-/* =========================================================
-   REMOVER BATERIA
-========================================================= */
 
 function removerBateria(i, j) {
 
   if (!modoEdicao)
     return;
 
+
   pops[i].baterias.splice(j, 1);
+
 
   pops[i].baterias.forEach(
     (bateria, index) => {
@@ -2102,9 +2295,15 @@ function removerBateria(i, j) {
     }
   );
 
+
   existemAlteracoes = true;
 
-  renderVisivel(i, false, true);
+
+  renderVisivel(
+    i,
+    false,
+    true
+  );
 
 }
 
@@ -2114,12 +2313,12 @@ function removerBateria(i, j) {
 ========================================================= */
 
 function render(
-  preservarBusca = true,
-  abrirEquipamentoI = null
+  preservarBusca = true
 ) {
 
   const buscaElemento =
     document.getElementById("busca");
+
 
   const busca =
     preservarBusca &&
@@ -2127,10 +2326,13 @@ function render(
       ? buscaElemento.value
       : "";
 
+
   const container =
     document.getElementById("pops");
 
+
   container.innerHTML = "";
+
 
   let totalOk = 0;
   let totalAlerta = 0;
@@ -2140,38 +2342,52 @@ function render(
   pops.forEach(
     (pop, i) => {
 
+
       const status =
         statusPreventiva(pop);
+
 
       if (status.tipo === "ok")
         totalOk++;
 
+
       if (status.tipo === "alerta")
         totalAlerta++;
+
 
       if (status.tipo === "vencida")
         totalVencida++;
 
 
       let consumo = 0;
+
       let linhas = "";
 
 
-      /* EQUIPAMENTOS */
+      /* =========================
+         EQUIPAMENTOS
+      ========================= */
 
       (pop.equipamentos || [])
         .forEach(
           (e, j) => {
 
+
             const ampere =
               Number(e[2]) || 0;
+
 
             const quantidade =
               Number(e[3]) || 0;
 
+
             consumo +=
               ampere *
               quantidade;
+
+
+            const patrimonio =
+              e[4] || "";
 
 
             linhas += `
@@ -2181,10 +2397,15 @@ function render(
                 <td>
 
                   <input
+
                     value="${escapeHtml(e[0])}"
+
                     list="listaEquipamentos"
+
                     placeholder="Digite o equipamento"
+
                     ${!modoEdicao ? "disabled" : ""}
+
                     onchange="
                       preencherEquipamento(
                         ${i},
@@ -2192,27 +2413,54 @@ function render(
                         this
                       );
                     "
+
                   >
 
                 </td>
 
+
                 <td>
 
                   <input
+
                     value="${escapeHtml(e[1])}"
+
                     disabled
-                    placeholder="Modelo / Patrimônio"
+
+                    placeholder="Modelo"
+
                   >
 
                 </td>
 
+
                 <td>
 
                   <input
+
+                    value="${escapeHtml(patrimonio)}"
+
+                    disabled
+
+                    placeholder="Patrimônio"
+
+                  >
+
+                </td>
+
+
+                <td>
+
+                  <input
+
                     type="number"
+
                     step="0.01"
+
                     value="${e[2] || 0}"
+
                     ${!modoEdicao ? "disabled" : ""}
+
                     onchange="
                       pops[${i}]
                         .equipamentos[${j}][2]
@@ -2223,17 +2471,24 @@ function render(
 
                       atualizarConsumoVisual(${i});
                     "
+
                   >
 
                 </td>
 
+
                 <td>
 
                   <input
+
                     type="number"
+
                     min="1"
+
                     value="${e[3] || 1}"
+
                     ${!modoEdicao ? "disabled" : ""}
+
                     onchange="
                       pops[${i}]
                         .equipamentos[${j}][3]
@@ -2244,15 +2499,20 @@ function render(
 
                       atualizarConsumoVisual(${i});
                     "
+
                   >
 
                 </td>
 
+
                 <td>
 
                   <button
+
                     class="remove btn-edicao"
+
                     ${!modoEdicao ? "disabled" : ""}
+
                     onclick="
                       pops[${i}]
                         .equipamentos
@@ -2266,6 +2526,7 @@ function render(
                         true
                       );
                     "
+
                   >
                     X
                   </button>
@@ -2280,10 +2541,13 @@ function render(
         );
 
 
-      /* AUTONOMIA */
+      /* =========================
+         AUTONOMIA
+      ========================= */
 
       const ahNominal =
         Number(pop.ah) || 0;
+
 
       const autonomiaTeorica =
         consumo > 0
@@ -2291,10 +2555,11 @@ function render(
           : 0;
 
 
-      /* DATA PRINCIPAL */
+      /* DATA */
 
       let dataPrincipal =
         pop.dataInstalacao || "";
+
 
       if (
         Array.isArray(pop.baterias) &&
@@ -2303,9 +2568,13 @@ function render(
 
         const datas =
           pop.baterias
-            .map(b => b.dataInstalacao)
+            .map(
+              b =>
+                b.dataInstalacao
+            )
             .filter(Boolean)
             .sort();
+
 
         if (datas.length)
           dataPrincipal =
@@ -2319,24 +2588,29 @@ function render(
           dataPrincipal
         );
 
+
       const percentual =
         dadosBateria.percentual;
+
 
       const capacidadeUtil =
         ahNominal *
         percentual /
         100;
 
+
       const autonomiaAjustada =
         consumo > 0
           ? capacidadeUtil / consumo
           : 0;
+
 
       const perda =
         Math.max(
           0,
           100 - percentual
         );
+
 
       const monitor =
         statusMonitoramento(
@@ -2346,10 +2620,11 @@ function render(
         );
 
 
-      /* STATUS GARANTIA */
+      /* VALIDADE */
 
       let validadePrincipal =
         pop.validade || "";
+
 
       if (
         Array.isArray(pop.baterias) &&
@@ -2358,9 +2633,13 @@ function render(
 
         const validades =
           pop.baterias
-            .map(b => b.validade)
+            .map(
+              b =>
+                b.validade
+            )
             .filter(Boolean)
             .sort();
+
 
         if (validades.length)
           validadePrincipal =
@@ -2368,23 +2647,27 @@ function render(
 
       }
 
+
       const bateria =
         statusBateria(
           validadePrincipal
         );
 
 
-      /* BATERIAS HTML */
+      /* =========================
+         BATERIAS
+      ========================= */
 
       let bateriasHtml = "";
 
-      if (
-        !Array.isArray(pop.baterias)
-      )
+
+      if (!Array.isArray(pop.baterias))
         pop.baterias = [];
+
 
       pop.baterias.forEach(
         (bat, j) => {
+
 
           bateriasHtml += `
 
@@ -2394,6 +2677,7 @@ function render(
                 Bateria ${j + 1}
               </strong>
 
+
               <div>
 
                 <label>
@@ -2401,9 +2685,13 @@ function render(
                 </label>
 
                 <input
+
                   type="date"
+
                   value="${bat.dataInstalacao || ""}"
+
                   ${!modoEdicao ? "disabled" : ""}
+
                   onchange="
                     pops[${i}]
                       .baterias[${j}]
@@ -2418,9 +2706,11 @@ function render(
                       true
                     );
                   "
+
                 >
 
               </div>
+
 
               <div>
 
@@ -2429,9 +2719,13 @@ function render(
                 </label>
 
                 <input
+
                   type="date"
+
                   value="${bat.validade || ""}"
+
                   ${!modoEdicao ? "disabled" : ""}
+
                   onchange="
                     pops[${i}]
                       .baterias[${j}]
@@ -2446,19 +2740,25 @@ function render(
                       true
                     );
                   "
+
                 >
 
               </div>
 
+
               <button
+
                 class="remove btn-edicao"
+
                 ${!modoEdicao ? "disabled" : ""}
+
                 onclick="
                   removerBateria(
                     ${i},
                     ${j}
                   );
                 "
+
               >
                 X
               </button>
@@ -2471,15 +2771,20 @@ function render(
       );
 
 
-      /* HTML POP */
+      /* =========================
+         POP
+      ========================= */
 
       container.innerHTML += `
 
         <div
+
           class="pop"
+
           data-nome="${escapeHtml(
             pop.nome.toLowerCase()
           )}"
+
         >
 
           <div class="nome-pop-edicao">
@@ -2490,10 +2795,15 @@ function render(
               </strong>
             </label>
 
+
             <input
+
               type="text"
+
               value="${escapeHtml(pop.nome)}"
+
               ${!modoEdicao ? "disabled" : ""}
+
               onchange="
                 pops[${i}].nome =
                   this.value.trim();
@@ -2502,6 +2812,7 @@ function render(
 
                 atualizarListaPOPs();
               "
+
             >
 
           </div>
@@ -2515,7 +2826,9 @@ function render(
               🔋 Banco de Baterias
             </h3>
 
+
             <div class="banco-grid">
+
 
               <div>
 
@@ -2523,11 +2836,17 @@ function render(
                   Capacidade do Banco
                 </label>
 
+
                 <input
+
                   type="number"
+
                   step="0.01"
+
                   value="${pop.ah}"
+
                   ${!modoEdicao ? "disabled" : ""}
+
                   onchange="
                     pops[${i}].ah =
                       Number(this.value) || 0;
@@ -2536,7 +2855,9 @@ function render(
 
                     renderVisivel(${i});
                   "
+
                 >
+
 
                 <small>
                   Ah
@@ -2551,10 +2872,15 @@ function render(
                   Data principal
                 </label>
 
+
                 <input
+
                   type="date"
+
                   value="${dataPrincipal}"
+
                   disabled
+
                 >
 
               </div>
@@ -2566,10 +2892,15 @@ function render(
                   Validade principal
                 </label>
 
+
                 <input
+
                   type="date"
+
                   value="${validadePrincipal}"
+
                   disabled
+
                 >
 
               </div>
@@ -2580,6 +2911,7 @@ function render(
                 <label>
                   Situação
                 </label>
+
 
                 <div
                   class="status ${bateria.classe}"
@@ -2592,14 +2924,13 @@ function render(
             </div>
 
 
-            <details
-              ${pop.baterias.length ? "" : ""}
-            >
+            <details>
 
               <summary>
                 🔋 Baterias individuais
                 (${pop.baterias.length})
               </summary>
+
 
               <div class="baterias-box">
 
@@ -2607,19 +2938,26 @@ function render(
                   Datas individuais das baterias
                 </h4>
 
+
                 <p>
                   Cadastre aqui quando as baterias
                   possuem datas diferentes.
                 </p>
 
+
                 ${bateriasHtml}
 
+
                 <button
+
                   class="btn-edicao"
+
                   ${!modoEdicao ? "disabled" : ""}
+
                   onclick="
                     adicionarBateria(${i});
                   "
+
                 >
                   ➕ Adicionar Bateria
                 </button>
@@ -2632,6 +2970,7 @@ function render(
             <div class="info">
 
               📅 Data considerada:
+
               <strong>
                 ${formatarData(dataPrincipal)}
               </strong>
@@ -2639,6 +2978,7 @@ function render(
               <br>
 
               📅 Validade considerada:
+
               <strong>
                 ${formatarData(validadePrincipal)}
               </strong>
@@ -2656,7 +2996,9 @@ function render(
               📊 Monitoramento do Banco
             </h3>
 
+
             <div class="monitor-grid">
+
 
               <div class="monitor-card">
 
@@ -2800,7 +3142,9 @@ function render(
               🔧 Controle de Preventiva
             </h3>
 
+
             <div class="preventiva-grid">
+
 
               <div>
 
@@ -2808,10 +3152,15 @@ function render(
                   Última Preventiva
                 </label>
 
+
                 <input
+
                   type="date"
+
                   value="${pop.ultimaPreventiva || ""}"
+
                   ${!modoEdicao ? "disabled" : ""}
+
                   onchange="
                     pops[${i}]
                       .ultimaPreventiva =
@@ -2829,6 +3178,7 @@ function render(
 
                     renderVisivel(${i});
                   "
+
                 >
 
               </div>
@@ -2840,13 +3190,19 @@ function render(
                   Periodicidade
                 </label>
 
+
                 <input
+
                   type="number"
+
                   min="1"
+
                   value="${
                     pop.periodicidadePreventiva || 30
                   }"
+
                   ${!modoEdicao ? "disabled" : ""}
+
                   onchange="
                     pops[${i}]
                       .periodicidadePreventiva =
@@ -2867,7 +3223,9 @@ function render(
 
                     renderVisivel(${i});
                   "
+
                 >
+
 
                 <small>
                   dias
@@ -2882,13 +3240,19 @@ function render(
                   Próxima Preventiva
                 </label>
 
+
                 <input
+
                   class="campo-proxima-preventiva"
+
                   type="date"
+
                   value="${
                     pop.proximaPreventiva || ""
                   }"
+
                   disabled
+
                 >
 
               </div>
@@ -2899,6 +3263,7 @@ function render(
                 <label>
                   Status
                 </label>
+
 
                 <div
                   class="status ${status.classe}"
@@ -2914,6 +3279,7 @@ function render(
             <div class="info">
 
               📅 Última:
+
               <strong>
                 ${formatarData(
                   pop.ultimaPreventiva
@@ -2923,6 +3289,7 @@ function render(
               <br>
 
               📅 Próxima:
+
               <strong>
                 ${formatarData(
                   pop.proximaPreventiva
@@ -2934,7 +3301,7 @@ function render(
           </div>
 
 
-          <!-- EQUIPAMENTOS RECOLHIDOS -->
+          <!-- EQUIPAMENTOS -->
 
           <details
             class="detalhes-equipamentos"
@@ -2942,11 +3309,15 @@ function render(
           >
 
             <summary>
+
               📡 Equipamentos
               (${pop.equipamentos.length})
+
             </summary>
 
+
             <div class="equipamentos-conteudo">
+
 
               <table>
 
@@ -2957,7 +3328,11 @@ function render(
                   </th>
 
                   <th>
-                    Modelo / Patrimônio
+                    Modelo
+                  </th>
+
+                  <th>
+                    Patrimônio
                   </th>
 
                   <th>
@@ -2973,17 +3348,21 @@ function render(
 
                 </tr>
 
+
                 ${linhas}
+
 
                 <tr class="total">
 
-                  <td colspan="2">
+                  <td colspan="3">
                     Consumo Total
                   </td>
 
                   <td colspan="3">
+
                     ${consumo.toFixed(2)}
                     A
+
                   </td>
 
                 </tr>
@@ -2992,8 +3371,11 @@ function render(
 
 
               <button
+
                 class="btn-edicao"
+
                 ${!modoEdicao ? "disabled" : ""}
+
                 onclick="
                   pops[${i}]
                     .equipamentos
@@ -3001,7 +3383,8 @@ function render(
                       '',
                       '',
                       0,
-                      1
+                      1,
+                      ''
                     ]);
 
                   existemAlteracoes = true;
@@ -3012,6 +3395,7 @@ function render(
                     true
                   );
                 "
+
               >
                 ➕ Adicionar Equipamento
               </button>
@@ -3057,11 +3441,15 @@ function render(
 
 
           <button
+
             class="remove btn-edicao"
+
             ${!modoEdicao ? "disabled" : ""}
+
             onclick="
               excluirPOP(${i})
             "
+
           >
             🗑️ Excluir POP
           </button>
@@ -3079,15 +3467,18 @@ function render(
   ).textContent =
     pops.length;
 
+
   document.getElementById(
     "preventivasOk"
   ).textContent =
     totalOk;
 
+
   document.getElementById(
     "preventivasAlerta"
   ).textContent =
     totalAlerta;
+
 
   document.getElementById(
     "preventivasVencidas"
@@ -3102,27 +3493,9 @@ function render(
   atualizarCampos();
 
 
-  /* MOSTRAR POP */
-
   if (busca) {
 
     buscarPOP();
-
-  }
-
-
-  /* ABRIR EQUIPAMENTOS */
-
-  if (abrirEquipamentoI !== null) {
-
-    const detalhes =
-      document.querySelectorAll(
-        ".detalhes-equipamentos"
-      );
-
-    if (detalhes[abrirEquipamentoI])
-      detalhes[abrirEquipamentoI].open =
-        true;
 
   }
 
@@ -3144,17 +3517,29 @@ function renderVisivel(
       "busca"
     ).value;
 
-  render(
-    true,
-    abrirEquipamentos
-      ? i
-      : null
-  );
+
+  document
+    .querySelectorAll(
+      ".detalhes-equipamentos"
+    )
+    .forEach(
+      (detalhe, index) => {
+
+        detalhesEquipamentosAbertos[index] =
+          detalhe.open;
+
+      }
+    );
+
+
+  render(true);
+
 
   document.getElementById(
     "busca"
   ).value =
     busca;
+
 
   if (busca) {
 
@@ -3169,12 +3554,47 @@ function renderVisivel(
         ".pop"
       );
 
+
     if (elementos[i]) {
 
-      elementos[i]
-        .style
-        .display =
+      elementos[i].style.display =
         "block";
+
+    }
+
+  }
+
+
+  document
+    .querySelectorAll(
+      ".detalhes-equipamentos"
+    )
+    .forEach(
+      (detalhe, index) => {
+
+        if (
+          detalhesEquipamentosAbertos[index]
+        ) {
+
+          detalhe.open = true;
+
+        }
+
+      }
+    );
+
+
+  if (abrirEquipamentos) {
+
+    const detalhes =
+      document.querySelectorAll(
+        ".detalhes-equipamentos"
+      );
+
+
+    if (detalhes[i]) {
+
+      detalhes[i].open = true;
 
     }
 
@@ -3184,7 +3604,7 @@ function renderVisivel(
 
 
 /* =========================================================
-   ATUALIZAR CONSUMO SEM RECONSTRUIR TUDO
+   CONSUMO
 ========================================================= */
 
 function atualizarConsumoVisual(i) {
@@ -3192,27 +3612,35 @@ function atualizarConsumoVisual(i) {
   const pop =
     pops[i];
 
+
   let consumo = 0;
 
+
   (pop.equipamentos || [])
-    .forEach(e => {
+    .forEach(
+      e => {
 
-      const ampere =
-        Number(e[2]) || 0;
+        const ampere =
+          Number(e[2]) || 0;
 
-      const quantidade =
-        Number(e[3]) || 0;
 
-      consumo +=
-        ampere *
-        quantidade;
+        const quantidade =
+          Number(e[3]) || 0;
 
-    });
+
+        consumo +=
+          ampere *
+          quantidade;
+
+      }
+    );
+
 
   const elemento =
     document.getElementById(
       `consumo-${i}`
     );
+
 
   if (elemento) {
 
@@ -3235,10 +3663,13 @@ function atualizarListaPOPs() {
       "listaPOPs"
     );
 
+
   if (!lista)
     return;
 
+
   lista.innerHTML = "";
+
 
   pops
     .slice()
@@ -3257,8 +3688,10 @@ function atualizarListaPOPs() {
             "option"
           );
 
+
         option.value =
           pop.nome;
+
 
         lista.appendChild(
           option
@@ -3283,6 +3716,7 @@ function buscarPOP() {
     .value
     .trim()
     .toLowerCase();
+
 
   document
     .querySelectorAll(".pop")
@@ -3322,10 +3756,12 @@ async function criarPOP() {
   if (!modoEdicao)
     return;
 
+
   const nome =
     document.getElementById(
       "novoNome"
     ).value.trim();
+
 
   const ah =
     Number(
@@ -3334,10 +3770,12 @@ async function criarPOP() {
       ).value
     );
 
+
   const data =
     document.getElementById(
       "novaData"
     ).value;
+
 
   const validade =
     document.getElementById(
@@ -3397,11 +3835,19 @@ async function criarPOP() {
       validade,
 
     baterias: [
+
       {
+
         numero: 1,
-        dataInstalacao: data,
-        validade: validade
+
+        dataInstalacao:
+          data,
+
+        validade:
+          validade
+
       }
+
     ],
 
     ultimaPreventiva:
@@ -3423,6 +3869,7 @@ async function criarPOP() {
     novoPOP
   );
 
+
   existemAlteracoes =
     true;
 
@@ -3431,13 +3878,16 @@ async function criarPOP() {
     "novoNome"
   ).value = "";
 
+
   document.getElementById(
     "novoAh"
   ).value = "";
 
+
   document.getElementById(
     "novaData"
   ).value = "";
+
 
   document.getElementById(
     "novaValidade"
@@ -3450,7 +3900,7 @@ async function criarPOP() {
 
 
 /* =========================================================
-   EXCLUIR
+   EXCLUIR POP
 ========================================================= */
 
 async function excluirPOP(i) {
@@ -3458,11 +3908,14 @@ async function excluirPOP(i) {
   if (!modoEdicao)
     return;
 
+
   const pop =
     pops[i];
 
+
   if (!pop)
     return;
+
 
   if (
     !confirm(
@@ -3499,8 +3952,10 @@ async function excluirPOP(i) {
     1
   );
 
+
   existemAlteracoes =
     false;
+
 
   render();
 
@@ -3516,13 +3971,16 @@ async function salvarTudo() {
   if (!modoEdicao)
     return;
 
+
   const btn =
     document.getElementById(
       "btnSalvar"
     );
 
+
   btn.disabled =
     true;
+
 
   btn.textContent =
     "💾 Salvando...";
@@ -3548,6 +4006,7 @@ async function salvarTudo() {
             }
           );
 
+
       if (error)
         throw error;
 
@@ -3568,6 +4027,7 @@ async function salvarTudo() {
 
     console.error(error);
 
+
     alert(
       "❌ Erro ao salvar: " +
       error.message
@@ -3578,6 +4038,7 @@ async function salvarTudo() {
 
   btn.disabled =
     false;
+
 
   btn.textContent =
     "💾 Salvar Alterações";
@@ -3607,10 +4068,12 @@ async function carregarDados() {
 
     console.error(error);
 
+
     alert(
       "Erro ao carregar os POPs: " +
       error.message
     );
+
 
     return;
 
@@ -3641,10 +4104,13 @@ async function iniciar() {
 
     await carregarDados();
 
+
     modoEdicao =
       false;
 
+
     atualizarModoEdicao();
+
 
     atualizarListaEquipamentos();
 
