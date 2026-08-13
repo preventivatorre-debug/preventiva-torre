@@ -608,7 +608,7 @@ details[open]>summary::before{
       <p>
         Cadastre cada equipamento uma única vez.
         <br>
-        <strong>Patrimônio NÃO é cadastrado aqui.</strong>
+        <strong>Patrimônio NÃO é cadastrado no cadastro global.</strong>
         <br>
         O patrimônio será informado somente quando
         o equipamento for ligado a um POP.
@@ -930,16 +930,30 @@ function bancoParaPop(row){
 
       equipamentos=row.equipamentos.map(e=>{
 
-        if(!Array.isArray(e))
-          return ["","","",1,""];
+        /*
+         * Vínculo do equipamento com o POP.
+         * O patrimônio pertence a esta instalação, não ao cadastro global.
+         * Mantém compatibilidade com o formato antigo em array.
+         */
+        if(Array.isArray(e)){
+          return {
+            equipamento_id: e[5] || null,
+            nome: e.nome || "",
+            modelo: e.modelo || "",
+            ampere: Number(e[2]) || 0,
+            quantidade: Number(e[3]) || 1,
+            patrimonio: e[4] || ""
+          };
+        }
 
-        return [
-          e[0]||"",
-          e[1]||"",
-          e[2]||0,
-          e[3]||1,
-          e[4]||""
-        ];
+        return {
+          equipamento_id: e.equipamento_id || e.id || null,
+          nome: e.nome || e.equipamento || "",
+          modelo: e.modelo || "",
+          ampere: Number(e.ampere) || 0,
+          quantidade: Number(e.quantidade) || 1,
+          patrimonio: e.patrimonio || ""
+        };
 
       });
 
@@ -1209,28 +1223,28 @@ function preencherEquipamento(i,j,input){
 
   if(encontrado){
 
-    pops[i].equipamentos[j][0]=
+    pops[i].equipamentos[j].equipamento_id =
+      encontrado.id || null;
+
+    pops[i].equipamentos[j].nome =
       encontrado.nome;
 
-    pops[i].equipamentos[j][1]=
-      encontrado.modelo||"";
+    pops[i].equipamentos[j].modelo =
+      encontrado.modelo || "";
 
-    pops[i].equipamentos[j][2]=
-      Number(encontrado.ampere)||0;
+    pops[i].equipamentos[j].ampere =
+      Number(encontrado.ampere) || 0;
 
     /*
      * IMPORTANTE:
-     * NÃO altera e NÃO apaga:
-     *
-     * pops[i].equipamentos[j][4]
-     *
-     * que é o patrimônio do POP.
+     * NÃO altera nem apaga o patrimônio.
+     * O patrimônio é exclusivo deste vínculo com o POP.
      */
 
   }else{
 
-    pops[i].equipamentos[j][0]=
-      input.value;
+    pops[i].equipamentos[j].equipamento_id = null;
+    pops[i].equipamentos[j].nome = input.value;
 
   }
 
@@ -1258,8 +1272,8 @@ function alterarPatrimonio(i,j,valor){
 
   if(!modoEdicao) return;
 
-  pops[i].equipamentos[j][4]=
-    valor;
+  pops[i].equipamentos[j].patrimonio =
+    String(valor || "").trim();
 
   existemAlteracoes=true;
 
@@ -1899,10 +1913,10 @@ function render(preservarBusca=true){
       .forEach((e,j)=>{
 
         const ampere=
-          Number(e[2])||0;
+          Number(e.ampere)||0;
 
         const quantidade=
-          Number(e[3])||0;
+          Number(e.quantidade)||0;
 
         consumo+=ampere*quantidade;
 
@@ -1910,12 +1924,12 @@ function render(preservarBusca=true){
         /*
          * PATRIMÔNIO:
          *
-         * e[4] pertence somente ao equipamento
-         * dentro deste POP.
+         * e.patrimonio pertence somente ao vínculo
+         * do equipamento dentro deste POP.
          */
 
         const patrimonio=
-          e[4]||"";
+          e.patrimonio||"";
 
 
         linhas+=`
@@ -1926,7 +1940,7 @@ function render(preservarBusca=true){
 
               <input
 
-                value="${escapeHtml(e[0])}"
+                value="${escapeHtml(e.nome)}"
 
                 list="listaEquipamentos"
 
@@ -1951,7 +1965,7 @@ function render(preservarBusca=true){
 
               <input
 
-                value="${escapeHtml(e[1])}"
+                value="${escapeHtml(e.modelo)}"
 
                 disabled
 
@@ -1995,13 +2009,13 @@ function render(preservarBusca=true){
 
                 step="0.01"
 
-                value="${e[2]||0}"
+                value="${e.ampere||0}"
 
                 ${!modoEdicao?"disabled":""}
 
                 onchange="
                   pops[${i}]
-                    .equipamentos[${j}][2]
+                    .equipamentos[${j}].ampere
                     =
                     Number(this.value)||0;
 
@@ -2027,13 +2041,13 @@ function render(preservarBusca=true){
 
                 min="1"
 
-                value="${e[3]||1}"
+                value="${e.quantidade||1}"
 
                 ${!modoEdicao?"disabled":""}
 
                 onchange="
                   pops[${i}]
-                    .equipamentos[${j}][3]
+                    .equipamentos[${j}].quantidade
                     =
                     Number(this.value)||1;
 
@@ -2883,9 +2897,9 @@ function render(preservarBusca=true){
 
               <br>
 
-              O patrimônio é cadastrado
-              somente aqui, porque ele pertence
-              ao equipamento instalado neste POP.
+              O patrimônio é cadastrado somente no vínculo
+              com este POP. A mesma RB/equipamento pode
+              ter outro patrimônio em outro POP.
 
             </div>
 
@@ -2988,22 +3002,18 @@ function adicionarEquipamentoPOP(i){
 
 
   /*
-   * Estrutura:
-   *
-   * [0] Equipamento
-   * [1] Modelo
-   * [2] Ampere
-   * [3] Quantidade
-   * [4] Patrimônio
+   * Vínculo equipamento -> POP.
+   * O patrimônio fica neste registro, permitindo que a mesma
+   * RB/equipamento tenha patrimônios diferentes em POPs diferentes.
    */
-
-  pops[i].equipamentos.push([
-    "",
-    "",
-    0,
-    1,
-    ""
-  ]);
+  pops[i].equipamentos.push({
+    equipamento_id: null,
+    nome: "",
+    modelo: "",
+    ampere: 0,
+    quantidade: 1,
+    patrimonio: ""
+  });
 
 
   existemAlteracoes=true;
@@ -3183,10 +3193,10 @@ function atualizarConsumoVisual(i){
     .forEach(e=>{
 
       const ampere=
-        Number(e[2])||0;
+        Number(e.ampere)||0;
 
       const quantidade=
-        Number(e[3])||0;
+        Number(e.quantidade)||0;
 
       consumo+=ampere*quantidade;
 
