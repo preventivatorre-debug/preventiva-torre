@@ -5,7 +5,8 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1">
 
 <title>Controle de POPs - Autonomia</title>
 
@@ -14,6 +15,10 @@
 <meta name="theme-color" content="#1f6f43">
 
 <style>
+
+/* =========================================================
+   BASE
+========================================================= */
 
 * {
   box-sizing: border-box;
@@ -31,14 +36,19 @@ h1 {
   color: #1f6f43;
 }
 
-.topo {
-  max-width: 1400px;
+.container {
+  max-width: 1500px;
   margin: auto;
 }
 
+
+/* =========================================================
+   CONTROLE DE EDIÇÃO
+========================================================= */
+
 .controle-edicao {
-  background: white;
-  padding: 12px;
+  background: #fff;
+  padding: 15px;
   border-radius: 8px;
   margin-bottom: 15px;
   box-shadow: 0 2px 6px rgba(0,0,0,.1);
@@ -50,7 +60,7 @@ h1 {
 }
 
 .status-edicao {
-  padding: 8px 12px;
+  padding: 9px 13px;
   border-radius: 6px;
   font-weight: bold;
 }
@@ -65,80 +75,10 @@ h1 {
   color: #155724;
 }
 
-.busca-container {
-  width: 100%;
-  margin-bottom: 15px;
-}
 
-#busca {
-  width: 100%;
-  padding: 12px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-}
-
-.resumo {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.resumo-card {
-  background: white;
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,.1);
-  text-align: center;
-}
-
-.resumo-card strong {
-  display: block;
-  font-size: 25px;
-  margin-top: 5px;
-}
-
-.resumo-ok {
-  border-left: 5px solid #28a745;
-}
-
-.resumo-alerta {
-  border-left: 5px solid #f0ad4e;
-}
-
-.resumo-vencida {
-  border-left: 5px solid #dc3545;
-}
-
-.form-pop,
-.form-equipamento {
-  background: #fff;
-  padding: 15px;
-  border-radius: 8px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 6px rgba(0,0,0,.1);
-}
-
-.form-pop input,
-.form-equipamento input {
-  padding: 9px;
-  margin: 4px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-input {
-  width: 95%;
-  padding: 7px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-input:disabled {
-  background: #eeeeee;
-  cursor: not-allowed;
-}
+/* =========================================================
+   BOTÕES
+========================================================= */
 
 button {
   padding: 8px 12px;
@@ -157,14 +97,11 @@ button:hover {
 button:disabled {
   background: #999;
   cursor: not-allowed;
+  opacity: .7;
 }
 
 .remove {
   background: #c0392b;
-}
-
-.editar {
-  background: #2980b9;
 }
 
 .salvar {
@@ -176,13 +113,125 @@ button:disabled {
   background: #555;
 }
 
+.editar {
+  background: #2980b9;
+}
+
+
+/* =========================================================
+   BUSCA
+========================================================= */
+
+.busca-container {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+#busca {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+
+/* =========================================================
+   RESUMO
+========================================================= */
+
+.resumo {
+  display: grid;
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.resumo-card {
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow:
+    0 2px 6px rgba(0,0,0,.1);
+
+  text-align: center;
+}
+
+.resumo-card strong {
+  display: block;
+  font-size: 28px;
+  margin-top: 5px;
+}
+
+.resumo-ok {
+  border-left: 5px solid #28a745;
+}
+
+.resumo-alerta {
+  border-left: 5px solid #f0ad4e;
+}
+
+.resumo-vencida {
+  border-left: 5px solid #dc3545;
+}
+
+
+/* =========================================================
+   FORMULÁRIOS
+========================================================= */
+
+.form-pop,
+.form-equipamento {
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+
+  box-shadow:
+    0 2px 6px rgba(0,0,0,.1);
+}
+
+.form-pop input,
+.form-equipamento input {
+  padding: 9px;
+  margin: 4px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.form-pop input {
+  width: auto;
+}
+
+input {
+  width: 95%;
+  padding: 7px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+input:disabled {
+  background: #eeeeee;
+  color: #666;
+  cursor: not-allowed;
+}
+
+
+/* =========================================================
+   POP
+========================================================= */
+
 .pop {
   display: none;
   background: #fff;
   border-radius: 8px;
   padding: 15px;
   margin-bottom: 25px;
-  box-shadow: 0 2px 6px rgba(0,0,0,.1);
+
+  box-shadow:
+    0 2px 6px rgba(0,0,0,.1);
 }
 
 .nome-pop-edicao {
@@ -201,17 +250,28 @@ button:disabled {
   font-weight: bold;
 }
 
+
+/* =========================================================
+   BANCO
+========================================================= */
+
 .banco {
   margin-top: 15px;
   padding: 15px;
+
   background: #eef8f2;
-  border-left: 5px solid #1f6f43;
+
+  border-left:
+    5px solid #1f6f43;
+
   border-radius: 6px;
 }
 
 .banco-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns:
+    repeat(4, 1fr);
+
   gap: 10px;
 }
 
@@ -222,19 +282,35 @@ button:disabled {
   margin-bottom: 5px;
 }
 
+
+/* =========================================================
+   PREVENTIVA
+========================================================= */
+
 .preventiva {
   margin-top: 15px;
   padding: 15px;
+
   background: #f5f8ff;
-  border-left: 5px solid #2980b9;
+
+  border-left:
+    5px solid #2980b9;
+
   border-radius: 6px;
 }
 
 .preventiva-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns:
+    repeat(4, 1fr);
+
   gap: 10px;
 }
+
+
+/* =========================================================
+   STATUS
+========================================================= */
 
 .status {
   font-weight: bold;
@@ -263,6 +339,11 @@ button:disabled {
   color: #666;
 }
 
+
+/* =========================================================
+   TABELAS
+========================================================= */
+
 table {
   width: 100%;
   border-collapse: collapse;
@@ -285,11 +366,19 @@ th {
   font-weight: bold;
 }
 
+
+/* =========================================================
+   INFORMAÇÕES
+========================================================= */
+
 .info {
   margin-top: 15px;
   padding: 12px;
+
   background: #f7f7f7;
+
   border-radius: 6px;
+
   line-height: 1.7;
 }
 
@@ -299,38 +388,90 @@ th {
   color: #1f6f43;
 }
 
-.cadastro-equipamentos {
-  display: none;
+
+/* =========================================================
+   CADASTRO DE EQUIPAMENTOS
+========================================================= */
+
+.cadastro-equipamento-grid {
+  display: grid;
+
+  grid-template-columns:
+    2fr 2fr 1fr auto;
+
+  gap: 8px;
+
+  align-items: center;
 }
 
-@media(max-width:900px) {
+.equipamentos-lista {
+  margin-top: 15px;
+}
+
+.equipamentos-lista table {
+  background: #fff;
+}
+
+.equipamento-status {
+  margin-top: 10px;
+  font-size: 13px;
+  color: #666;
+}
+
+
+/* =========================================================
+   RESPONSIVO
+========================================================= */
+
+@media(max-width: 900px) {
 
   .resumo {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns:
+      1fr 1fr;
   }
 
   .banco-grid,
   .preventiva-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns:
+      1fr 1fr;
+  }
+
+  .cadastro-equipamento-grid {
+    grid-template-columns:
+      1fr 1fr;
   }
 
 }
 
-@media(max-width:500px) {
+@media(max-width: 500px) {
+
+  body {
+    padding: 10px;
+  }
 
   .resumo {
-    grid-template-columns: 1fr;
+    grid-template-columns:
+      1fr;
   }
 
   .banco-grid,
   .preventiva-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns:
+      1fr;
   }
 
-  .form-pop input,
-  .form-equipamento input {
+  .cadastro-equipamento-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+  .form-pop input {
     width: 100%;
     margin: 4px 0;
+  }
+
+  table {
+    font-size: 12px;
   }
 
 }
@@ -342,7 +483,8 @@ th {
 
 <body>
 
-<div class="topo">
+
+<div class="container">
 
 
 <h1>
@@ -351,2194 +493,2931 @@ th {
 
 
 <!-- =====================================================
-CONTROLE DE EDIÇÃO
+     CONTROLE DE EDIÇÃO
 ===================================================== -->
 
 <div class="controle-edicao">
 
-<div
-id="statusEdicao"
-class="status-edicao edicao-bloqueada"
->
-🔒 Edição bloqueada
-</div>
+  <div
+    id="statusEdicao"
+    class="status-edicao edicao-bloqueada"
+  >
+    🔒 Edição bloqueada
+  </div>
 
-<button
-id="btnEditar"
-onclick="ativarEdicao()"
->
-🔒 Ativar Edição
-</button>
+  <button
+    id="btnEditar"
+    onclick="ativarEdicao()"
+  >
+    🔓 Ativar Edição
+  </button>
 
-<button
-id="btnSalvar"
-class="salvar"
-onclick="salvarTudo()"
-disabled
->
-💾 Salvar Alterações
-</button>
+  <button
+    id="btnSalvar"
+    class="salvar"
+    onclick="salvarTudo()"
+    disabled
+  >
+    💾 Salvar Alterações
+  </button>
 
-<button
-id="btnBloquear"
-class="bloquear"
-onclick="bloquearEdicao()"
-disabled
->
-🔒 Bloquear Edição
-</button>
+  <button
+    id="btnBloquear"
+    class="bloquear"
+    onclick="bloquearEdicao()"
+    disabled
+  >
+    🔒 Bloquear Edição
+  </button>
 
 </div>
 
 
 <!-- =====================================================
-RESUMO PREVENTIVAS
+     RESUMO
 ===================================================== -->
 
 <div class="resumo">
 
-<div class="resumo-card">
-🔧 Total de POPs
-<strong id="totalPops">0</strong>
-</div>
+  <div class="resumo-card">
 
-<div class="resumo-card resumo-ok">
-🟢 Preventivas em dia
-<strong id="preventivasOk">0</strong>
-</div>
+    📡 Total de POPs
 
-<div class="resumo-card resumo-alerta">
-🟡 Próximas do vencimento
-<strong id="preventivasAlerta">0</strong>
-</div>
+    <strong id="totalPops">
+      0
+    </strong>
 
-<div class="resumo-card resumo-vencida">
-🔴 Preventivas vencidas
-<strong id="preventivasVencidas">0</strong>
-</div>
+  </div>
+
+
+  <div class="resumo-card resumo-ok">
+
+    🟢 Preventivas em dia
+
+    <strong id="preventivasOk">
+      0
+    </strong>
+
+  </div>
+
+
+  <div class="resumo-card resumo-alerta">
+
+    🟡 Próximas do vencimento
+
+    <strong id="preventivasAlerta">
+      0
+    </strong>
+
+  </div>
+
+
+  <div class="resumo-card resumo-vencida">
+
+    🔴 Preventivas vencidas
+
+    <strong id="preventivasVencidas">
+      0
+    </strong>
+
+  </div>
 
 </div>
 
 
 <!-- =====================================================
-BUSCA
+     BUSCA
 ===================================================== -->
 
 <div class="busca-container">
 
-<input
-id="busca"
-list="listaPOPs"
-autocomplete="off"
-placeholder="🔍 Digite ou selecione um POP..."
-oninput="buscarPOP()"
->
+  <input
+    id="busca"
+    list="listaPOPs"
+    autocomplete="off"
+    placeholder="🔍 Digite ou selecione um POP..."
+    oninput="buscarPOP()"
+  >
 
-<datalist id="listaPOPs"></datalist>
+  <datalist id="listaPOPs"></datalist>
 
 </div>
 
 
 <!-- =====================================================
-NOVO POP
+     NOVO POP
 ===================================================== -->
 
 <div class="form-pop">
 
-<h3>
-➕ Novo POP
-</h3>
+  <h3>
+    ➕ Novo POP
+  </h3>
 
-<input
-id="novoNome"
-placeholder="Nome do POP"
-disabled
->
 
-<input
-id="novoAh"
-type="number"
-step="0.01"
-placeholder="Banco de baterias (Ah)"
-disabled
->
+  <input
+    id="novoNome"
+    placeholder="Nome do POP"
+    disabled
+  >
 
-<input
-id="novaData"
-type="date"
-title="Data de instalação"
-disabled
->
 
-<input
-id="novaValidade"
-type="date"
-title="Validade das baterias"
-disabled
->
+  <input
+    id="novoAh"
+    type="number"
+    step="0.01"
+    placeholder="Banco de baterias (Ah)"
+    disabled
+  >
 
-<br>
 
-<button
-id="btnCriarPOP"
-onclick="criarPOP()"
-disabled
->
-Salvar POP
-</button>
+  <input
+    id="novaData"
+    type="date"
+    title="Data de instalação"
+    disabled
+  >
 
-<button
-id="btnCadastroEquipamentos"
-class="editar"
-onclick="abrirCadastroEquipamentos()"
-disabled
->
-⚙️ Cadastro de Equipamentos
-</button>
+
+  <input
+    id="novaValidade"
+    type="date"
+    title="Data de validade das baterias"
+    disabled
+  >
+
+
+  <br>
+
+
+  <button
+    id="btnCriarPOP"
+    onclick="criarPOP()"
+    disabled
+  >
+    ➕ Salvar POP
+  </button>
 
 </div>
 
 
 <!-- =====================================================
-CADASTRO GLOBAL
+     CADASTRO GLOBAL DE EQUIPAMENTOS
 ===================================================== -->
 
-<div
-id="cadastroEquipamentos"
-class="form-equipamento cadastro-equipamentos"
->
+<div class="form-equipamento">
 
-<h3>
-⚙️ Cadastro Global de Equipamentos
-</h3>
+  <h3>
+    ⚙️ Cadastro Global de Equipamentos
+  </h3>
 
-<input
-id="novoEquipamento"
-placeholder="Nome do equipamento"
-disabled
->
 
-<input
-id="novoModelo"
-placeholder="Modelo / Fabricante"
-disabled
->
+  <p>
+    Cadastre cada equipamento uma única vez.
+    Depois, ao digitar o nome dentro do POP,
+    o modelo e o consumo serão preenchidos automaticamente.
+  </p>
 
-<input
-id="novoAmpere"
-type="number"
-step="0.01"
-placeholder="Consumo em Ampere"
-disabled
->
 
-<br>
+  <div class="cadastro-equipamento-grid">
 
-<button
-id="btnCadastrarEquipamento"
-onclick="cadastrarEquipamento()"
-disabled
->
-➕ Cadastrar Equipamento
-</button>
 
-<div id="listaEquipamentosCadastrados"></div>
+    <input
+      id="novoEquipamento"
+      placeholder="Nome do equipamento"
+      disabled
+    >
+
+
+    <input
+      id="novoModelo"
+      placeholder="Modelo / Fabricante"
+      disabled
+    >
+
+
+    <input
+      id="novoAmpere"
+      type="number"
+      step="0.01"
+      placeholder="Ampere"
+      disabled
+    >
+
+
+    <button
+      id="btnCadastrarEquipamento"
+      onclick="cadastrarEquipamento()"
+      disabled
+    >
+      ➕ Cadastrar
+    </button>
+
+
+  </div>
+
+
+  <div
+    id="listaEquipamentosCadastrados"
+    class="equipamentos-lista"
+  >
+  </div>
 
 </div>
 
+
+<!-- =====================================================
+     DATAlIST DOS EQUIPAMENTOS
+===================================================== -->
+
+<datalist id="listaEquipamentos"></datalist>
+
+
+<!-- =====================================================
+     POPs
+===================================================== -->
 
 <div id="pops"></div>
 
+
 </div>
 
 
+<!-- =====================================================
+     SUPABASE
+===================================================== -->
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 
 <script>
 
+
 /* =========================================================
-SUPABASE
+   CONFIGURAÇÃO SUPABASE
 ========================================================= */
 
 const SUPABASE_URL =
 "https://idzteltrnttmwzqjlkgj.supabase.co";
 
+
 const SUPABASE_ANON_KEY =
 "sb_publishable_R4WcR-nhwErOjdW-cByXmw_RCGI4aix";
+
 
 const SENHA_EDICAO =
 "8Hgkg77d6f";
 
+
 const supabaseClient =
 window.supabase.createClient(
-SUPABASE_URL,
-SUPABASE_ANON_KEY
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
 );
 
 
 /* =========================================================
-VARIÁVEIS
+   VARIÁVEIS
 ========================================================= */
-
-let modoEdicao = false;
 
 let pops = [];
 
 let equipamentosCadastro = [];
 
+let modoEdicao = false;
+
+
+/*
+   Controla se existem alterações que ainda
+   precisam ser salvas.
+*/
+
+let existemAlteracoes = false;
+
 
 /* =========================================================
-ID
+   NOVO ID
 ========================================================= */
 
 function novoId() {
 
-return crypto.randomUUID();
+  return crypto.randomUUID();
 
 }
 
 
 /* =========================================================
-MODO EDIÇÃO
+   ESCAPE HTML
+========================================================= */
+
+function escapeHtml(text) {
+
+  return String(text ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+
+}
+
+
+/* =========================================================
+   FORMATAÇÃO DE DATA
+========================================================= */
+
+function formatarData(data) {
+
+  if (!data)
+    return "--";
+
+  const partes =
+    String(data).split("-");
+
+  if (partes.length !== 3)
+    return data;
+
+  return `
+    ${partes[2]}/
+    ${partes[1]}/
+    ${partes[0]}
+  `;
+
+}
+
+
+/* =========================================================
+   MODO EDIÇÃO
 ========================================================= */
 
 function ativarEdicao() {
 
-const senha =
-prompt(
-"🔐 Digite a senha para ativar o modo edição:"
-);
+  const senha =
+    prompt(
+      "🔐 Digite a senha para ativar o modo edição:"
+    );
 
-if (senha === null)
-return;
 
-if (senha !== SENHA_EDICAO) {
+  if (senha === null)
+    return;
 
-alert("❌ Senha incorreta.");
 
-return;
+  if (senha !== SENHA_EDICAO) {
 
-}
+    alert(
+      "❌ Senha incorreta."
+    );
 
-modoEdicao = true;
+    return;
 
-atualizarModoEdicao();
+  }
 
-render();
+
+  modoEdicao = true;
+
+  atualizarModoEdicao();
+
+  render();
 
 }
 
 
 function bloquearEdicao() {
 
-modoEdicao = false;
+  modoEdicao = false;
 
-fecharCadastroEquipamentos();
+  atualizarModoEdicao();
 
-atualizarModoEdicao();
-
-render();
+  render();
 
 }
 
 
 function atualizarModoEdicao() {
 
-const status =
-document.getElementById(
-"statusEdicao"
-);
-
-const btnEditar =
-document.getElementById(
-"btnEditar"
-);
-
-const btnSalvar =
-document.getElementById(
-"btnSalvar"
-);
-
-const btnBloquear =
-document.getElementById(
-"btnBloquear"
-);
+  const status =
+    document.getElementById(
+      "statusEdicao"
+    );
 
 
-if (modoEdicao) {
-
-status.textContent =
-"🔓 MODO EDIÇÃO ATIVO";
-
-status.className =
-"status-edicao edicao-liberada";
-
-btnEditar.disabled = true;
-
-btnSalvar.disabled = false;
-
-btnBloquear.disabled = false;
-
-} else {
-
-status.textContent =
-"🔒 Edição bloqueada";
-
-status.className =
-"status-edicao edicao-bloqueada";
-
-btnEditar.disabled = false;
-
-btnSalvar.disabled = true;
-
-btnBloquear.disabled = true;
-
-}
-
-atualizarCampos();
-
-}
+  const btnEditar =
+    document.getElementById(
+      "btnEditar"
+    );
 
 
-function atualizarCampos() {
+  const btnSalvar =
+    document.getElementById(
+      "btnSalvar"
+    );
 
-document
-.querySelectorAll(
-"input"
-)
-.forEach(
-campo => {
 
-if (
-campo.id === "busca"
-)
-return;
+  const btnBloquear =
+    document.getElementById(
+      "btnBloquear"
+    );
 
-campo.disabled =
-!modoEdicao;
 
-}
-);
+  if (modoEdicao) {
 
-document
-.querySelectorAll(
-".btn-edicao"
-)
-.forEach(
-botao => {
+    status.textContent =
+      "🔓 MODO EDIÇÃO ATIVO";
 
-botao.disabled =
-!modoEdicao;
 
-}
-);
+    status.className =
+      "status-edicao edicao-liberada";
+
+
+    btnEditar.disabled =
+      true;
+
+
+    btnSalvar.disabled =
+      false;
+
+
+    btnBloquear.disabled =
+      false;
+
+  }
+
+  else {
+
+    status.textContent =
+      "🔒 Edição bloqueada";
+
+
+    status.className =
+      "status-edicao edicao-bloqueada";
+
+
+    btnEditar.disabled =
+      false;
+
+
+    btnSalvar.disabled =
+      true;
+
+
+    btnBloquear.disabled =
+      true;
+
+  }
+
+
+  atualizarCampos();
 
 }
 
 
 /* =========================================================
-BANCO
+   HABILITAR / DESABILITAR CAMPOS
+========================================================= */
+
+function atualizarCampos() {
+
+  document
+    .querySelectorAll("input")
+    .forEach(
+      campo => {
+
+        /*
+          Busca sempre disponível.
+        */
+
+        if (campo.id === "busca") {
+
+          campo.disabled =
+            false;
+
+          return;
+
+        }
+
+
+        /*
+          Próxima preventiva é calculada
+          automaticamente.
+        */
+
+        if (
+          campo.classList.contains(
+            "campo-proxima-preventiva"
+          )
+        ) {
+
+          campo.disabled =
+            true;
+
+          return;
+
+        }
+
+
+        campo.disabled =
+          !modoEdicao;
+
+      }
+    );
+
+
+  document
+    .querySelectorAll(".btn-edicao")
+    .forEach(
+      botao => {
+
+        botao.disabled =
+          !modoEdicao;
+
+      }
+    );
+
+
+  /*
+    Cadastro global
+  */
+
+  const camposEquipamentos = [
+
+    "novoEquipamento",
+    "novoModelo",
+    "novoAmpere"
+
+  ];
+
+
+  camposEquipamentos.forEach(
+    id => {
+
+      const campo =
+        document.getElementById(id);
+
+      if (campo) {
+
+        campo.disabled =
+          !modoEdicao;
+
+      }
+
+    }
+  );
+
+
+  const btnCadastro =
+    document.getElementById(
+      "btnCadastrarEquipamento"
+    );
+
+
+  if (btnCadastro) {
+
+    btnCadastro.disabled =
+      !modoEdicao;
+
+  }
+
+
+  const btnCriar =
+    document.getElementById(
+      "btnCriarPOP"
+    );
+
+
+  if (btnCriar) {
+
+    btnCriar.disabled =
+      !modoEdicao;
+
+  }
+
+}
+
+
+/* =========================================================
+   CONVERTER POP PARA BANCO
 ========================================================= */
 
 function popParaBanco(pop) {
 
-return {
+  return {
 
-id: pop.id,
+    id:
+      pop.id || novoId(),
 
-nome: pop.nome,
+    nome:
+      pop.nome,
 
-ah: Number(pop.ah) || 0,
+    ah:
+      Number(pop.ah) || 0,
 
-data_instalacao:
-pop.dataInstalacao || null,
+    data_instalacao:
+      pop.dataInstalacao || null,
 
-validade:
-pop.validade || null,
+    validade:
+      pop.validade || null,
 
-ultima_preventiva:
-pop.ultimaPreventiva || null,
+    ultima_preventiva:
+      pop.ultimaPreventiva || null,
 
-proxima_preventiva:
-pop.proximaPreventiva || null,
+    proxima_preventiva:
+      pop.proximaPreventiva || null,
 
-periodicidade_preventiva:
-Number(
-pop.periodicidadePreventiva
-) || 30,
+    periodicidade_preventiva:
+      Number(
+        pop.periodicidadePreventiva
+      ) || 30,
 
-equipamentos:
-pop.equipamentos || []
+    equipamentos:
+      pop.equipamentos || []
 
-};
+  };
 
 }
 
+
+/* =========================================================
+   CONVERTER BANCO PARA POP
+========================================================= */
 
 function bancoParaPop(row) {
 
-return {
+  return {
 
-id: row.id,
+    id:
+      row.id,
 
-nome: row.nome,
+    nome:
+      row.nome || "",
 
-ah: Number(row.ah) || 0,
+    ah:
+      Number(row.ah) || 0,
 
-dataInstalacao:
-row.data_instalacao || "",
+    dataInstalacao:
+      row.data_instalacao || "",
 
-validade:
-row.validade || "",
+    validade:
+      row.validade || "",
 
-ultimaPreventiva:
-row.ultima_preventiva || "",
+    ultimaPreventiva:
+      row.ultima_preventiva || "",
 
-proximaPreventiva:
-row.proxima_preventiva || "",
+    proximaPreventiva:
+      row.proxima_preventiva || "",
 
-periodicidadePreventiva:
-Number(
-row.periodicidade_preventiva
-) || 30,
+    periodicidadePreventiva:
+      Number(
+        row.periodicidade_preventiva
+      ) || 30,
 
-equipamentos:
-Array.isArray(row.equipamentos)
-? row.equipamentos
-: []
+    equipamentos:
+      Array.isArray(row.equipamentos)
+        ? row.equipamentos
+        : []
 
-};
-
-}
-
-
-/* =========================================================
-CALCULAR PRÓXIMA PREVENTIVA
-========================================================= */
-
-function calcularProximaPreventiva(
-data,
-dias
-) {
-
-if (!data)
-return "";
-
-dias =
-Number(dias) || 30;
-
-const partes =
-data.split("-");
-
-const dataObj =
-new Date(
-Number(partes[0]),
-Number(partes[1]) - 1,
-Number(partes[2])
-);
-
-dataObj.setDate(
-dataObj.getDate() + dias
-);
-
-const ano =
-dataObj.getFullYear();
-
-const mes =
-String(
-dataObj.getMonth() + 1
-).padStart(2,"0");
-
-const dia =
-String(
-dataObj.getDate()
-).padStart(2,"0");
-
-return `${ano}-${mes}-${dia}`;
+  };
 
 }
 
 
 /* =========================================================
-STATUS PREVENTIVA
-========================================================= */
-
-function statusPreventiva(pop) {
-
-if (!pop.proximaPreventiva) {
-
-return {
-
-texto:
-"⚪ Preventiva não cadastrada",
-
-classe:
-"status-sem",
-
-tipo:
-"sem"
-
-};
-
-}
-
-
-const hoje =
-new Date();
-
-hoje.setHours(
-0,0,0,0
-);
-
-
-const proxima =
-new Date(
-pop.proximaPreventiva +
-"T00:00:00"
-);
-
-
-const dias =
-Math.ceil(
-(
-proxima - hoje
-) /
-(
-1000 *
-60 *
-60 *
-24
-)
-);
-
-
-if (dias < 0) {
-
-return {
-
-texto:
-`🔴 PREVENTIVA VENCIDA há ${Math.abs(dias)} dias`,
-
-classe:
-"status-vencida",
-
-tipo:
-"vencida"
-
-};
-
-}
-
-
-if (dias <= 7) {
-
-return {
-
-texto:
-`🟡 Preventiva vence em ${dias} dias`,
-
-classe:
-"status-alerta",
-
-tipo:
-"alerta"
-
-};
-
-}
-
-
-return {
-
-texto:
-`🟢 Preventiva em dia — ${dias} dias`,
-
-classe:
-"status-ok",
-
-tipo:
-"ok"
-
-};
-
-}
-
-
-/* =========================================================
-EQUIPAMENTOS
+   CARREGAR EQUIPAMENTOS
 ========================================================= */
 
 async function carregarEquipamentos() {
 
-const { data, error } =
-await supabaseClient
-.from(
-"equipamentos_autonomia"
-)
-.select("*")
-.order(
-"nome",
-{
-ascending:true
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "equipamentos_autonomia"
+      )
+      .select("*")
+      .order(
+        "nome",
+        {
+          ascending: true
+        }
+      );
+
+
+  if (error) {
+
+    console.error(
+      "Erro equipamentos:",
+      error
+    );
+
+
+    alert(
+      "Erro ao carregar equipamentos: " +
+      error.message
+    );
+
+
+    equipamentosCadastro =
+      [];
+
+    return;
+
+  }
+
+
+  equipamentosCadastro =
+    data || [];
+
+
+  criarListaEquipamentos();
+
+  atualizarListaEquipamentos();
+
 }
-);
 
-if (error) {
 
-console.error(error);
-
-alert(
-"Erro ao carregar equipamentos: " +
-error.message
-);
-
-return;
-
-}
-
-equipamentosCadastro =
-data || [];
-
-}
-
+/* =========================================================
+   CADASTRAR EQUIPAMENTO GLOBAL
+========================================================= */
 
 async function cadastrarEquipamento() {
 
-if (!modoEdicao)
-return;
+  if (!modoEdicao)
+    return;
 
-const nome =
-document
-.getElementById(
-"novoEquipamento"
-)
-.value
-.trim();
 
-const modelo =
-document
-.getElementById(
-"novoModelo"
-)
-.value
-.trim();
+  const nome =
+    document
+      .getElementById(
+        "novoEquipamento"
+      )
+      .value
+      .trim();
 
-const ampere =
-Number(
-document
-.getElementById(
-"novoAmpere"
-)
-.value
-);
 
-if (!nome) {
+  const modelo =
+    document
+      .getElementById(
+        "novoModelo"
+      )
+      .value
+      .trim();
 
-alert(
-"Informe o equipamento."
-);
 
-return;
+  const ampere =
+    Number(
+      document
+        .getElementById(
+          "novoAmpere"
+        )
+        .value
+    );
+
+
+  if (!nome) {
+
+    alert(
+      "Digite o nome do equipamento."
+    );
+
+    return;
+
+  }
+
+
+  if (
+    Number.isNaN(ampere)
+  ) {
+
+    alert(
+      "Digite o consumo em Ampere."
+    );
+
+    return;
+
+  }
+
+
+  /*
+    Verifica se já existe.
+  */
+
+  const existente =
+    encontrarEquipamento(
+      nome
+    );
+
+
+  if (existente) {
+
+    alert(
+      "⚠️ Esse equipamento já está cadastrado."
+    );
+
+    return;
+
+  }
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "equipamentos_autonomia"
+      )
+      .insert({
+
+        nome:
+          nome,
+
+        modelo:
+          modelo,
+
+        ampere:
+          ampere
+
+      })
+      .select()
+      .single();
+
+
+  if (error) {
+
+    console.error(
+      error
+    );
+
+
+    alert(
+      "Erro ao cadastrar equipamento: " +
+      error.message
+    );
+
+    return;
+
+  }
+
+
+  equipamentosCadastro.push(
+    data
+  );
+
+
+  document
+    .getElementById(
+      "novoEquipamento"
+    )
+    .value = "";
+
+
+  document
+    .getElementById(
+      "novoModelo"
+    )
+    .value = "";
+
+
+  document
+    .getElementById(
+      "novoAmpere"
+    )
+    .value = "";
+
+
+  criarListaEquipamentos();
+
+  atualizarListaEquipamentos();
+
+
+  alert(
+    "✅ Equipamento cadastrado."
+  );
 
 }
 
-const { data, error } =
-await supabaseClient
-.from(
-"equipamentos_autonomia"
-)
-.insert({
 
-nome,
-modelo,
-ampere
-
-})
-.select()
-.single();
-
-if (error) {
-
-alert(
-"Erro ao cadastrar equipamento: " +
-error.message
-);
-
-return;
-
-}
-
-equipamentosCadastro.push(
-data
-);
-
-document.getElementById(
-"novoEquipamento"
-).value = "";
-
-document.getElementById(
-"novoModelo"
-).value = "";
-
-document.getElementById(
-"novoAmpere"
-).value = "";
-
-atualizarListaEquipamentos();
-
-}
-
+/* =========================================================
+   ENCONTRAR EQUIPAMENTO
+========================================================= */
 
 function encontrarEquipamento(nome) {
 
-return equipamentosCadastro.find(
-e =>
-String(e.nome)
-.trim()
-.toLowerCase() ===
-String(nome)
-.trim()
-.toLowerCase()
-);
-
-}
+  const busca =
+    String(nome || "")
+      .trim()
+      .toLowerCase();
 
 
-function preencherEquipamento(
-i,
-j,
-input
-) {
+  return equipamentosCadastro.find(
+    equipamento => {
 
-if (!modoEdicao)
-return;
+      return String(
+        equipamento.nome || ""
+      )
+      .trim()
+      .toLowerCase() === busca;
 
-const encontrado =
-encontrarEquipamento(
-input.value
-);
-
-if (!encontrado)
-return;
-
-pops[i]
-.equipamentos[j][0] =
-encontrado.nome;
-
-pops[i]
-.equipamentos[j][1] =
-encontrado.modelo || "";
-
-pops[i]
-.equipamentos[j][2] =
-Number(encontrado.ampere) || 0;
-
-salvarPOP(
-pops[i]
-);
-
-renderVisivel(i);
-
-}
-
-
-function atualizarListaEquipamentos() {
-
-const div =
-document.getElementById(
-"listaEquipamentosCadastrados"
-);
-
-if (!div)
-return;
-
-let html = `
-
-<h4>
-Equipamentos cadastrados
-</h4>
-
-<table>
-
-<tr>
-
-<th>
-Equipamento
-</th>
-
-<th>
-Modelo
-</th>
-
-<th>
-Ampere
-</th>
-
-</tr>
-`;
-
-equipamentosCadastro.forEach(
-e => {
-
-html += `
-
-<tr>
-
-<td>
-${escapeHtml(e.nome)}
-</td>
-
-<td>
-${escapeHtml(e.modelo || "")}
-</td>
-
-<td>
-${Number(e.ampere).toFixed(2)} A
-</td>
-
-</tr>
-
-`;
-
-}
-);
-
-html += `
-</table>
-`;
-
-div.innerHTML =
-html;
+    }
+  );
 
 }
 
 
 /* =========================================================
-RENDER
+   PREENCHER EQUIPAMENTO AUTOMATICAMENTE
 ========================================================= */
 
-function render() {
+function preencherEquipamento(
+  i,
+  j,
+  input
+) {
 
-const c =
-document.getElementById(
-"pops"
-);
+  if (!modoEdicao)
+    return;
 
-c.innerHTML = "";
 
-let ok = 0;
+  const encontrado =
+    encontrarEquipamento(
+      input.value
+    );
 
-let alerta = 0;
 
-let vencida = 0;
+  /*
+    Se encontrou:
+    nome + modelo + ampere.
+  */
 
+  if (encontrado) {
 
-pops.forEach(
-(pop,i) => {
+    pops[i]
+      .equipamentos[j][0] =
+        encontrado.nome;
 
-const status =
-statusPreventiva(pop);
 
-if (
-status.tipo === "ok"
-) ok++;
+    pops[i]
+      .equipamentos[j][1] =
+        encontrado.modelo || "";
 
-if (
-status.tipo === "alerta"
-) alerta++;
 
-if (
-status.tipo === "vencida"
-) vencida++;
+    pops[i]
+      .equipamentos[j][2] =
+        Number(
+          encontrado.ampere
+        ) || 0;
 
 
-let consumo = 0;
+    existemAlteracoes =
+      true;
 
-let linhas = "";
 
+    renderVisivel(i);
 
-pop.equipamentos.forEach(
-(e,j) => {
 
-consumo +=
-(Number(e[2]) || 0) *
-(Number(e[3]) || 0);
+    return;
 
+  }
 
-linhas += `
 
-<tr>
+  /*
+    Se não encontrou,
+    mantém o que foi digitado.
+  */
 
-<td>
+  pops[i]
+    .equipamentos[j][0] =
+      input.value;
 
-<input
 
-value="${escapeHtml(e[0])}"
-
-list="listaEquipamentos"
-
-placeholder="Digite o equipamento"
-
-${!modoEdicao ? "disabled" : ""}
-
-onchange="
-preencherEquipamento(
-${i},
-${j},
-this
-)
-"
-
->
-
-</td>
-
-
-<td>
-
-<input
-
-value="${escapeHtml(e[1])}"
-
-readonly
-
->
-
-</td>
-
-
-<td>
-
-<input
-
-type="number"
-
-step="0.01"
-
-value="${e[2]}"
-
-${!modoEdicao ? "disabled" : ""}
-
-onchange="
-
-pops[${i}]
-.equipamentos[${j}][2]
-=
-Number(this.value);
-
-salvarPOP(
-pops[${i}]
-);
-
-renderVisivel(${i});
-
-"
-
->
-
-</td>
-
-
-<td>
-
-<input
-
-type="number"
-
-min="1"
-
-value="${e[3]}"
-
-${!modoEdicao ? "disabled" : ""}
-
-onchange="
-
-pops[${i}]
-.equipamentos[${j}][3]
-=
-Number(this.value);
-
-salvarPOP(
-pops[${i}]
-);
-
-renderVisivel(${i});
-
-"
-
->
-
-</td>
-
-
-<td>
-
-<button
-
-class="remove btn-edicao"
-
-${!modoEdicao ? "disabled" : ""}
-
-onclick="
-
-pops[${i}]
-.equipamentos
-.splice(${j},1);
-
-salvarPOP(
-pops[${i}]
-);
-
-render();
-
-"
-
->
-
-X
-
-</button>
-
-</td>
-
-</tr>
-
-`;
-
-}
-);
-
-
-const horas =
-consumo > 0
-?
-Number(pop.ah) /
-consumo
-:
-0;
-
-const h =
-Math.floor(horas);
-
-const m =
-Math.round(
-(horas - h) * 60
-);
-
-
-c.innerHTML += `
-
-<div
-class="pop"
-data-nome="${escapeHtml(
-pop.nome.toLowerCase()
-)}"
->
-
-
-<div class="nome-pop-edicao">
-
-<label>
-<strong>
-Nome do POP
-</strong>
-</label>
-
-<input
-
-value="${escapeHtml(
-pop.nome
-)}"
-
-${!modoEdicao ? "disabled" : ""}
-
-onchange="
-
-pops[${i}].nome =
-this.value.trim();
-
-salvarPOP(
-pops[${i}]
-);
-
-"
-
->
-
-</div>
-
-
-<!-- BANCO -->
-
-<div class="banco">
-
-<h3>
-🔋 Banco de Baterias
-</h3>
-
-
-<div class="banco-grid">
-
-
-<div>
-
-<label>
-Capacidade
-</label>
-
-<input
-
-type="number"
-
-step="0.01"
-
-value="${pop.ah}"
-
-${!modoEdicao ? "disabled" : ""}
-
-onchange="
-
-pops[${i}].ah =
-Number(this.value);
-
-salvarPOP(
-pops[${i}]
-);
-
-renderVisivel(${i});
-
-"
-
->
-
-<small>
-Ah
-</small>
-
-</div>
-
-
-<div>
-
-<label>
-Data de Instalação
-</label>
-
-<input
-
-type="date"
-
-value="${pop.dataInstalacao}"
-
-${!modoEdicao ? "disabled" : ""}
-
-onchange="
-
-pops[${i}]
-.dataInstalacao =
-this.value;
-
-salvarPOP(
-pops[${i}]
-);
-
-"
-
->
-
-</div>
-
-
-<div>
-
-<label>
-Validade
-</label>
-
-<input
-
-type="date"
-
-value="${pop.validade}"
-
-${!modoEdicao ? "disabled" : ""}
-
-onchange="
-
-pops[${i}]
-.validade =
-this.value;
-
-salvarPOP(
-pops[${i}]
-);
-
-renderVisivel(${i});
-
-"
-
->
-
-</div>
-
-
-<div>
-
-<label>
-Situação
-</label>
-
-<div class="status ${
-statusBateria(
-pop.validade
-).classe
-}">
-
-${statusBateria(
-pop.validade
-).texto}
-
-</div>
-
-</div>
-
-
-</div>
-
-</div>
-
-
-<!-- PREVENTIVA -->
-
-<div class="preventiva">
-
-<h3>
-🔧 Controle de Preventiva
-</h3>
-
-
-<div class="preventiva-grid">
-
-
-<div>
-
-<label>
-Última Preventiva
-</label>
-
-<input
-
-type="date"
-
-value="${pop.ultimaPreventiva || ""}"
-
-${!modoEdicao ? "disabled" : ""}
-
-onchange="
-
-pops[${i}]
-.ultimaPreventiva =
-this.value;
-
-pops[${i}]
-.proximaPreventiva =
-calcularProximaPreventiva(
-this.value,
-pops[${i}]
-.periodicidadePreventiva
-);
-
-salvarPOP(
-pops[${i}]
-);
-
-renderVisivel(${i});
-
-"
-
->
-
-</div>
-
-
-<div>
-
-<label>
-Periodicidade
-</label>
-
-<input
-
-type="number"
-
-min="1"
-
-value="${
-pop.periodicidadePreventiva || 30
-}"
-
-${!modoEdicao ? "disabled" : ""}
-
-onchange="
-
-pops[${i}]
-.periodicidadePreventiva =
-Number(this.value);
-
-pops[${i}]
-.proximaPreventiva =
-calcularProximaPreventiva(
-pops[${i}]
-.ultimaPreventiva,
-this.value
-);
-
-salvarPOP(
-pops[${i}]
-);
-
-renderVisivel(${i});
-
-"
-
->
-
-<small>
-dias
-</small>
-
-</div>
-
-
-<div>
-
-<label>
-Próxima Preventiva
-</label>
-
-<input
-
-type="date"
-
-value="${
-pop.proximaPreventiva || ""
-}"
-
-disabled
-
->
-
-</div>
-
-
-<div>
-
-<label>
-Status
-</label>
-
-<div class="status ${
-status.classe
-}">
-
-${status.texto}
-
-</div>
-
-</div>
-
-
-</div>
-
-</div>
-
-
-<!-- EQUIPAMENTOS -->
-
-<h3>
-📡 Equipamentos
-</h3>
-
-
-<table>
-
-<tr>
-
-<th>
-Equipamento
-</th>
-
-<th>
-Modelo
-</th>
-
-<th>
-Ampere
-</th>
-
-<th>
-Qt
-</th>
-
-<th>
-</th>
-
-</tr>
-
-
-${linhas}
-
-
-<tr class="total">
-
-<td colspan="2">
-Consumo Total
-</td>
-
-<td colspan="3">
-
-${consumo.toFixed(2)}
-A
-
-</td>
-
-</tr>
-
-</table>
-
-
-<button
-
-class="btn-edicao"
-
-${!modoEdicao ? "disabled" : ""}
-
-onclick="
-
-pops[${i}]
-.equipamentos
-.push(['','',0,1]);
-
-salvarPOP(
-pops[${i}]
-);
-
-renderVisivel(${i});
-
-"
-
->
-
-➕ Adicionar Equipamento
-
-</button>
-
-
-<div class="info">
-
-🔋 Banco:
-
-<strong>
-${Number(pop.ah).toFixed(2)}
-Ah
-</strong>
-
-&nbsp;&nbsp;
-
-⚡ Consumo:
-
-<strong>
-${consumo.toFixed(2)}
-A
-</strong>
-
-&nbsp;&nbsp;
-
-⏱️ Autonomia:
-
-<span class="autonomia">
-
-${h}h ${m}min
-
-</span>
-
-</div>
-
-
-<button
-
-class="remove btn-edicao"
-
-${!modoEdicao ? "disabled" : ""}
-
-onclick="
-excluirPOP(${i})
-"
-
->
-
-🗑️ Excluir POP
-
-</button>
-
-
-</div>
-
-`;
-
-}
-);
-
-
-document.getElementById(
-"totalPops"
-).textContent =
-pops.length;
-
-document.getElementById(
-"preventivasOk"
-).textContent =
-ok;
-
-document.getElementById(
-"preventivasAlerta"
-).textContent =
-alerta;
-
-document.getElementById(
-"preventivasVencidas"
-).textContent =
-vencida;
-
-
-atualizarListaPOPs();
-
-criarListaEquipamentos();
-
-atualizarCampos();
+  existemAlteracoes =
+    true;
 
 }
 
 
 /* =========================================================
-LISTA EQUIPAMENTOS PARA O INPUT
+   LISTA DE EQUIPAMENTOS
 ========================================================= */
 
 function criarListaEquipamentos() {
 
-let lista =
-document.getElementById(
-"listaEquipamentos"
-);
+  const lista =
+    document.getElementById(
+      "listaEquipamentos"
+    );
 
-if (!lista) {
 
-lista =
-document.createElement(
-"datalist"
-);
+  if (!lista)
+    return;
 
-lista.id =
-"listaEquipamentos";
 
-document.body.appendChild(
-lista
-);
+  lista.innerHTML = "";
 
-}
 
-lista.innerHTML = "";
+  equipamentosCadastro
+    .forEach(
+      equipamento => {
 
-equipamentosCadastro.forEach(
-e => {
+        const option =
+          document.createElement(
+            "option"
+          );
 
-const option =
-document.createElement(
-"option"
-);
 
-option.value =
-e.nome;
+        option.value =
+          equipamento.nome;
 
-lista.appendChild(
-option
-);
 
-}
-);
+        lista.appendChild(
+          option
+        );
+
+      }
+    );
 
 }
 
 
 /* =========================================================
-STATUS BATERIA
+   MOSTRAR CADASTRO DE EQUIPAMENTOS
+========================================================= */
+
+function atualizarListaEquipamentos() {
+
+  const div =
+    document.getElementById(
+      "listaEquipamentosCadastrados"
+    );
+
+
+  if (!div)
+    return;
+
+
+  if (
+    equipamentosCadastro.length === 0
+  ) {
+
+    div.innerHTML = `
+      <div class="info">
+        ⚪ Nenhum equipamento cadastrado.
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  let html = `
+
+    <h4>
+      📋 Equipamentos cadastrados
+    </h4>
+
+    <table>
+
+      <tr>
+
+        <th>
+          Equipamento
+        </th>
+
+        <th>
+          Modelo
+        </th>
+
+        <th>
+          Ampere
+        </th>
+
+      </tr>
+
+  `;
+
+
+  equipamentosCadastro
+    .forEach(
+      equipamento => {
+
+        html += `
+
+          <tr>
+
+            <td>
+              ${escapeHtml(
+                equipamento.nome
+              )}
+            </td>
+
+            <td>
+              ${escapeHtml(
+                equipamento.modelo || ""
+              )}
+            </td>
+
+            <td>
+              ${Number(
+                equipamento.ampere || 0
+              ).toFixed(2)}
+              A
+            </td>
+
+          </tr>
+
+        `;
+
+      }
+    );
+
+
+  html += `
+
+    </table>
+
+    <div class="equipamento-status">
+
+      Total de equipamentos:
+      <strong>
+        ${equipamentosCadastro.length}
+      </strong>
+
+    </div>
+
+  `;
+
+
+  div.innerHTML =
+    html;
+
+}
+
+
+/* =========================================================
+   CALCULAR PRÓXIMA PREVENTIVA
+========================================================= */
+
+function calcularProximaPreventiva(
+  data,
+  dias
+) {
+
+  if (!data)
+    return "";
+
+
+  dias =
+    Number(dias) || 30;
+
+
+  const partes =
+    data.split("-");
+
+
+  if (
+    partes.length !== 3
+  )
+    return "";
+
+
+  const dataObj =
+    new Date(
+      Number(partes[0]),
+      Number(partes[1]) - 1,
+      Number(partes[2])
+    );
+
+
+  dataObj.setDate(
+    dataObj.getDate() + dias
+  );
+
+
+  const ano =
+    dataObj.getFullYear();
+
+
+  const mes =
+    String(
+      dataObj.getMonth() + 1
+    )
+    .padStart(
+      2,
+      "0"
+    );
+
+
+  const dia =
+    String(
+      dataObj.getDate()
+    )
+    .padStart(
+      2,
+      "0"
+    );
+
+
+  return `${ano}-${mes}-${dia}`;
+
+}
+
+
+/* =========================================================
+   STATUS PREVENTIVA
+========================================================= */
+
+function statusPreventiva(
+  pop
+) {
+
+  if (
+    !pop.proximaPreventiva
+  ) {
+
+    return {
+
+      texto:
+        "⚪ Preventiva não cadastrada",
+
+      classe:
+        "status-sem",
+
+      tipo:
+        "sem"
+
+    };
+
+  }
+
+
+  const hoje =
+    new Date();
+
+
+  hoje.setHours(
+    0,
+    0,
+    0,
+    0
+  );
+
+
+  const proxima =
+    new Date(
+      pop.proximaPreventiva +
+      "T00:00:00"
+    );
+
+
+  const dias =
+    Math.ceil(
+      (
+        proxima - hoje
+      ) /
+      86400000
+    );
+
+
+  if (dias < 0) {
+
+    return {
+
+      texto:
+        `🔴 PREVENTIVA VENCIDA há ${Math.abs(dias)} dias`,
+
+      classe:
+        "status-vencida",
+
+      tipo:
+        "vencida"
+
+    };
+
+  }
+
+
+  if (dias <= 7) {
+
+    return {
+
+      texto:
+        `🟡 Preventiva vence em ${dias} dias`,
+
+      classe:
+        "status-alerta",
+
+      tipo:
+        "alerta"
+
+    };
+
+  }
+
+
+  return {
+
+    texto:
+      `🟢 Preventiva em dia — ${dias} dias`,
+
+    classe:
+      "status-ok",
+
+    tipo:
+      "ok"
+
+  };
+
+}
+
+
+/* =========================================================
+   STATUS BATERIA
 ========================================================= */
 
 function statusBateria(
-validade
+  validade
 ) {
 
-if (!validade) {
+  if (!validade) {
 
-return {
+    return {
 
-texto:
-"⚪ Sem validade cadastrada",
+      texto:
+        "⚪ Sem validade cadastrada",
 
-classe:
-"status-sem"
+      classe:
+        "status-sem"
 
-};
+    };
 
-}
+  }
 
-const hoje =
-new Date();
 
-hoje.setHours(
-0,0,0,0
-);
+  const hoje =
+    new Date();
 
-const data =
-new Date(
-validade +
-"T00:00:00"
-);
 
-const dias =
-Math.ceil(
-(data - hoje) /
-86400000
-);
+  hoje.setHours(
+    0,
+    0,
+    0,
+    0
+  );
 
-if (dias < 0) {
 
-return {
+  const dataValidade =
+    new Date(
+      validade +
+      "T00:00:00"
+    );
 
-texto:
-"🔴 BATERIA FORA DA GARANTIA",
 
-classe:
-"status-vencida"
+  const diferenca =
+    Math.ceil(
+      (
+        dataValidade - hoje
+      ) /
+      86400000
+    );
 
-};
 
-}
+  if (
+    diferenca < 0
+  ) {
 
-if (dias <= 90) {
+    return {
 
-return {
+      texto:
+        "🔴 BATERIA FORA DA GARANTIA",
 
-texto:
-`🟡 Vence em ${dias} dias`,
+      classe:
+        "status-vencida"
 
-classe:
-"status-alerta"
+    };
 
-};
+  }
 
-}
 
-return {
+  if (
+    diferenca <= 90
+  ) {
 
-texto:
-"🟢 Bateria dentro da Garantia",
+    return {
 
-classe:
-"status-ok"
+      texto:
+        `🟡 Vence em ${diferenca} dias`,
 
-};
+      classe:
+        "status-alerta"
+
+    };
+
+  }
+
+
+  return {
+
+    texto:
+      "🟢 Bateria dentro da Garantia",
+
+    classe:
+      "status-ok"
+
+  };
 
 }
 
 
 /* =========================================================
-SALVAR POP
+   RENDER
 ========================================================= */
 
-async function salvarPOP(pop) {
+function render() {
 
-const registro =
-popParaBanco(pop);
+  const container =
+    document.getElementById(
+      "pops"
+    );
 
-const { error } =
-await supabaseClient
-.from(
-"pops_autonomia"
-)
-.upsert(
-registro,
-{
-onConflict:"id"
-}
-);
 
-if (error) {
+  container.innerHTML = "";
 
-console.error(
-error
-);
 
-alert(
-"Erro ao salvar: " +
-error.message
-);
+  let totalOk = 0;
 
-}
+  let totalAlerta = 0;
+
+  let totalVencida = 0;
+
+
+  pops.forEach(
+    (pop, i) => {
+
+
+      const status =
+        statusPreventiva(
+          pop
+        );
+
+
+      if (
+        status.tipo === "ok"
+      )
+        totalOk++;
+
+
+      if (
+        status.tipo === "alerta"
+      )
+        totalAlerta++;
+
+
+      if (
+        status.tipo === "vencida"
+      )
+        totalVencida++;
+
+
+      let consumo =
+        0;
+
+
+      let linhas =
+        "";
+
+
+      /*
+        EQUIPAMENTOS
+      */
+
+      pop.equipamentos
+        .forEach(
+          (e, j) => {
+
+
+            consumo +=
+              (
+                Number(e[2]) || 0
+              ) *
+              (
+                Number(e[3]) || 0
+              );
+
+
+            linhas += `
+
+              <tr>
+
+                <td>
+
+                  <input
+
+                    value="${escapeHtml(
+                      e[0]
+                    )}"
+
+                    list="listaEquipamentos"
+
+                    placeholder="Digite o equipamento"
+
+                    ${!modoEdicao
+                      ? "disabled"
+                      : ""}
+
+                    onchange="
+                      preencherEquipamento(
+                        ${i},
+                        ${j},
+                        this
+                      );
+                    "
+
+                  >
+
+                </td>
+
+
+                <td>
+
+                  <input
+
+                    value="${escapeHtml(
+                      e[1]
+                    )}"
+
+                    disabled
+
+                  >
+
+                </td>
+
+
+                <td>
+
+                  <input
+
+                    type="number"
+
+                    step="0.01"
+
+                    value="${e[2] || 0}"
+
+                    ${!modoEdicao
+                      ? "disabled"
+                      : ""}
+
+                    onchange="
+
+                      pops[${i}]
+                        .equipamentos[${j}][2]
+                        =
+                        Number(this.value) || 0;
+
+                      existemAlteracoes =
+                        true;
+
+                      renderVisivel(${i});
+
+                    "
+
+                  >
+
+                </td>
+
+
+                <td>
+
+                  <input
+
+                    type="number"
+
+                    min="1"
+
+                    value="${e[3] || 1}"
+
+                    ${!modoEdicao
+                      ? "disabled"
+                      : ""}
+
+                    onchange="
+
+                      pops[${i}]
+                        .equipamentos[${j}][3]
+                        =
+                        Number(this.value) || 1;
+
+                      existemAlteracoes =
+                        true;
+
+                      renderVisivel(${i});
+
+                    "
+
+                  >
+
+                </td>
+
+
+                <td>
+
+                  <button
+
+                    class="remove btn-edicao"
+
+                    ${!modoEdicao
+                      ? "disabled"
+                      : ""}
+
+                    onclick="
+
+                      pops[${i}]
+                        .equipamentos
+                        .splice(${j}, 1);
+
+                      existemAlteracoes =
+                        true;
+
+                      renderVisivel(${i});
+
+                    "
+
+                  >
+
+                    X
+
+                  </button>
+
+                </td>
+
+              </tr>
+
+            `;
+
+          }
+        );
+
+
+      /*
+        AUTONOMIA
+      */
+
+      const horas =
+        consumo > 0
+          ? Number(pop.ah) /
+            consumo
+          : 0;
+
+
+      const h =
+        Math.floor(
+          horas
+        );
+
+
+      const m =
+        Math.round(
+          (
+            horas - h
+          ) * 60
+        );
+
+
+      /*
+        STATUS BATERIA
+      */
+
+      const bateria =
+        statusBateria(
+          pop.validade
+        );
+
+
+      /*
+        HTML DO POP
+      */
+
+      container.innerHTML += `
+
+        <div
+
+          class="pop"
+
+          data-nome="${escapeHtml(
+            pop.nome
+              .toLowerCase()
+          )}"
+
+        >
+
+
+          <!-- NOME -->
+
+          <div
+            class="nome-pop-edicao"
+          >
+
+            <label>
+              <strong>
+                Nome do POP
+              </strong>
+            </label>
+
+
+            <input
+
+              type="text"
+
+              value="${escapeHtml(
+                pop.nome
+              )}"
+
+              ${!modoEdicao
+                ? "disabled"
+                : ""}
+
+              onchange="
+
+                pops[${i}].nome =
+                  this.value.trim();
+
+                existemAlteracoes =
+                  true;
+
+              "
+
+            >
+
+          </div>
+
+
+          <!-- BANCO DE BATERIAS -->
+
+          <div class="banco">
+
+            <h3>
+              🔋 Banco de Baterias
+            </h3>
+
+
+            <div
+              class="banco-grid"
+            >
+
+
+              <div>
+
+                <label>
+                  Capacidade do Banco
+                </label>
+
+                <input
+
+                  type="number"
+
+                  step="0.01"
+
+                  value="${pop.ah}"
+
+                  ${!modoEdicao
+                    ? "disabled"
+                    : ""}
+
+                  onchange="
+
+                    pops[${i}].ah =
+                      Number(this.value) || 0;
+
+                    existemAlteracoes =
+                      true;
+
+                    renderVisivel(${i});
+
+                  "
+
+                >
+
+                <small>
+                  Ah
+                </small>
+
+              </div>
+
+
+              <div>
+
+                <label>
+                  Data de Instalação
+                </label>
+
+                <input
+
+                  type="date"
+
+                  value="${pop.dataInstalacao || ""}"
+
+                  ${!modoEdicao
+                    ? "disabled"
+                    : ""}
+
+                  onchange="
+
+                    pops[${i}]
+                      .dataInstalacao =
+                      this.value;
+
+                    existemAlteracoes =
+                      true;
+
+                  "
+
+                >
+
+              </div>
+
+
+              <div>
+
+                <label>
+                  Data de Validade
+                </label>
+
+                <input
+
+                  type="date"
+
+                  value="${pop.validade || ""}"
+
+                  ${!modoEdicao
+                    ? "disabled"
+                    : ""}
+
+                  onchange="
+
+                    pops[${i}]
+                      .validade =
+                      this.value;
+
+                    existemAlteracoes =
+                      true;
+
+                    renderVisivel(${i});
+
+                  "
+
+                >
+
+              </div>
+
+
+              <div>
+
+                <label>
+                  Situação
+                </label>
+
+                <div
+                  class="status ${bateria.classe}"
+                >
+
+                  ${bateria.texto}
+
+                </div>
+
+              </div>
+
+
+            </div>
+
+
+            <div class="info">
+
+              📅 Instalação:
+
+              <strong>
+                ${formatarData(
+                  pop.dataInstalacao
+                )}
+              </strong>
+
+              <br>
+
+              📅 Validade:
+
+              <strong>
+                ${formatarData(
+                  pop.validade
+                )}
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <!-- PREVENTIVA -->
+
+          <div class="preventiva">
+
+            <h3>
+              🔧 Controle de Preventiva
+            </h3>
+
+
+            <div
+              class="preventiva-grid"
+            >
+
+
+              <div>
+
+                <label>
+                  Última Preventiva
+                </label>
+
+                <input
+
+                  type="date"
+
+                  value="${
+                    pop.ultimaPreventiva || ""
+                  }"
+
+                  ${!modoEdicao
+                    ? "disabled"
+                    : ""}
+
+                  onchange="
+
+                    pops[${i}]
+                      .ultimaPreventiva =
+                      this.value;
+
+                    pops[${i}]
+                      .proximaPreventiva =
+                      calcularProximaPreventiva(
+                        this.value,
+                        pops[${i}]
+                          .periodicidadePreventiva
+                      );
+
+                    existemAlteracoes =
+                      true;
+
+                    renderVisivel(${i});
+
+                  "
+
+                >
+
+              </div>
+
+
+              <div>
+
+                <label>
+                  Periodicidade
+                </label>
+
+                <input
+
+                  type="number"
+
+                  min="1"
+
+                  value="${
+                    pop.periodicidadePreventiva || 30
+                  }"
+
+                  ${!modoEdicao
+                    ? "disabled"
+                    : ""}
+
+                  onchange="
+
+                    pops[${i}]
+                      .periodicidadePreventiva =
+                      Number(this.value) || 30;
+
+                    pops[${i}]
+                      .proximaPreventiva =
+                      calcularProximaPreventiva(
+                        pops[${i}]
+                          .ultimaPreventiva,
+                        this.value
+                      );
+
+                    existemAlteracoes =
+                      true;
+
+                    renderVisivel(${i});
+
+                  "
+
+                >
+
+                <small>
+                  dias
+                </small>
+
+              </div>
+
+
+              <div>
+
+                <label>
+                  Próxima Preventiva
+                </label>
+
+                <input
+
+                  class="campo-proxima-preventiva"
+
+                  type="date"
+
+                  value="${
+                    pop.proximaPreventiva || ""
+                  }"
+
+                  disabled
+
+                >
+
+              </div>
+
+
+              <div>
+
+                <label>
+                  Status
+                </label>
+
+                <div
+                  class="status ${status.classe}"
+                >
+
+                  ${status.texto}
+
+                </div>
+
+              </div>
+
+
+            </div>
+
+
+            <div class="info">
+
+              📅 Última:
+
+              <strong>
+                ${formatarData(
+                  pop.ultimaPreventiva
+                )}
+              </strong>
+
+              <br>
+
+              📅 Próxima:
+
+              <strong>
+                ${formatarData(
+                  pop.proximaPreventiva
+                )}
+              </strong>
+
+            </div>
+
+
+          </div>
+
+
+          <!-- EQUIPAMENTOS -->
+
+          <h3>
+            📡 Equipamentos
+          </h3>
+
+
+          <table>
+
+            <tr>
+
+              <th>
+                Equipamento
+              </th>
+
+              <th>
+                Modelo
+              </th>
+
+              <th>
+                Ampere
+              </th>
+
+              <th>
+                Qt
+              </th>
+
+              <th>
+              </th>
+
+            </tr>
+
+
+            ${linhas}
+
+
+            <tr class="total">
+
+              <td colspan="2">
+
+                Consumo Total
+
+              </td>
+
+              <td colspan="3">
+
+                ${consumo.toFixed(2)}
+                A
+
+              </td>
+
+            </tr>
+
+
+          </table>
+
+
+          <button
+
+            class="btn-edicao"
+
+            ${!modoEdicao
+              ? "disabled"
+              : ""}
+
+            onclick="
+
+              pops[${i}]
+                .equipamentos
+                .push([
+                  '',
+                  '',
+                  0,
+                  1
+                ]);
+
+              existemAlteracoes =
+                true;
+
+              renderVisivel(${i});
+
+            "
+
+          >
+
+            ➕ Adicionar Equipamento
+
+          </button>
+
+
+          <!-- AUTONOMIA -->
+
+          <div class="info">
+
+            🔋 Banco:
+
+            <strong>
+              ${Number(
+                pop.ah
+              ).toFixed(2)}
+              Ah
+            </strong>
+
+
+            &nbsp;&nbsp;
+
+
+            ⚡ Consumo:
+
+            <strong>
+              ${consumo.toFixed(2)}
+              A
+            </strong>
+
+
+            &nbsp;&nbsp;
+
+
+            ⏱️ Autonomia estimada:
+
+            <span class="autonomia">
+
+              ${h}h ${m}min
+
+            </span>
+
+          </div>
+
+
+          <!-- EXCLUIR -->
+
+          <button
+
+            class="remove btn-edicao"
+
+            ${!modoEdicao
+              ? "disabled"
+              : ""}
+
+            onclick="
+              excluirPOP(${i})
+            "
+
+          >
+
+            🗑️ Excluir POP
+
+          </button>
+
+
+        </div>
+
+      `;
+
+    }
+  );
+
+
+  /*
+    RESUMO
+  */
+
+  document.getElementById(
+    "totalPops"
+  ).textContent =
+    pops.length;
+
+
+  document.getElementById(
+    "preventivasOk"
+  ).textContent =
+    totalOk;
+
+
+  document.getElementById(
+    "preventivasAlerta"
+  ).textContent =
+    totalAlerta;
+
+
+  document.getElementById(
+    "preventivasVencidas"
+  ).textContent =
+    totalVencida;
+
+
+  atualizarListaPOPs();
+
+  criarListaEquipamentos();
+
+  atualizarCampos();
 
 }
 
 
 /* =========================================================
-SALVAR TUDO
-========================================================= */
-
-async function salvarTudo() {
-
-if (!modoEdicao)
-return;
-
-const btn =
-document.getElementById(
-"btnSalvar"
-);
-
-btn.disabled = true;
-
-btn.textContent =
-"💾 Salvando...";
-
-try {
-
-for (
-const pop of pops
-) {
-
-const { error } =
-await supabaseClient
-.from(
-"pops_autonomia"
-)
-.upsert(
-popParaBanco(pop),
-{
-onConflict:"id"
-}
-);
-
-if (error)
-throw error;
-
-}
-
-alert(
-"✅ Todas as alterações foram salvas."
-);
-
-}
-catch(error) {
-
-alert(
-"❌ Erro ao salvar: " +
-error.message
-);
-
-}
-
-btn.disabled = false;
-
-btn.textContent =
-"💾 Salvar Alterações";
-
-}
-
-
-/* =========================================================
-CRIAR POP
-========================================================= */
-
-async function criarPOP() {
-
-if (!modoEdicao)
-return;
-
-const nome =
-document.getElementById(
-"novoNome"
-).value.trim();
-
-const ah =
-Number(
-document.getElementById(
-"novoAh"
-).value
-);
-
-const data =
-document.getElementById(
-"novaData"
-).value;
-
-const validade =
-document.getElementById(
-"novaValidade"
-).value;
-
-if (!nome || !ah) {
-
-alert(
-"Informe o nome e o banco."
-);
-
-return;
-
-}
-
-const novoPOP = {
-
-id: novoId(),
-
-nome,
-
-ah,
-
-dataInstalacao:
-data,
-
-validade,
-
-ultimaPreventiva:
-"",
-
-proximaPreventiva:
-"",
-
-periodicidadePreventiva:
-30,
-
-equipamentos:
-[]
-
-};
-
-pops.push(
-novoPOP
-);
-
-await salvarPOP(
-novoPOP
-);
-
-document.getElementById(
-"novoNome"
-).value = "";
-
-document.getElementById(
-"novoAh"
-).value = "";
-
-document.getElementById(
-"novaData"
-).value = "";
-
-document.getElementById(
-"novaValidade"
-).value = "";
-
-render();
-
-}
-
-
-/* =========================================================
-EXCLUIR POP
-========================================================= */
-
-async function excluirPOP(i) {
-
-if (!modoEdicao)
-return;
-
-const pop =
-pops[i];
-
-if (!confirm(
-"Deseja excluir este POP?"
-))
-return;
-
-const { error } =
-await supabaseClient
-.from(
-"pops_autonomia"
-)
-.delete()
-.eq(
-"id",
-pop.id
-);
-
-if (error) {
-
-alert(
-"Erro ao excluir: " +
-error.message
-);
-
-return;
-
-}
-
-pops.splice(
-i,
-1
-);
-
-render();
-
-}
-
-
-/* =========================================================
-CARREGAR POPS
-========================================================= */
-
-async function carregarDados() {
-
-const { data, error } =
-await supabaseClient
-.from(
-"pops_autonomia"
-)
-.select("*")
-.order(
-"nome",
-{
-ascending:true
-}
-);
-
-if (error) {
-
-alert(
-"Erro ao carregar POPs: " +
-error.message
-);
-
-return;
-
-}
-
-pops =
-(data || []).map(
-bancoParaPop
-);
-
-render();
-
-}
-
-
-/* =========================================================
-LISTA POPS
-========================================================= */
-
-function atualizarListaPOPs() {
-
-const lista =
-document.getElementById(
-"listaPOPs"
-);
-
-lista.innerHTML = "";
-
-pops
-.slice()
-.sort(
-(a,b) =>
-a.nome.localeCompare(
-b.nome,
-"pt-BR"
-)
-)
-.forEach(
-pop => {
-
-const option =
-document.createElement(
-"option"
-);
-
-option.value =
-pop.nome;
-
-lista.appendChild(
-option
-);
-
-}
-);
-
-}
-
-
-/* =========================================================
-BUSCAR
-========================================================= */
-
-function buscarPOP() {
-
-const texto =
-document.getElementById(
-"busca"
-)
-.value
-.trim()
-.toLowerCase();
-
-document
-.querySelectorAll(
-".pop"
-)
-.forEach(
-p => {
-
-p.style.display =
-texto &&
-p.dataset.nome.includes(
-texto
-)
-?
-"block"
-:
-"none";
-
-}
-);
-
-}
-
-
-/* =========================================================
-CADASTRO EQUIPAMENTOS
-========================================================= */
-
-function abrirCadastroEquipamentos() {
-
-if (!modoEdicao)
-return;
-
-document.getElementById(
-"cadastroEquipamentos"
-).style.display =
-"block";
-
-atualizarListaEquipamentos();
-
-}
-
-
-function fecharCadastroEquipamentos() {
-
-document.getElementById(
-"cadastroEquipamentos"
-).style.display =
-"none";
-
-}
-
-
-/* =========================================================
-ESCAPE HTML
-========================================================= */
-
-function escapeHtml(text) {
-
-return String(
-text || ""
-)
-.replace(
-/&/g,
-"&amp;"
-)
-.replace(
-/</g,
-"&lt;"
-)
-.replace(
-/>/g,
-"&gt;"
-)
-.replace(
-/"/g,
-"&quot;"
-)
-.replace(
-/'/g,
-"&#039;"
-);
-
-}
-
-
-/* =========================================================
-INICIAR
-========================================================= */
-
-async function iniciar() {
-
-await carregarEquipamentos();
-
-await carregarDados();
-
-modoEdicao = false;
-
-atualizarModoEdicao();
-
-}
-
-iniciar();
-/* =========================================================
-   RENDERIZAR SOMENTE O POP ALTERADO
+   RENDERIZAR POP ESPECÍFICO
 ========================================================= */
 
 function renderVisivel(i) {
 
+  /*
+    Guarda a pesquisa atual
+  */
+
+  const busca =
+    document.getElementById(
+      "busca"
+    ).value;
+
+
+  /*
+    Renderiza novamente
+  */
+
   render();
 
-  const textoBusca =
-    document.getElementById("busca").value
-      .trim()
-      .toLowerCase();
 
-  const popsTela =
-    document.querySelectorAll(".pop");
+  /*
+    Restaura a pesquisa
+  */
 
-  if (popsTela[i]) {
+  document.getElementById(
+    "busca"
+  ).value =
+    busca;
 
-    // Se não existe busca, mostra o POP alterado
-    if (!textoBusca) {
 
-      popsTela[i].style.display = "block";
+  /*
+    Se existe pesquisa,
+    executa novamente.
+  */
 
-    } else {
+  if (busca) {
 
-      // Mantém a pesquisa funcionando
-      if (
-        popsTela[i].dataset.nome
-          .includes(textoBusca)
-      ) {
+    buscarPOP();
 
-        popsTela[i].style.display = "block";
+  }
 
-      }
+  else {
+
+    /*
+      Mostra somente o POP
+      que foi alterado.
+    */
+
+    const elementos =
+      document.querySelectorAll(
+        ".pop"
+      );
+
+
+    if (elementos[i]) {
+
+      elementos[i]
+        .style
+        .display =
+        "block";
 
     }
 
   }
 
 }
+
+
+/* =========================================================
+   ATUALIZAR LISTA DE POPs
+========================================================= */
+
+function atualizarListaPOPs() {
+
+  const lista =
+    document.getElementById(
+      "listaPOPs"
+    );
+
+
+  if (!lista)
+    return;
+
+
+  lista.innerHTML = "";
+
+
+  pops
+    .slice()
+    .sort(
+      (a, b) =>
+        a.nome.localeCompare(
+          b.nome,
+          "pt-BR"
+        )
+    )
+    .forEach(
+      pop => {
+
+        const option =
+          document.createElement(
+            "option"
+          );
+
+
+        option.value =
+          pop.nome;
+
+
+        lista.appendChild(
+          option
+        );
+
+      }
+    );
+
+}
+
+
+/* =========================================================
+   BUSCAR POP
+========================================================= */
+
+function buscarPOP() {
+
+  const texto =
+    document.getElementById(
+      "busca"
+    )
+    .value
+    .trim()
+    .toLowerCase();
+
+
+  document
+    .querySelectorAll(
+      ".pop"
+    )
+    .forEach(
+      pop => {
+
+        if (
+          texto &&
+          pop.dataset.nome
+            .includes(texto)
+        ) {
+
+          pop.style.display =
+            "block";
+
+        }
+
+        else {
+
+          pop.style.display =
+            "none";
+
+        }
+
+      }
+    );
+
+}
+
+
+/* =========================================================
+   CRIAR POP
+========================================================= */
+
+async function criarPOP() {
+
+  if (!modoEdicao)
+    return;
+
+
+  const nome =
+    document
+      .getElementById(
+        "novoNome"
+      )
+      .value
+      .trim();
+
+
+  const ah =
+    Number(
+      document
+        .getElementById(
+          "novoAh"
+        )
+        .value
+    );
+
+
+  const data =
+    document
+      .getElementById(
+        "novaData"
+      )
+      .value;
+
+
+  const validade =
+    document
+      .getElementById(
+        "novaValidade"
+      )
+      .value;
+
+
+  if (!nome || !ah) {
+
+    alert(
+      "Preencha o nome do POP e a capacidade do banco."
+    );
+
+    return;
+
+  }
+
+
+  /*
+    Verifica se já existe.
+  */
+
+  const existe =
+    pops.some(
+      pop =>
+        pop.nome
+          .trim()
+          .toLowerCase() ===
+        nome
+          .trim()
+          .toLowerCase()
+    );
+
+
+  if (existe) {
+
+    alert(
+      "⚠️ Já existe um POP com esse nome."
+    );
+
+    return;
+
+  }
+
+
+  const novoPOP = {
+
+    id:
+      novoId(),
+
+    nome:
+      nome,
+
+    ah:
+      ah,
+
+    dataInstalacao:
+      data,
+
+    validade:
+      validade,
+
+    ultimaPreventiva:
+      "",
+
+    proximaPreventiva:
+      "",
+
+    periodicidadePreventiva:
+      30,
+
+    equipamentos:
+      []
+
+  };
+
+
+  pops.push(
+    novoPOP
+  );
+
+
+  existemAlteracoes =
+    true;
+
+
+  document
+    .getElementById(
+      "novoNome"
+    )
+    .value = "";
+
+
+  document
+    .getElementById(
+      "novoAh"
+    )
+    .value = "";
+
+
+  document
+    .getElementById(
+      "novaData"
+    )
+    .value = "";
+
+
+  document
+    .getElementById(
+      "novaValidade"
+    )
+    .value = "";
+
+
+  render();
+
+
+  /*
+    Mostra o novo POP
+  */
+
+  const elementos =
+    document.querySelectorAll(
+      ".pop"
+    );
+
+
+  if (
+    elementos.length
+  ) {
+
+    elementos[
+      elementos.length - 1
+    ].style.display =
+      "block";
+
+  }
+
+}
+
+
+/* =========================================================
+   EXCLUIR POP
+========================================================= */
+
+async function excluirPOP(i) {
+
+  if (!modoEdicao)
+    return;
+
+
+  const pop =
+    pops[i];
+
+
+  if (!pop)
+    return;
+
+
+  if (
+    !confirm(
+      `Deseja excluir o POP "${pop.nome}"?`
+    )
+  )
+    return;
+
+
+  /*
+    Exclui imediatamente do banco.
+  */
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .from(
+        "pops_autonomia"
+      )
+      .delete()
+      .eq(
+        "id",
+        pop.id
+      );
+
+
+  if (error) {
+
+    alert(
+      "Erro ao excluir POP: " +
+      error.message
+    );
+
+    return;
+
+  }
+
+
+  pops.splice(
+    i,
+    1
+  );
+
+
+  existemAlteracoes =
+    false;
+
+
+  render();
+
+}
+
+
+/* =========================================================
+   SALVAR TODOS
+========================================================= */
+
+async function salvarTudo() {
+
+  if (!modoEdicao)
+    return;
+
+
+  const btn =
+    document.getElementById(
+      "btnSalvar"
+    );
+
+
+  btn.disabled =
+    true;
+
+
+  btn.textContent =
+    "💾 Salvando...";
+
+
+  try {
+
+
+    /*
+      Salva todos os POPs.
+    */
+
+    const registros =
+      pops.map(
+        popParaBanco
+      );
+
+
+    if (
+      registros.length > 0
+    ) {
+
+      const {
+        error
+      } =
+        await supabaseClient
+          .from(
+            "pops_autonomia"
+          )
+          .upsert(
+            registros,
+            {
+              onConflict:
+                "id"
+            }
+          );
+
+
+      if (error)
+        throw error;
+
+    }
+
+
+    existemAlteracoes =
+      false;
+
+
+    alert(
+      "✅ Todas as alterações foram salvas com sucesso."
+    );
+
+
+  }
+
+  catch(error) {
+
+    console.error(
+      error
+    );
+
+
+    alert(
+      "❌ Erro ao salvar: " +
+      error.message
+    );
+
+  }
+
+
+  btn.disabled =
+    false;
+
+
+  btn.textContent =
+    "💾 Salvar Alterações";
+
+}
+
+
+/* =========================================================
+   CARREGAR POPs
+========================================================= */
+
+async function carregarDados() {
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "pops_autonomia"
+      )
+      .select("*")
+      .order(
+        "nome",
+        {
+          ascending:
+            true
+        }
+      );
+
+
+  if (error) {
+
+    console.error(
+      error
+    );
+
+
+    alert(
+      "Erro ao carregar os POPs: " +
+      error.message
+    );
+
+    return;
+
+  }
+
+
+  pops =
+    (data || [])
+      .map(
+        bancoParaPop
+      );
+
+
+  render();
+
+}
+
+
+/* =========================================================
+   INICIALIZAÇÃO
+========================================================= */
+
+async function iniciar() {
+
+  try {
+
+    /*
+      Carrega primeiro
+      os equipamentos.
+    */
+
+    await carregarEquipamentos();
+
+
+    /*
+      Depois carrega os POPs.
+    */
+
+    await carregarDados();
+
+
+    /*
+      Começa bloqueado.
+    */
+
+    modoEdicao =
+      false;
+
+
+    atualizarModoEdicao();
+
+
+    atualizarListaEquipamentos();
+
+
+  }
+
+  catch(error) {
+
+    console.error(
+      "Erro ao iniciar:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   INICIAR SISTEMA
+========================================================= */
+
+iniciar();
+
+
 </script>
+
 
 </body>
 
