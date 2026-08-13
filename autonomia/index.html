@@ -1056,8 +1056,10 @@ function popParaBanco(pop) {
       pop.id || novoId(),
 
     nome:
-      pop.nome,
+      pop.nome || "",
 
+    // IMPORTANTE:
+    // mantém casas decimais do banco
     ah:
       Number(pop.ah) || 0,
 
@@ -1074,12 +1076,14 @@ function popParaBanco(pop) {
       pop.proximaPreventiva || null,
 
     periodicidade_preventiva:
-      Number(
-        pop.periodicidadePreventiva
-      ) || 30,
+      Math.round(
+        Number(pop.periodicidadePreventiva) || 30
+      ),
 
     equipamentos:
-      pop.equipamentos || []
+      Array.isArray(pop.equipamentos)
+        ? pop.equipamentos
+        : []
 
   };
 
@@ -1100,6 +1104,7 @@ function bancoParaPop(row) {
     nome:
       row.nome || "",
 
+    // Aceita decimal, exemplo: 182.5 Ah
     ah:
       Number(row.ah) || 0,
 
@@ -1116,9 +1121,9 @@ function bancoParaPop(row) {
       row.proxima_preventiva || "",
 
     periodicidadePreventiva:
-      Number(
-        row.periodicidade_preventiva
-      ) || 30,
+      Math.round(
+        Number(row.periodicidade_preventiva) || 30
+      ),
 
     equipamentos:
       Array.isArray(row.equipamentos)
@@ -1128,7 +1133,6 @@ function bancoParaPop(row) {
   };
 
 }
-
 
 /* =========================================================
    EQUIPAMENTOS
@@ -2888,9 +2892,9 @@ function render() {
 
                   onchange="
 
-                    pops[${i}]
-                      .periodicidadePreventiva =
-                      Number(this.value) || 30;
+pops[i]
+  .periodicidadePreventiva =
+  Math.round(Number(this.value) || 30);
 
                     pops[${i}]
                       .proximaPreventiva =
