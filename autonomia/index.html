@@ -142,9 +142,7 @@ button:disabled {
 
 .resumo {
   display: grid;
-  grid-template-columns:
-    repeat(4, 1fr);
-
+  grid-template-columns: repeat(4, 1fr);
   gap: 10px;
   margin-bottom: 20px;
 }
@@ -153,9 +151,7 @@ button:disabled {
   background: #fff;
   padding: 15px;
   border-radius: 8px;
-  box-shadow:
-    0 2px 6px rgba(0,0,0,.1);
-
+  box-shadow: 0 2px 6px rgba(0,0,0,.1);
   text-align: center;
 }
 
@@ -188,9 +184,7 @@ button:disabled {
   padding: 15px;
   border-radius: 8px;
   margin-bottom: 20px;
-
-  box-shadow:
-    0 2px 6px rgba(0,0,0,.1);
+  box-shadow: 0 2px 6px rgba(0,0,0,.1);
 }
 
 .form-pop input,
@@ -229,9 +223,7 @@ input:disabled {
   border-radius: 8px;
   padding: 15px;
   margin-bottom: 25px;
-
-  box-shadow:
-    0 2px 6px rgba(0,0,0,.1);
+  box-shadow: 0 2px 6px rgba(0,0,0,.1);
 }
 
 .nome-pop-edicao {
@@ -258,20 +250,14 @@ input:disabled {
 .banco {
   margin-top: 15px;
   padding: 15px;
-
   background: #eef8f2;
-
-  border-left:
-    5px solid #1f6f43;
-
+  border-left: 5px solid #1f6f43;
   border-radius: 6px;
 }
 
 .banco-grid {
   display: grid;
-  grid-template-columns:
-    repeat(4, 1fr);
-
+  grid-template-columns: repeat(4, 1fr);
   gap: 10px;
 }
 
@@ -284,26 +270,103 @@ input:disabled {
 
 
 /* =========================================================
+   MONITORAMENTO DA BATERIA
+========================================================= */
+
+.monitor-bateria {
+  margin-top: 15px;
+  padding: 15px;
+  border-radius: 8px;
+  border-left: 6px solid #1f6f43;
+  background: #fff;
+}
+
+.monitor-bateria h3 {
+  margin-top: 0;
+}
+
+.monitor-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.monitor-card {
+  background: #f7f7f7;
+  padding: 12px;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.monitor-card span {
+  display: block;
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.monitor-card strong {
+  font-size: 20px;
+}
+
+.monitor-alerta {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 6px;
+  font-weight: bold;
+  line-height: 1.6;
+}
+
+.monitor-normal {
+  background: #d4edda;
+  color: #155724;
+  border-left: 5px solid #28a745;
+}
+
+.monitor-atencao {
+  background: #fff3cd;
+  color: #856404;
+  border-left: 5px solid #f0ad4e;
+}
+
+.monitor-alerta-laranja {
+  background: #ffe5cc;
+  color: #9a4d00;
+  border-left: 5px solid #ff8c00;
+}
+
+.monitor-critico {
+  background: #f8d7da;
+  color: #721c24;
+  border-left: 5px solid #dc3545;
+}
+
+.autonomia-grande {
+  font-size: 22px;
+  font-weight: bold;
+  color: #1f6f43;
+}
+
+.perda-capacidade {
+  font-weight: bold;
+}
+
+
+/* =========================================================
    PREVENTIVA
 ========================================================= */
 
 .preventiva {
   margin-top: 15px;
   padding: 15px;
-
   background: #f5f8ff;
-
-  border-left:
-    5px solid #2980b9;
-
+  border-left: 5px solid #2980b9;
   border-radius: 6px;
 }
 
 .preventiva-grid {
   display: grid;
-  grid-template-columns:
-    repeat(4, 1fr);
-
+  grid-template-columns: repeat(4, 1fr);
   gap: 10px;
 }
 
@@ -374,11 +437,8 @@ th {
 .info {
   margin-top: 15px;
   padding: 12px;
-
   background: #f7f7f7;
-
   border-radius: 6px;
-
   line-height: 1.7;
 }
 
@@ -395,12 +455,8 @@ th {
 
 .cadastro-equipamento-grid {
   display: grid;
-
-  grid-template-columns:
-    2fr 2fr 1fr auto;
-
+  grid-template-columns: 2fr 2fr 1fr auto;
   gap: 8px;
-
   align-items: center;
 }
 
@@ -426,19 +482,17 @@ th {
 @media(max-width: 900px) {
 
   .resumo {
-    grid-template-columns:
-      1fr 1fr;
+    grid-template-columns: 1fr 1fr;
   }
 
   .banco-grid,
-  .preventiva-grid {
-    grid-template-columns:
-      1fr 1fr;
+  .preventiva-grid,
+  .monitor-grid {
+    grid-template-columns: 1fr 1fr;
   }
 
   .cadastro-equipamento-grid {
-    grid-template-columns:
-      1fr 1fr;
+    grid-template-columns: 1fr 1fr;
   }
 
 }
@@ -450,19 +504,17 @@ th {
   }
 
   .resumo {
-    grid-template-columns:
-      1fr;
+    grid-template-columns: 1fr;
   }
 
   .banco-grid,
-  .preventiva-grid {
-    grid-template-columns:
-      1fr;
+  .preventiva-grid,
+  .monitor-grid {
+    grid-template-columns: 1fr;
   }
 
   .cadastro-equipamento-grid {
-    grid-template-columns:
-      1fr;
+    grid-template-columns: 1fr;
   }
 
   .form-pop input {
@@ -480,12 +532,9 @@ th {
 
 </head>
 
-
 <body>
 
-
 <div class="container">
-
 
 <h1>
 🔋 Controle de Autonomia dos POPs
@@ -549,7 +598,6 @@ th {
 
   </div>
 
-
   <div class="resumo-card resumo-ok">
 
     🟢 Preventivas em dia
@@ -560,7 +608,6 @@ th {
 
   </div>
 
-
   <div class="resumo-card resumo-alerta">
 
     🟡 Próximas do vencimento
@@ -570,7 +617,6 @@ th {
     </strong>
 
   </div>
-
 
   <div class="resumo-card resumo-vencida">
 
@@ -614,13 +660,11 @@ th {
     ➕ Novo POP
   </h3>
 
-
   <input
     id="novoNome"
     placeholder="Nome do POP"
     disabled
   >
-
 
   <input
     id="novoAh"
@@ -630,14 +674,12 @@ th {
     disabled
   >
 
-
   <input
     id="novaData"
     type="date"
-    title="Data de instalação"
+    title="Data de instalação do banco"
     disabled
   >
-
 
   <input
     id="novaValidade"
@@ -646,9 +688,7 @@ th {
     disabled
   >
 
-
   <br>
-
 
   <button
     id="btnCriarPOP"
@@ -671,16 +711,13 @@ th {
     ⚙️ Cadastro Global de Equipamentos
   </h3>
 
-
   <p>
     Cadastre cada equipamento uma única vez.
     Depois, ao digitar o nome dentro do POP,
     o modelo e o consumo serão preenchidos automaticamente.
   </p>
 
-
   <div class="cadastro-equipamento-grid">
-
 
     <input
       id="novoEquipamento"
@@ -688,13 +725,11 @@ th {
       disabled
     >
 
-
     <input
       id="novoModelo"
       placeholder="Modelo / Fabricante"
       disabled
     >
-
 
     <input
       id="novoAmpere"
@@ -704,7 +739,6 @@ th {
       disabled
     >
 
-
     <button
       id="btnCadastrarEquipamento"
       onclick="cadastrarEquipamento()"
@@ -713,22 +747,15 @@ th {
       ➕ Cadastrar
     </button>
 
-
   </div>
-
 
   <div
     id="listaEquipamentosCadastrados"
     class="equipamentos-lista"
-  >
-  </div>
+  ></div>
 
 </div>
 
-
-<!-- =====================================================
-     DATAlIST DOS EQUIPAMENTOS
-===================================================== -->
 
 <datalist id="listaEquipamentos"></datalist>
 
@@ -739,7 +766,6 @@ th {
 
 <div id="pops"></div>
 
-
 </div>
 
 
@@ -749,9 +775,7 @@ th {
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-
 <script>
-
 
 /* =========================================================
    CONFIGURAÇÃO SUPABASE
@@ -760,14 +784,11 @@ th {
 const SUPABASE_URL =
 "https://idzteltrnttmwzqjlkgj.supabase.co";
 
-
 const SUPABASE_ANON_KEY =
 "sb_publishable_R4WcR-nhwErOjdW-cByXmw_RCGI4aix";
 
-
 const SENHA_EDICAO =
 "8Hgkg77d6f";
-
 
 const supabaseClient =
 window.supabase.createClient(
@@ -785,12 +806,6 @@ let pops = [];
 let equipamentosCadastro = [];
 
 let modoEdicao = false;
-
-
-/*
-   Controla se existem alterações que ainda
-   precisam ser salvas.
-*/
 
 let existemAlteracoes = false;
 
@@ -823,7 +838,7 @@ function escapeHtml(text) {
 
 
 /* =========================================================
-   FORMATAÇÃO DE DATA
+   DATA
 ========================================================= */
 
 function formatarData(data) {
@@ -837,11 +852,7 @@ function formatarData(data) {
   if (partes.length !== 3)
     return data;
 
-  return `
-    ${partes[2]}/
-    ${partes[1]}/
-    ${partes[0]}
-  `;
+  return `${partes[2]}/${partes[1]}/${partes[0]}`;
 
 }
 
@@ -857,10 +868,8 @@ function ativarEdicao() {
       "🔐 Digite a senha para ativar o modo edição:"
     );
 
-
   if (senha === null)
     return;
-
 
   if (senha !== SENHA_EDICAO) {
 
@@ -871,7 +880,6 @@ function ativarEdicao() {
     return;
 
   }
-
 
   modoEdicao = true;
 
@@ -900,45 +908,34 @@ function atualizarModoEdicao() {
       "statusEdicao"
     );
 
-
   const btnEditar =
     document.getElementById(
       "btnEditar"
     );
-
 
   const btnSalvar =
     document.getElementById(
       "btnSalvar"
     );
 
-
   const btnBloquear =
     document.getElementById(
       "btnBloquear"
     );
-
 
   if (modoEdicao) {
 
     status.textContent =
       "🔓 MODO EDIÇÃO ATIVO";
 
-
     status.className =
       "status-edicao edicao-liberada";
 
+    btnEditar.disabled = true;
 
-    btnEditar.disabled =
-      true;
+    btnSalvar.disabled = false;
 
-
-    btnSalvar.disabled =
-      false;
-
-
-    btnBloquear.disabled =
-      false;
+    btnBloquear.disabled = false;
 
   }
 
@@ -947,24 +944,16 @@ function atualizarModoEdicao() {
     status.textContent =
       "🔒 Edição bloqueada";
 
-
     status.className =
       "status-edicao edicao-bloqueada";
 
+    btnEditar.disabled = false;
 
-    btnEditar.disabled =
-      false;
+    btnSalvar.disabled = true;
 
-
-    btnSalvar.disabled =
-      true;
-
-
-    btnBloquear.disabled =
-      true;
+    btnBloquear.disabled = true;
 
   }
-
 
   atualizarCampos();
 
@@ -972,71 +961,48 @@ function atualizarModoEdicao() {
 
 
 /* =========================================================
-   HABILITAR / DESABILITAR CAMPOS
+   CAMPOS
 ========================================================= */
 
 function atualizarCampos() {
 
   document
     .querySelectorAll("input")
-    .forEach(
-      campo => {
+    .forEach(campo => {
 
-        /*
-          Busca sempre disponível.
-        */
+      if (campo.id === "busca") {
 
-        if (campo.id === "busca") {
+        campo.disabled = false;
 
-          campo.disabled =
-            false;
-
-          return;
-
-        }
-
-
-        /*
-          Próxima preventiva é calculada
-          automaticamente.
-        */
-
-        if (
-          campo.classList.contains(
-            "campo-proxima-preventiva"
-          )
-        ) {
-
-          campo.disabled =
-            true;
-
-          return;
-
-        }
-
-
-        campo.disabled =
-          !modoEdicao;
+        return;
 
       }
-    );
+
+      if (
+        campo.classList.contains(
+          "campo-proxima-preventiva"
+        )
+      ) {
+
+        campo.disabled = true;
+
+        return;
+
+      }
+
+      campo.disabled = !modoEdicao;
+
+    });
 
 
   document
     .querySelectorAll(".btn-edicao")
-    .forEach(
-      botao => {
+    .forEach(botao => {
 
-        botao.disabled =
-          !modoEdicao;
+      botao.disabled = !modoEdicao;
 
-      }
-    );
+    });
 
-
-  /*
-    Cadastro global
-  */
 
   const camposEquipamentos = [
 
@@ -1047,21 +1013,15 @@ function atualizarCampos() {
   ];
 
 
-  camposEquipamentos.forEach(
-    id => {
+  camposEquipamentos.forEach(id => {
 
-      const campo =
-        document.getElementById(id);
+    const campo =
+      document.getElementById(id);
 
-      if (campo) {
+    if (campo)
+      campo.disabled = !modoEdicao;
 
-        campo.disabled =
-          !modoEdicao;
-
-      }
-
-    }
-  );
+  });
 
 
   const btnCadastro =
@@ -1069,13 +1029,8 @@ function atualizarCampos() {
       "btnCadastrarEquipamento"
     );
 
-
-  if (btnCadastro) {
-
-    btnCadastro.disabled =
-      !modoEdicao;
-
-  }
+  if (btnCadastro)
+    btnCadastro.disabled = !modoEdicao;
 
 
   const btnCriar =
@@ -1083,19 +1038,14 @@ function atualizarCampos() {
       "btnCriarPOP"
     );
 
-
-  if (btnCriar) {
-
-    btnCriar.disabled =
-      !modoEdicao;
-
-  }
+  if (btnCriar)
+    btnCriar.disabled = !modoEdicao;
 
 }
 
 
 /* =========================================================
-   CONVERTER POP PARA BANCO
+   POP -> BANCO
 ========================================================= */
 
 function popParaBanco(pop) {
@@ -1137,7 +1087,7 @@ function popParaBanco(pop) {
 
 
 /* =========================================================
-   CONVERTER BANCO PARA POP
+   BANCO -> POP
 ========================================================= */
 
 function bancoParaPop(row) {
@@ -1181,7 +1131,7 @@ function bancoParaPop(row) {
 
 
 /* =========================================================
-   CARREGAR EQUIPAMENTOS
+   EQUIPAMENTOS
 ========================================================= */
 
 async function carregarEquipamentos() {
@@ -1191,9 +1141,7 @@ async function carregarEquipamentos() {
     error
   } =
     await supabaseClient
-      .from(
-        "equipamentos_autonomia"
-      )
+      .from("equipamentos_autonomia")
       .select("*")
       .order(
         "nome",
@@ -1202,7 +1150,6 @@ async function carregarEquipamentos() {
         }
       );
 
-
   if (error) {
 
     console.error(
@@ -1210,24 +1157,19 @@ async function carregarEquipamentos() {
       error
     );
 
-
     alert(
       "Erro ao carregar equipamentos: " +
       error.message
     );
 
-
-    equipamentosCadastro =
-      [];
+    equipamentosCadastro = [];
 
     return;
 
   }
 
-
   equipamentosCadastro =
     data || [];
-
 
   criarListaEquipamentos();
 
@@ -1236,15 +1178,10 @@ async function carregarEquipamentos() {
 }
 
 
-/* =========================================================
-   CADASTRAR EQUIPAMENTO GLOBAL
-========================================================= */
-
 async function cadastrarEquipamento() {
 
   if (!modoEdicao)
     return;
-
 
   const nome =
     document
@@ -1254,7 +1191,6 @@ async function cadastrarEquipamento() {
       .value
       .trim();
 
-
   const modelo =
     document
       .getElementById(
@@ -1262,7 +1198,6 @@ async function cadastrarEquipamento() {
       )
       .value
       .trim();
-
 
   const ampere =
     Number(
@@ -1273,7 +1208,6 @@ async function cadastrarEquipamento() {
         .value
     );
 
-
   if (!nome) {
 
     alert(
@@ -1283,7 +1217,6 @@ async function cadastrarEquipamento() {
     return;
 
   }
-
 
   if (
     Number.isNaN(ampere)
@@ -1297,16 +1230,10 @@ async function cadastrarEquipamento() {
 
   }
 
-
-  /*
-    Verifica se já existe.
-  */
-
   const existente =
     encontrarEquipamento(
       nome
     );
-
 
   if (existente) {
 
@@ -1318,15 +1245,12 @@ async function cadastrarEquipamento() {
 
   }
 
-
   const {
     data,
     error
   } =
     await supabaseClient
-      .from(
-        "equipamentos_autonomia"
-      )
+      .from("equipamentos_autonomia")
       .insert({
 
         nome:
@@ -1342,13 +1266,9 @@ async function cadastrarEquipamento() {
       .select()
       .single();
 
-
   if (error) {
 
-    console.error(
-      error
-    );
-
+    console.error(error);
 
     alert(
       "Erro ao cadastrar equipamento: " +
@@ -1359,37 +1279,25 @@ async function cadastrarEquipamento() {
 
   }
 
-
   equipamentosCadastro.push(
     data
   );
 
+  document.getElementById(
+    "novoEquipamento"
+  ).value = "";
 
-  document
-    .getElementById(
-      "novoEquipamento"
-    )
-    .value = "";
+  document.getElementById(
+    "novoModelo"
+  ).value = "";
 
-
-  document
-    .getElementById(
-      "novoModelo"
-    )
-    .value = "";
-
-
-  document
-    .getElementById(
-      "novoAmpere"
-    )
-    .value = "";
-
+  document.getElementById(
+    "novoAmpere"
+  ).value = "";
 
   criarListaEquipamentos();
 
   atualizarListaEquipamentos();
-
 
   alert(
     "✅ Equipamento cadastrado."
@@ -1398,17 +1306,12 @@ async function cadastrarEquipamento() {
 }
 
 
-/* =========================================================
-   ENCONTRAR EQUIPAMENTO
-========================================================= */
-
 function encontrarEquipamento(nome) {
 
   const busca =
     String(nome || "")
       .trim()
       .toLowerCase();
-
 
   return equipamentosCadastro.find(
     equipamento => {
@@ -1425,10 +1328,6 @@ function encontrarEquipamento(nome) {
 }
 
 
-/* =========================================================
-   PREENCHER EQUIPAMENTO AUTOMATICAMENTE
-========================================================= */
-
 function preencherEquipamento(
   i,
   j,
@@ -1438,17 +1337,10 @@ function preencherEquipamento(
   if (!modoEdicao)
     return;
 
-
   const encontrado =
     encontrarEquipamento(
       input.value
     );
-
-
-  /*
-    Se encontrou:
-    nome + modelo + ampere.
-  */
 
   if (encontrado) {
 
@@ -1456,11 +1348,9 @@ function preencherEquipamento(
       .equipamentos[j][0] =
         encontrado.nome;
 
-
     pops[i]
       .equipamentos[j][1] =
         encontrado.modelo || "";
-
 
     pops[i]
       .equipamentos[j][2] =
@@ -1468,38 +1358,22 @@ function preencherEquipamento(
           encontrado.ampere
         ) || 0;
 
-
-    existemAlteracoes =
-      true;
-
+    existemAlteracoes = true;
 
     renderVisivel(i);
-
 
     return;
 
   }
 
-
-  /*
-    Se não encontrou,
-    mantém o que foi digitado.
-  */
-
   pops[i]
     .equipamentos[j][0] =
       input.value;
 
-
-  existemAlteracoes =
-    true;
+  existemAlteracoes = true;
 
 }
 
-
-/* =========================================================
-   LISTA DE EQUIPAMENTOS
-========================================================= */
 
 function criarListaEquipamentos() {
 
@@ -1508,41 +1382,30 @@ function criarListaEquipamentos() {
       "listaEquipamentos"
     );
 
-
   if (!lista)
     return;
 
-
   lista.innerHTML = "";
 
-
   equipamentosCadastro
-    .forEach(
-      equipamento => {
+    .forEach(equipamento => {
 
-        const option =
-          document.createElement(
-            "option"
-          );
-
-
-        option.value =
-          equipamento.nome;
-
-
-        lista.appendChild(
-          option
+      const option =
+        document.createElement(
+          "option"
         );
 
-      }
-    );
+      option.value =
+        equipamento.nome;
+
+      lista.appendChild(
+        option
+      );
+
+    });
 
 }
 
-
-/* =========================================================
-   MOSTRAR CADASTRO DE EQUIPAMENTOS
-========================================================= */
 
 function atualizarListaEquipamentos() {
 
@@ -1551,10 +1414,8 @@ function atualizarListaEquipamentos() {
       "listaEquipamentosCadastrados"
     );
 
-
   if (!div)
     return;
-
 
   if (
     equipamentosCadastro.length === 0
@@ -1569,7 +1430,6 @@ function atualizarListaEquipamentos() {
     return;
 
   }
-
 
   let html = `
 
@@ -1597,41 +1457,37 @@ function atualizarListaEquipamentos() {
 
   `;
 
-
   equipamentosCadastro
-    .forEach(
-      equipamento => {
+    .forEach(equipamento => {
 
-        html += `
+      html += `
 
-          <tr>
+        <tr>
 
-            <td>
-              ${escapeHtml(
-                equipamento.nome
-              )}
-            </td>
+          <td>
+            ${escapeHtml(
+              equipamento.nome
+            )}
+          </td>
 
-            <td>
-              ${escapeHtml(
-                equipamento.modelo || ""
-              )}
-            </td>
+          <td>
+            ${escapeHtml(
+              equipamento.modelo || ""
+            )}
+          </td>
 
-            <td>
-              ${Number(
-                equipamento.ampere || 0
-              ).toFixed(2)}
-              A
-            </td>
+          <td>
+            ${Number(
+              equipamento.ampere || 0
+            ).toFixed(2)}
+            A
+          </td>
 
-          </tr>
+        </tr>
 
-        `;
+      `;
 
-      }
-    );
-
+    });
 
   html += `
 
@@ -1648,7 +1504,6 @@ function atualizarListaEquipamentos() {
 
   `;
 
-
   div.innerHTML =
     html;
 
@@ -1656,7 +1511,7 @@ function atualizarListaEquipamentos() {
 
 
 /* =========================================================
-   CALCULAR PRÓXIMA PREVENTIVA
+   PREVENTIVA
 ========================================================= */
 
 function calcularProximaPreventiva(
@@ -1667,20 +1522,16 @@ function calcularProximaPreventiva(
   if (!data)
     return "";
 
-
   dias =
     Number(dias) || 30;
 
-
   const partes =
     data.split("-");
-
 
   if (
     partes.length !== 3
   )
     return "";
-
 
   const dataObj =
     new Date(
@@ -1689,48 +1540,29 @@ function calcularProximaPreventiva(
       Number(partes[2])
     );
 
-
   dataObj.setDate(
     dataObj.getDate() + dias
   );
 
-
   const ano =
     dataObj.getFullYear();
-
 
   const mes =
     String(
       dataObj.getMonth() + 1
-    )
-    .padStart(
-      2,
-      "0"
-    );
-
+    ).padStart(2, "0");
 
   const dia =
     String(
       dataObj.getDate()
-    )
-    .padStart(
-      2,
-      "0"
-    );
-
+    ).padStart(2, "0");
 
   return `${ano}-${mes}-${dia}`;
 
 }
 
 
-/* =========================================================
-   STATUS PREVENTIVA
-========================================================= */
-
-function statusPreventiva(
-  pop
-) {
+function statusPreventiva(pop) {
 
   if (
     !pop.proximaPreventiva
@@ -1751,10 +1583,8 @@ function statusPreventiva(
 
   }
 
-
   const hoje =
     new Date();
-
 
   hoje.setHours(
     0,
@@ -1763,22 +1593,18 @@ function statusPreventiva(
     0
   );
 
-
   const proxima =
     new Date(
       pop.proximaPreventiva +
       "T00:00:00"
     );
 
-
   const dias =
     Math.ceil(
       (
         proxima - hoje
-      ) /
-      86400000
+      ) / 86400000
     );
-
 
   if (dias < 0) {
 
@@ -1797,7 +1623,6 @@ function statusPreventiva(
 
   }
 
-
   if (dias <= 7) {
 
     return {
@@ -1814,7 +1639,6 @@ function statusPreventiva(
     };
 
   }
-
 
   return {
 
@@ -1854,10 +1678,8 @@ function statusBateria(
 
   }
 
-
   const hoje =
     new Date();
-
 
   hoje.setHours(
     0,
@@ -1866,22 +1688,17 @@ function statusBateria(
     0
   );
 
-
   const dataValidade =
     new Date(
-      validade +
-      "T00:00:00"
+      validade + "T00:00:00"
     );
-
 
   const diferenca =
     Math.ceil(
       (
         dataValidade - hoje
-      ) /
-      86400000
+      ) / 86400000
     );
-
 
   if (
     diferenca < 0
@@ -1899,7 +1716,6 @@ function statusBateria(
 
   }
 
-
   if (
     diferenca <= 90
   ) {
@@ -1916,7 +1732,6 @@ function statusBateria(
 
   }
 
-
   return {
 
     texto:
@@ -1926,6 +1741,352 @@ function statusBateria(
       "status-ok"
 
   };
+
+}
+
+
+/* =========================================================
+   TEMPO DE USO DA BATERIA
+========================================================= */
+
+function calcularIdadeBateria(dataInstalacao) {
+
+  if (!dataInstalacao) {
+
+    return {
+
+      anos: 0,
+      meses: 0,
+      totalMeses: 0,
+      texto: "Não informado"
+
+    };
+
+  }
+
+  const inicio =
+    new Date(
+      dataInstalacao + "T00:00:00"
+    );
+
+  const hoje =
+    new Date();
+
+  if (
+    isNaN(inicio.getTime()) ||
+    inicio > hoje
+  ) {
+
+    return {
+
+      anos: 0,
+      meses: 0,
+      totalMeses: 0,
+      texto: "Data inválida"
+
+    };
+
+  }
+
+  let anos =
+    hoje.getFullYear() -
+    inicio.getFullYear();
+
+  let meses =
+    hoje.getMonth() -
+    inicio.getMonth();
+
+  let dias =
+    hoje.getDate() -
+    inicio.getDate();
+
+  if (dias < 0) {
+
+    meses--;
+
+  }
+
+  if (meses < 0) {
+
+    anos--;
+
+    meses += 12;
+
+  }
+
+  const totalMeses =
+    Math.max(
+      0,
+      (
+        anos * 12
+      ) + meses
+    );
+
+  let texto = "";
+
+  if (anos > 0) {
+
+    texto +=
+      `${anos} ano${anos > 1 ? "s" : ""}`;
+
+  }
+
+  if (meses > 0) {
+
+    if (texto)
+      texto += " e ";
+
+    texto +=
+      `${meses} mês${meses > 1 ? "es" : ""}`;
+
+  }
+
+  if (!texto)
+    texto = "Menos de 1 mês";
+
+  return {
+
+    anos,
+    meses,
+    totalMeses,
+    texto
+
+  };
+
+}
+
+
+/* =========================================================
+   ESTIMATIVA DE CAPACIDADE PELO TEMPO DE USO
+=========================================================
+
+   Essa tabela é uma ESTIMATIVA de monitoramento.
+
+   Até 2 anos   = 100%
+   2 a 3 anos   = 90%
+   3 a 4 anos   = 75%
+   4 a 5 anos   = 60%
+   acima 5 anos = 45%
+
+========================================================= */
+
+function calcularCapacidadeUtil(
+  dataInstalacao
+) {
+
+  const idade =
+    calcularIdadeBateria(
+      dataInstalacao
+    );
+
+  const meses =
+    idade.totalMeses;
+
+  let percentual = 100;
+
+  if (meses < 24) {
+
+    percentual = 100;
+
+  }
+
+  else if (meses < 36) {
+
+    percentual = 90;
+
+  }
+
+  else if (meses < 48) {
+
+    percentual = 75;
+
+  }
+
+  else if (meses < 60) {
+
+    percentual = 60;
+
+  }
+
+  else {
+
+    percentual = 45;
+
+  }
+
+  return {
+
+    percentual,
+    idade
+
+  };
+
+}
+
+
+/* =========================================================
+   STATUS DO MONITORAMENTO
+========================================================= */
+
+function statusMonitoramento(
+  idade,
+  percentual,
+  autonomia
+) {
+
+  if (
+    !idade ||
+    !idade.totalMeses
+  ) {
+
+    return {
+
+      nivel: "sem",
+      classe: "monitor-atencao",
+      titulo:
+        "⚪ MONITORAMENTO PARCIAL",
+      mensagem:
+        "Cadastre a data de instalação do banco para calcular o desgaste estimado."
+
+    };
+
+  }
+
+  if (
+    autonomia > 0 &&
+    autonomia < 2
+  ) {
+
+    return {
+
+      nivel: "critico",
+      classe: "monitor-critico",
+      titulo:
+        "🚨 AUTONOMIA CRÍTICA",
+      mensagem:
+        "A autonomia estimada está abaixo de 2 horas. Verifique imediatamente a alimentação elétrica e o banco de baterias."
+
+    };
+
+  }
+
+  if (
+    autonomia > 0 &&
+    autonomia < 6
+  ) {
+
+    return {
+
+      nivel: "laranja",
+      classe: "monitor-alerta-laranja",
+      titulo:
+        "🔴 AUTONOMIA MUITO BAIXA",
+      mensagem:
+        "O POP possui poucas horas de autonomia estimada. Recomenda-se intervenção preventiva."
+
+    };
+
+  }
+
+  if (
+    percentual <= 45
+  ) {
+
+    return {
+
+      nivel: "critico",
+      classe: "monitor-critico",
+      titulo:
+        "🔴 RISCO NO BANCO DE BATERIAS",
+      mensagem:
+        "Banco com mais de 5 anos de uso. A capacidade útil estimada está bastante reduzida. Recomenda-se avaliação ou substituição."
+
+    };
+
+  }
+
+  if (
+    percentual <= 60
+  ) {
+
+    return {
+
+      nivel: "laranja",
+      classe: "monitor-alerta-laranja",
+      titulo:
+        "🟠 BANCO ENVELHECIDO",
+      mensagem:
+        "Banco com desgaste estimado elevado pelo tempo de uso. Acompanhe a autonomia e programe avaliação do banco."
+
+    };
+
+  }
+
+  if (
+    percentual <= 75
+  ) {
+
+    return {
+
+      nivel: "atencao",
+      classe: "monitor-atencao",
+      titulo:
+        "🟡 ATENÇÃO AO BANCO",
+      mensagem:
+        "O banco já apresenta tempo de uso significativo. Recomenda-se acompanhar a autonomia e realizar testes periódicos."
+
+    };
+
+  }
+
+  return {
+
+    nivel: "normal",
+    classe: "monitor-normal",
+    titulo:
+      "🟢 BANCO EM CONDIÇÃO NORMAL",
+    mensagem:
+      "Autonomia dentro da estimativa atual. Continue acompanhando o consumo e o envelhecimento do banco."
+
+  };
+
+}
+
+
+/* =========================================================
+   FORMATAR AUTONOMIA
+========================================================= */
+
+function formatarAutonomia(
+  horas
+) {
+
+  if (
+    !horas ||
+    horas <= 0 ||
+    !isFinite(horas)
+  ) {
+
+    return "Sem cálculo";
+
+  }
+
+  let h =
+    Math.floor(horas);
+
+  let m =
+    Math.round(
+      (horas - h) * 60
+    );
+
+  if (m >= 60) {
+
+    h++;
+    m = 0;
+
+  }
+
+  return `${h}h ${m}min`;
 
 }
 
@@ -1941,9 +2102,7 @@ function render() {
       "pops"
     );
 
-
   container.innerHTML = "";
-
 
   let totalOk = 0;
 
@@ -1954,7 +2113,6 @@ function render() {
 
   pops.forEach(
     (pop, i) => {
-
 
       const status =
         statusPreventiva(
@@ -1980,30 +2138,28 @@ function render() {
         totalVencida++;
 
 
-      let consumo =
-        0;
+      let consumo = 0;
+
+      let linhas = "";
 
 
-      let linhas =
-        "";
-
-
-      /*
-        EQUIPAMENTOS
-      */
+      /* =====================================================
+         EQUIPAMENTOS
+      ===================================================== */
 
       pop.equipamentos
         .forEach(
           (e, j) => {
 
+            const ampere =
+              Number(e[2]) || 0;
+
+            const quantidade =
+              Number(e[3]) || 0;
 
             consumo +=
-              (
-                Number(e[2]) || 0
-              ) *
-              (
-                Number(e[3]) || 0
-              );
+              ampere *
+              quantidade;
 
 
             linhas += `
@@ -2159,34 +2315,77 @@ function render() {
         );
 
 
-      /*
-        AUTONOMIA
-      */
+      /* =====================================================
+         AUTONOMIA TEÓRICA
+      ===================================================== */
 
-      const horas =
+      const ahNominal =
+        Number(pop.ah) || 0;
+
+
+      const autonomiaTeorica =
         consumo > 0
-          ? Number(pop.ah) /
-            consumo
+          ? ahNominal / consumo
           : 0;
 
 
-      const h =
-        Math.floor(
-          horas
+      /* =====================================================
+         IDADE DA BATERIA
+      ===================================================== */
+
+      const dadosBateria =
+        calcularCapacidadeUtil(
+          pop.dataInstalacao
         );
 
 
-      const m =
-        Math.round(
-          (
-            horas - h
-          ) * 60
+      const percentual =
+        dadosBateria.percentual;
+
+
+      const capacidadeUtil =
+        ahNominal *
+        (
+          percentual / 100
         );
 
 
-      /*
-        STATUS BATERIA
-      */
+      /* =====================================================
+         AUTONOMIA AJUSTADA
+      ===================================================== */
+
+      const autonomiaAjustada =
+        consumo > 0
+          ? capacidadeUtil / consumo
+          : 0;
+
+
+      /* =====================================================
+         PERDA ESTIMADA
+      ===================================================== */
+
+      const perda =
+        Math.max(
+          0,
+          100 - percentual
+        );
+
+
+      /* =====================================================
+         STATUS DO BANCO
+      ===================================================== */
+
+      const monitor =
+        statusMonitoramento(
+          dadosBateria.idade,
+          percentual,
+          autonomiaAjustada
+        );
+
+
+      /* =====================================================
+         STATUS GARANTIA
+      ===================================================== */
 
       const bateria =
         statusBateria(
@@ -2194,9 +2393,9 @@ function render() {
         );
 
 
-      /*
-        HTML DO POP
-      */
+      /* =====================================================
+         HTML DO POP
+      ===================================================== */
 
       container.innerHTML += `
 
@@ -2205,8 +2404,7 @@ function render() {
           class="pop"
 
           data-nome="${escapeHtml(
-            pop.nome
-              .toLowerCase()
+            pop.nome.toLowerCase()
           )}"
 
         >
@@ -2223,7 +2421,6 @@ function render() {
                 Nome do POP
               </strong>
             </label>
-
 
             <input
 
@@ -2252,7 +2449,7 @@ function render() {
           </div>
 
 
-          <!-- BANCO DE BATERIAS -->
+          <!-- BANCO -->
 
           <div class="banco">
 
@@ -2264,7 +2461,6 @@ function render() {
             <div
               class="banco-grid"
             >
-
 
               <div>
 
@@ -2330,6 +2526,8 @@ function render() {
                     existemAlteracoes =
                       true;
 
+                    renderVisivel(${i});
+
                   "
 
                 >
@@ -2387,7 +2585,6 @@ function render() {
 
               </div>
 
-
             </div>
 
 
@@ -2416,6 +2613,202 @@ function render() {
           </div>
 
 
+          <!-- =================================================
+               MONITORAMENTO INTELIGENTE
+          ================================================= -->
+
+          <div
+            class="monitor-bateria"
+          >
+
+            <h3>
+              📊 Monitoramento do Banco
+            </h3>
+
+
+            <div
+              class="monitor-grid"
+            >
+
+
+              <div
+                class="monitor-card"
+              >
+
+                <span>
+                  🔋 Capacidade nominal
+                </span>
+
+                <strong>
+                  ${ahNominal.toFixed(2)}
+                  Ah
+                </strong>
+
+              </div>
+
+
+              <div
+                class="monitor-card"
+              >
+
+                <span>
+                  📅 Tempo de uso
+                </span>
+
+                <strong>
+                  ${dadosBateria.idade.texto}
+                </strong>
+
+              </div>
+
+
+              <div
+                class="monitor-card"
+              >
+
+                <span>
+                  📉 Capacidade útil estimada
+                </span>
+
+                <strong>
+                  ${percentual}%
+                </strong>
+
+              </div>
+
+
+              <div
+                class="monitor-card"
+              >
+
+                <span>
+                  🔋 Ah úteis estimados
+                </span>
+
+                <strong>
+                  ${capacidadeUtil.toFixed(2)}
+                  Ah
+                </strong>
+
+              </div>
+
+
+              <div
+                class="monitor-card"
+              >
+
+                <span>
+                  ⚡ Consumo atual
+                </span>
+
+                <strong>
+                  ${consumo.toFixed(2)}
+                  A
+                </strong>
+
+              </div>
+
+
+              <div
+                class="monitor-card"
+              >
+
+                <span>
+                  ⏱️ Autonomia teórica
+                </span>
+
+                <strong>
+                  ${formatarAutonomia(
+                    autonomiaTeorica
+                  )}
+                </strong>
+
+              </div>
+
+
+              <div
+                class="monitor-card"
+              >
+
+                <span>
+                  ⏱️ Autonomia ajustada
+                </span>
+
+                <strong
+                  class="autonomia-grande"
+                >
+                  ${formatarAutonomia(
+                    autonomiaAjustada
+                  )}
+                </strong>
+
+              </div>
+
+
+              <div
+                class="monitor-card"
+              >
+
+                <span>
+                  📉 Perda estimada
+                </span>
+
+                <strong
+                  class="perda-capacidade"
+                >
+                  ${perda}%
+                </strong>
+
+              </div>
+
+
+            </div>
+
+
+            <div
+              class="monitor-alerta ${monitor.classe}"
+            >
+
+              <div>
+                ${monitor.titulo}
+              </div>
+
+              <div>
+                ${monitor.mensagem}
+              </div>
+
+              ${
+                autonomiaTeorica > 0 &&
+                autonomiaAjustada > 0 &&
+                autonomiaAjustada <
+                autonomiaTeorica
+                ? `
+                  <div>
+                    ⚠️ A autonomia estimada foi
+                    reduzida de
+                    <strong>
+                      ${formatarAutonomia(
+                        autonomiaTeorica
+                      )}
+                    </strong>
+                    para
+                    <strong>
+                      ${formatarAutonomia(
+                        autonomiaAjustada
+                      )}
+                    </strong>
+                    considerando o envelhecimento
+                    estimado do banco.
+                  </div>
+                `
+                : ""
+              }
+
+            </div>
+
+          </div>
+
+
           <!-- PREVENTIVA -->
 
           <div class="preventiva">
@@ -2428,7 +2821,6 @@ function render() {
             <div
               class="preventiva-grid"
             >
-
 
               <div>
 
@@ -2563,7 +2955,6 @@ function render() {
 
               </div>
 
-
             </div>
 
 
@@ -2588,7 +2979,6 @@ function render() {
               </strong>
 
             </div>
-
 
           </div>
 
@@ -2646,7 +3036,6 @@ function render() {
 
             </tr>
 
-
           </table>
 
 
@@ -2683,22 +3072,18 @@ function render() {
           </button>
 
 
-          <!-- AUTONOMIA -->
+          <!-- RESUMO DE AUTONOMIA -->
 
           <div class="info">
 
             🔋 Banco:
 
             <strong>
-              ${Number(
-                pop.ah
-              ).toFixed(2)}
+              ${ahNominal.toFixed(2)}
               Ah
             </strong>
 
-
             &nbsp;&nbsp;
-
 
             ⚡ Consumo:
 
@@ -2707,15 +3092,15 @@ function render() {
               A
             </strong>
 
-
             &nbsp;&nbsp;
-
 
             ⏱️ Autonomia estimada:
 
             <span class="autonomia">
 
-              ${h}h ${m}min
+              ${formatarAutonomia(
+                autonomiaAjustada
+              )}
 
             </span>
 
@@ -2751,27 +3136,24 @@ function render() {
   );
 
 
-  /*
-    RESUMO
-  */
+  /* =====================================================
+     RESUMO
+  ===================================================== */
 
   document.getElementById(
     "totalPops"
   ).textContent =
     pops.length;
 
-
   document.getElementById(
     "preventivasOk"
   ).textContent =
     totalOk;
 
-
   document.getElementById(
     "preventivasAlerta"
   ).textContent =
     totalAlerta;
-
 
   document.getElementById(
     "preventivasVencidas"
@@ -2794,37 +3176,17 @@ function render() {
 
 function renderVisivel(i) {
 
-  /*
-    Guarda a pesquisa atual
-  */
-
   const busca =
     document.getElementById(
       "busca"
     ).value;
 
-
-  /*
-    Renderiza novamente
-  */
-
   render();
-
-
-  /*
-    Restaura a pesquisa
-  */
 
   document.getElementById(
     "busca"
   ).value =
     busca;
-
-
-  /*
-    Se existe pesquisa,
-    executa novamente.
-  */
 
   if (busca) {
 
@@ -2834,16 +3196,10 @@ function renderVisivel(i) {
 
   else {
 
-    /*
-      Mostra somente o POP
-      que foi alterado.
-    */
-
     const elementos =
       document.querySelectorAll(
         ".pop"
       );
-
 
     if (elementos[i]) {
 
@@ -2860,7 +3216,7 @@ function renderVisivel(i) {
 
 
 /* =========================================================
-   ATUALIZAR LISTA DE POPs
+   LISTA DE POPs
 ========================================================= */
 
 function atualizarListaPOPs() {
@@ -2870,13 +3226,10 @@ function atualizarListaPOPs() {
       "listaPOPs"
     );
 
-
   if (!lista)
     return;
 
-
   lista.innerHTML = "";
-
 
   pops
     .slice()
@@ -2895,10 +3248,8 @@ function atualizarListaPOPs() {
             "option"
           );
 
-
         option.value =
           pop.nome;
-
 
         lista.appendChild(
           option
@@ -2923,7 +3274,6 @@ function buscarPOP() {
     .value
     .trim()
     .toLowerCase();
-
 
   document
     .querySelectorAll(
@@ -2965,7 +3315,6 @@ async function criarPOP() {
   if (!modoEdicao)
     return;
 
-
   const nome =
     document
       .getElementById(
@@ -2973,7 +3322,6 @@ async function criarPOP() {
       )
       .value
       .trim();
-
 
   const ah =
     Number(
@@ -2984,14 +3332,12 @@ async function criarPOP() {
         .value
     );
 
-
   const data =
     document
       .getElementById(
         "novaData"
       )
       .value;
-
 
   const validade =
     document
@@ -3011,10 +3357,6 @@ async function criarPOP() {
 
   }
 
-
-  /*
-    Verifica se já existe.
-  */
 
   const existe =
     pops.some(
@@ -3080,40 +3422,25 @@ async function criarPOP() {
     true;
 
 
-  document
-    .getElementById(
-      "novoNome"
-    )
-    .value = "";
+  document.getElementById(
+    "novoNome"
+  ).value = "";
 
+  document.getElementById(
+    "novoAh"
+  ).value = "";
 
-  document
-    .getElementById(
-      "novoAh"
-    )
-    .value = "";
+  document.getElementById(
+    "novaData"
+  ).value = "";
 
-
-  document
-    .getElementById(
-      "novaData"
-    )
-    .value = "";
-
-
-  document
-    .getElementById(
-      "novaValidade"
-    )
-    .value = "";
+  document.getElementById(
+    "novaValidade"
+  ).value = "";
 
 
   render();
 
-
-  /*
-    Mostra o novo POP
-  */
 
   const elementos =
     document.querySelectorAll(
@@ -3144,14 +3471,11 @@ async function excluirPOP(i) {
   if (!modoEdicao)
     return;
 
-
   const pop =
     pops[i];
 
-
   if (!pop)
     return;
-
 
   if (
     !confirm(
@@ -3160,10 +3484,6 @@ async function excluirPOP(i) {
   )
     return;
 
-
-  /*
-    Exclui imediatamente do banco.
-  */
 
   const {
     error
@@ -3207,7 +3527,7 @@ async function excluirPOP(i) {
 
 
 /* =========================================================
-   SALVAR TODOS
+   SALVAR
 ========================================================= */
 
 async function salvarTudo() {
@@ -3231,11 +3551,6 @@ async function salvarTudo() {
 
 
   try {
-
-
-    /*
-      Salva todos os POPs.
-    */
 
     const registros =
       pops.map(
@@ -3341,6 +3656,7 @@ async function carregarDados() {
       error.message
     );
 
+
     return;
 
   }
@@ -3366,34 +3682,16 @@ async function iniciar() {
 
   try {
 
-    /*
-      Carrega primeiro
-      os equipamentos.
-    */
-
     await carregarEquipamentos();
 
-
-    /*
-      Depois carrega os POPs.
-    */
-
     await carregarDados();
-
-
-    /*
-      Começa bloqueado.
-    */
 
     modoEdicao =
       false;
 
-
     atualizarModoEdicao();
 
-
     atualizarListaEquipamentos();
-
 
   }
 
@@ -3415,9 +3713,7 @@ async function iniciar() {
 
 iniciar();
 
-
 </script>
-
 
 </body>
 
