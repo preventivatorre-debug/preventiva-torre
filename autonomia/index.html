@@ -1048,41 +1048,6 @@ function atualizarCampos() {
    POP -> BANCO
 ========================================================= */
 
-function bancoParaPop(row) {
-
-  return {
-
-    id: row.id,
-
-    nome: row.nome || "",
-
-    ah: Number(row.ah) || 0,
-
-    dataInstalacao:
-      row.data_instalacao || "",
-
-    validade:
-      row.validade || "",
-
-    ultimaPreventiva:
-      row.ultima_preventiva || "",
-
-    proximaPreventiva:
-      row.proxima_preventiva || "",
-
-    periodicidadePreventiva:
-      Number(row.periodicidade_preventiva) || 30,
-
-    equipamentos:
-      Array.isArray(row.equipamentos)
-        ? row.equipamentos
-        : []
-
-  };
-
-}
-
-
 /* =========================================================
    BANCO -> POP
 ========================================================= */
@@ -3179,7 +3144,47 @@ renderVisivel(${i});
 
 }
 
+/* =========================================================
+   POP -> BANCO SUPABASE
+========================================================= */
 
+function popParaBanco(pop) {
+
+  return {
+
+    id: pop.id,
+
+    nome: pop.nome || "",
+
+    ah: Number(pop.ah) || 0,
+
+    data_instalacao:
+      pop.dataInstalacao || null,
+
+    validade:
+      pop.validade || null,
+
+    ultima_preventiva:
+      pop.ultimaPreventiva || null,
+
+    proxima_preventiva:
+      pop.proximaPreventiva || null,
+
+    periodicidade_preventiva:
+      Math.round(
+        Number(
+          pop.periodicidadePreventiva
+        ) || 30
+      ),
+
+    equipamentos:
+      Array.isArray(pop.equipamentos)
+        ? pop.equipamentos
+        : []
+
+  };
+
+}
 /* =========================================================
    RENDERIZAR POP ESPECÍFICO
 ========================================================= */
