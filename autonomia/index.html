@@ -466,16 +466,16 @@ th {
 }
 
 /* =========================
-   CADASTRO EQUIPAMENTOS
+   CADASTRO GLOBAL
 ========================= */
 
 .cadastro-equipamento-grid {
+
   display: grid;
 
   /*
     EQUIPAMENTO
     MODELO
-    PATRIMÔNIO
     AMPERE
     BOTÃO
   */
@@ -483,11 +483,11 @@ th {
   grid-template-columns:
     2fr
     1.5fr
-    1.5fr
     1fr
     auto;
 
   gap: 8px;
+
   align-items: center;
 }
 
@@ -504,6 +504,34 @@ th {
   font-size: 13px;
   color: #666;
 }
+
+/* =========================
+   MODELO / PATRIMÔNIO
+========================= */
+
+.modelo-patrimonio {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.modelo-patrimonio input {
+  width: 100%;
+  margin: 0;
+}
+
+.modelo-patrimonio .modelo {
+  background: #eeeeee;
+  color: #555;
+}
+
+.modelo-patrimonio .patrimonio {
+  background: #fff;
+}
+
+/* =========================
+   DETAILS
+========================= */
 
 details {
   margin-top: 15px;
@@ -746,29 +774,27 @@ details[open] > summary::before {
     <div class="equipamentos-conteudo">
 
       <p>
-        Cadastre cada equipamento uma única vez.
-        Depois, ao selecionar o equipamento dentro do POP,
-        <strong>Modelo, Patrimônio e Ampere</strong>
-        serão preenchidos automaticamente.
+        Cadastre aqui o equipamento que poderá ser
+        utilizado nos POPs.
+        <br>
+        <strong>
+          O patrimônio NÃO é cadastrado aqui.
+        </strong>
+        O patrimônio será informado somente quando
+        o equipamento for instalado em um POP.
       </p>
 
       <div class="cadastro-equipamento-grid">
 
         <input
           id="novoEquipamento"
-          placeholder="Nome do equipamento"
+          placeholder="Equipamento"
           disabled
         >
 
         <input
           id="novoModelo"
           placeholder="Modelo"
-          disabled
-        >
-
-        <input
-          id="novoPatrimonio"
-          placeholder="Patrimônio"
           disabled
         >
 
@@ -844,8 +870,6 @@ let equipamentosCadastro = [];
 let modoEdicao = false;
 
 let existemAlteracoes = false;
-
-let detalhesEquipamentosAbertos = {};
 
 
 /* =========================================================
@@ -1056,6 +1080,18 @@ function atualizarCampos() {
 
       }
 
+      if (
+        campo.classList.contains(
+          "campo-modelo"
+        )
+      ) {
+
+        campo.disabled = true;
+
+        return;
+
+      }
+
       campo.disabled = !modoEdicao;
 
     });
@@ -1137,14 +1173,14 @@ function bancoParaPop(row) {
         row.equipamentos.map(e => {
 
           if (!Array.isArray(e))
-            return ["","","",1];
+            return ["","","",1,""];
 
           return [
 
             e[0] || "",
             e[1] || "",
-            e[2] || 0,
-            e[3] || 1,
+            Number(e[2]) || 0,
+            Number(e[3]) || 1,
             e[4] || ""
 
           ];
@@ -1296,7 +1332,7 @@ async function carregarEquipamentos() {
 
 
 /* =========================================================
-   CADASTRAR EQUIPAMENTO
+   CADASTRAR EQUIPAMENTO GLOBAL
 ========================================================= */
 
 async function cadastrarEquipamento() {
@@ -1314,12 +1350,6 @@ async function cadastrarEquipamento() {
   const modelo =
     document.getElementById(
       "novoModelo"
-    ).value.trim();
-
-
-  const patrimonio =
-    document.getElementById(
-      "novoPatrimonio"
     ).value.trim();
 
 
@@ -1368,6 +1398,12 @@ async function cadastrarEquipamento() {
   }
 
 
+  /*
+    IMPORTANTE:
+
+    Patrimônio NÃO é salvo no cadastro global.
+  */
+
   const { data, error } =
     await supabaseClient
       .from("equipamentos_autonomia")
@@ -1378,9 +1414,6 @@ async function cadastrarEquipamento() {
 
         modelo:
           modelo,
-
-        patrimonio:
-          patrimonio,
 
         ampere:
           ampere
@@ -1413,10 +1446,6 @@ async function cadastrarEquipamento() {
 
   document.getElementById(
     "novoModelo"
-  ).value = "";
-
-  document.getElementById(
-    "novoPatrimonio"
   ).value = "";
 
   document.getElementById(
@@ -1462,26 +1491,30 @@ function encontrarEquipamento(nome) {
 
 
 /* =========================================================
-   PREENCHER EQUIPAMENTO
+   PREENCHER EQUIPAMENTO NO POP
 ========================================================= */
 
-function preencherEquipamento(
-  i,
-  j,
-  input
-) {
+function preencherEquipamento(i, j, input) {
 
   if (!modoEdicao)
     return;
 
 
   const encontrado =
-    encontrarEquipamento(
-      input.value
-    );
+    encontrarEquipamento(input.value);
 
 
   if (encontrado) {
+
+    /*
+      Mantém o patrimônio que já estava
+      digitado nesse POP.
+    */
+
+    const patrimonioAtual =
+      pops[i]
+        .equipamentos[j][4] || "";
+
 
     pops[i]
       .equipamentos[j][0] =
@@ -1495,14 +1528,39 @@ function preencherEquipamento(
 
     pops[i]
       .equipamentos[j][2] =
-      Number(
-        encontrado.ampere
-      ) || 0;
+      Number(encontrado.ampere) || 0;
 
 
     pops[i]
       .equipamentos[j][4] =
-      encontrado.patrimonio || "";
+      patrimonioAtual;
+
+
+    /*
+      Atualiza visualmente a linha
+      sem fechar o details.
+    */
+
+    const linha =
+      input.closest("tr");
+
+
+    if (linha) {
+
+      const inputs =
+        linha.querySelectorAll("input");
+
+
+      if (inputs[1])
+        inputs[1].value =
+          encontrado.modelo || "";
+
+
+      if (inputs[3])
+        inputs[3].value =
+          Number(encontrado.ampere) || 0;
+
+    }
 
   }
 
@@ -1517,12 +1575,92 @@ function preencherEquipamento(
 
   existemAlteracoes = true;
 
+  atualizarConsumoVisual(i);
 
-  renderVisivel(
-    i,
-    false,
-    true
-  );
+  atualizarMonitoramentoVisual(i);
+
+}
+
+
+/* =========================================================
+   ALTERAR PATRIMÔNIO
+========================================================= */
+
+function alterarPatrimonio(i, j, valor) {
+
+  if (!modoEdicao)
+    return;
+
+
+  if (
+    !pops[i] ||
+    !pops[i].equipamentos[j]
+  )
+    return;
+
+
+  /*
+    Patrimônio pertence à instalação
+    do equipamento naquele POP.
+  */
+
+  pops[i]
+    .equipamentos[j][4] =
+    valor;
+
+
+  existemAlteracoes = true;
+
+}
+
+
+/* =========================================================
+   ALTERAR AMPERE
+========================================================= */
+
+function alterarAmpere(i, j, valor) {
+
+  if (!modoEdicao)
+    return;
+
+
+  pops[i]
+    .equipamentos[j][2] =
+    Number(valor) || 0;
+
+
+  existemAlteracoes = true;
+
+  atualizarConsumoVisual(i);
+
+  atualizarMonitoramentoVisual(i);
+
+}
+
+
+/* =========================================================
+   ALTERAR QUANTIDADE
+========================================================= */
+
+function alterarQuantidade(i, j, valor) {
+
+  if (!modoEdicao)
+    return;
+
+
+  pops[i]
+    .equipamentos[j][3] =
+    Math.max(
+      1,
+      Number(valor) || 1
+    );
+
+
+  existemAlteracoes = true;
+
+  atualizarConsumoVisual(i);
+
+  atualizarMonitoramentoVisual(i);
 
 }
 
@@ -1621,10 +1759,6 @@ function atualizarListaEquipamentos() {
         </th>
 
         <th>
-          Patrimônio
-        </th>
-
-        <th>
           Ampere
         </th>
 
@@ -1649,12 +1783,6 @@ function atualizarListaEquipamentos() {
           <td>
             ${escapeHtml(
               equipamento.modelo || ""
-            )}
-          </td>
-
-          <td>
-            ${escapeHtml(
-              equipamento.patrimonio || ""
             )}
           </td>
 
@@ -2271,6 +2399,7 @@ function adicionarBateria(i) {
   renderVisivel(
     i,
     false,
+    false,
     true
   );
 
@@ -2301,6 +2430,7 @@ function removerBateria(i, j) {
 
   renderVisivel(
     i,
+    false,
     false,
     true
   );
@@ -2342,7 +2472,6 @@ function render(
   pops.forEach(
     (pop, i) => {
 
-
       const status =
         statusPreventiva(pop);
 
@@ -2372,13 +2501,12 @@ function render(
         .forEach(
           (e, j) => {
 
-
             const ampere =
               Number(e[2]) || 0;
 
 
             const quantidade =
-              Number(e[3]) || 0;
+              Number(e[3]) || 1;
 
 
             consumo +=
@@ -2394,6 +2522,8 @@ function render(
 
               <tr>
 
+                <!-- EQUIPAMENTO -->
+
                 <td>
 
                   <input
@@ -2402,7 +2532,7 @@ function render(
 
                     list="listaEquipamentos"
 
-                    placeholder="Digite o equipamento"
+                    placeholder="Equipamento"
 
                     ${!modoEdicao ? "disabled" : ""}
 
@@ -2419,35 +2549,50 @@ function render(
                 </td>
 
 
+                <!-- MODELO / PATRIMÔNIO -->
+
                 <td>
 
-                  <input
+                  <div class="modelo-patrimonio">
 
-                    value="${escapeHtml(e[1])}"
+                    <input
 
-                    disabled
+                      class="campo-modelo"
 
-                    placeholder="Modelo"
+                      value="${escapeHtml(e[1])}"
 
-                  >
+                      disabled
+
+                      placeholder="Modelo"
+
+                    >
+
+                    <input
+
+                      class="patrimonio"
+
+                      value="${escapeHtml(patrimonio)}"
+
+                      placeholder="Patrimônio"
+
+                      ${!modoEdicao ? "disabled" : ""}
+
+                      onchange="
+                        alterarPatrimonio(
+                          ${i},
+                          ${j},
+                          this.value
+                        );
+                      "
+
+                    >
+
+                  </div>
 
                 </td>
 
 
-                <td>
-
-                  <input
-
-                    value="${escapeHtml(patrimonio)}"
-
-                    disabled
-
-                    placeholder="Patrimônio"
-
-                  >
-
-                </td>
-
+                <!-- AMPERE -->
 
                 <td>
 
@@ -2462,20 +2607,19 @@ function render(
                     ${!modoEdicao ? "disabled" : ""}
 
                     onchange="
-                      pops[${i}]
-                        .equipamentos[${j}][2]
-                        =
-                        Number(this.value) || 0;
-
-                      existemAlteracoes = true;
-
-                      atualizarConsumoVisual(${i});
+                      alterarAmpere(
+                        ${i},
+                        ${j},
+                        this.value
+                      );
                     "
 
                   >
 
                 </td>
 
+
+                <!-- QUANTIDADE -->
 
                 <td>
 
@@ -2490,20 +2634,19 @@ function render(
                     ${!modoEdicao ? "disabled" : ""}
 
                     onchange="
-                      pops[${i}]
-                        .equipamentos[${j}][3]
-                        =
-                        Number(this.value) || 1;
-
-                      existemAlteracoes = true;
-
-                      atualizarConsumoVisual(${i});
+                      alterarQuantidade(
+                        ${i},
+                        ${j},
+                        this.value
+                      );
                     "
 
                   >
 
                 </td>
 
+
+                <!-- REMOVER -->
 
                 <td>
 
@@ -2514,16 +2657,9 @@ function render(
                     ${!modoEdicao ? "disabled" : ""}
 
                     onclick="
-                      pops[${i}]
-                        .equipamentos
-                        .splice(${j},1);
-
-                      existemAlteracoes = true;
-
-                      renderVisivel(
+                      removerEquipamento(
                         ${i},
-                        false,
-                        true
+                        ${j}
                       );
                     "
 
@@ -2668,7 +2804,6 @@ function render(
       pop.baterias.forEach(
         (bat, j) => {
 
-
           bateriasHtml += `
 
             <div class="bateria-item">
@@ -2703,6 +2838,7 @@ function render(
                     renderVisivel(
                       ${i},
                       false,
+                      false,
                       true
                     );
                   "
@@ -2736,6 +2872,7 @@ function render(
 
                     renderVisivel(
                       ${i},
+                      false,
                       false,
                       true
                     );
@@ -3226,7 +3363,6 @@ function render(
 
                 >
 
-
                 <small>
                   dias
                 </small>
@@ -3328,11 +3464,7 @@ function render(
                   </th>
 
                   <th>
-                    Modelo
-                  </th>
-
-                  <th>
-                    Patrimônio
+                    Modelo / Patrimônio
                   </th>
 
                   <th>
@@ -3354,7 +3486,7 @@ function render(
 
                 <tr class="total">
 
-                  <td colspan="3">
+                  <td colspan="2">
                     Consumo Total
                   </td>
 
@@ -3377,22 +3509,8 @@ function render(
                 ${!modoEdicao ? "disabled" : ""}
 
                 onclick="
-                  pops[${i}]
-                    .equipamentos
-                    .push([
-                      '',
-                      '',
-                      0,
-                      1,
-                      ''
-                    ]);
-
-                  existemAlteracoes = true;
-
-                  renderVisivel(
-                    ${i},
-                    false,
-                    true
+                  adicionarEquipamentoPOP(
+                    ${i}
                   );
                 "
 
@@ -3420,7 +3538,7 @@ function render(
 
             ⚡ Consumo:
 
-            <strong>
+            <strong id="consumo-resumo-${i}">
               ${consumo.toFixed(2)}
               A
             </strong>
@@ -3429,7 +3547,10 @@ function render(
 
             ⏱️ Autonomia:
 
-            <span class="autonomia">
+            <span
+              class="autonomia"
+              id="autonomia-resumo-${i}"
+            >
 
               ${formatarAutonomia(
                 autonomiaAjustada
@@ -3503,19 +3624,115 @@ function render(
 
 
 /* =========================================================
+   ADICIONAR EQUIPAMENTO AO POP
+========================================================= */
+
+function adicionarEquipamentoPOP(i) {
+
+  if (!modoEdicao)
+    return;
+
+
+  if (!Array.isArray(pops[i].equipamentos))
+    pops[i].equipamentos = [];
+
+
+  /*
+    Estrutura:
+
+    [0] Equipamento
+    [1] Modelo
+    [2] Ampere
+    [3] Quantidade
+    [4] Patrimônio
+  */
+
+  pops[i].equipamentos.push([
+    "",
+    "",
+    0,
+    1,
+    ""
+  ]);
+
+
+  existemAlteracoes = true;
+
+
+  /*
+    Abre o POP e mantém
+    equipamentos aberto.
+  */
+
+  renderVisivel(
+    i,
+    true,
+    true
+  );
+
+}
+
+
+/* =========================================================
+   REMOVER EQUIPAMENTO
+========================================================= */
+
+function removerEquipamento(i, j) {
+
+  if (!modoEdicao)
+    return;
+
+
+  if (
+    !pops[i] ||
+    !Array.isArray(pops[i].equipamentos)
+  )
+    return;
+
+
+  pops[i]
+    .equipamentos
+    .splice(j, 1);
+
+
+  existemAlteracoes = true;
+
+
+  renderVisivel(
+    i,
+    true,
+    true
+  );
+
+}
+
+
+/* =========================================================
    RENDER VISÍVEL
 ========================================================= */
 
 function renderVisivel(
   i,
   abrirPop = false,
-  abrirEquipamentos = false
+  abrirEquipamentos = false,
+  abrirBaterias = false
 ) {
 
+  const buscaElemento =
+    document.getElementById("busca");
+
+
   const busca =
-    document.getElementById(
-      "busca"
-    ).value;
+    buscaElemento
+      ? buscaElemento.value
+      : "";
+
+
+  /*
+    Guarda estado dos equipamentos
+  */
+
+  const equipamentosAbertos = {};
 
 
   document
@@ -3523,22 +3740,81 @@ function renderVisivel(
       ".detalhes-equipamentos"
     )
     .forEach(
-      (detalhe, index) => {
+      detalhe => {
 
-        detalhesEquipamentosAbertos[index] =
-          detalhe.open;
+        const popId =
+          detalhe.dataset.popId;
+
+
+        if (popId) {
+
+          equipamentosAbertos[popId] =
+            detalhe.open;
+
+        }
 
       }
     );
 
 
+  /*
+    Guarda estado das baterias
+  */
+
+  const bateriasAbertas = {};
+
+
+  document
+    .querySelectorAll(
+      ".pop"
+    )
+    .forEach(
+      popElemento => {
+
+        const popId =
+          popElemento
+            .querySelector(
+              ".detalhes-equipamentos"
+            )
+            ?.dataset
+            .popId;
+
+
+        const details =
+          popElemento
+            .querySelectorAll(
+              "details"
+            );
+
+
+        if (popId && details[0]) {
+
+          bateriasAbertas[popId] =
+            details[0].open;
+
+        }
+
+      }
+    );
+
+
+  /*
+    Renderiza
+  */
+
   render(true);
 
 
-  document.getElementById(
-    "busca"
-  ).value =
-    busca;
+  /*
+    Restaura busca
+  */
+
+  if (buscaElemento) {
+
+    buscaElemento.value =
+      busca;
+
+  }
 
 
   if (busca) {
@@ -3547,42 +3823,61 @@ function renderVisivel(
 
   }
 
-  else {
 
-    const elementos =
-      document.querySelectorAll(
-        ".pop"
-      );
+  /*
+    Abre POP solicitado
+  */
+
+  const elementos =
+    document.querySelectorAll(
+      ".pop"
+    );
 
 
-    if (elementos[i]) {
+  if (
+    abrirPop &&
+    elementos[i]
+  ) {
 
-      elementos[i].style.display =
-        "block";
-
-    }
+    elementos[i].style.display =
+      "block";
 
   }
 
+
+  /*
+    Restaura equipamentos
+  */
 
   document
     .querySelectorAll(
       ".detalhes-equipamentos"
     )
     .forEach(
-      (detalhe, index) => {
+      detalhe => {
+
+        const popId =
+          detalhe.dataset.popId;
+
 
         if (
-          detalhesEquipamentosAbertos[index]
+          popId &&
+          equipamentosAbertos[popId]
         ) {
 
-          detalhe.open = true;
+          detalhe.open =
+            true;
 
         }
 
       }
     );
 
+
+  /*
+    Se solicitado,
+    abre equipamentos
+  */
 
   if (abrirEquipamentos) {
 
@@ -3594,7 +3889,80 @@ function renderVisivel(
 
     if (detalhes[i]) {
 
-      detalhes[i].open = true;
+      detalhes[i].open =
+        true;
+
+    }
+
+  }
+
+
+  /*
+    Restaura baterias
+  */
+
+  document
+    .querySelectorAll(
+      ".pop"
+    )
+    .forEach(
+      popElemento => {
+
+        const detalhe =
+          popElemento
+            .querySelector(
+              ".banco details"
+            );
+
+
+        if (
+          detalhe &&
+          detalhe.closest(".pop")
+        ) {
+
+          const popId =
+            popElemento
+              .querySelector(
+                ".detalhes-equipamentos"
+              )
+              ?.dataset
+              .popId;
+
+
+          if (
+            popId &&
+            bateriasAbertas[popId]
+          ) {
+
+            detalhe.open =
+              true;
+
+          }
+
+        }
+
+      }
+    );
+
+
+  /*
+    Se adicionou bateria,
+    deixa baterias aberto.
+  */
+
+  if (abrirBaterias) {
+
+    if (elementos[i]) {
+
+      const detalhe =
+        elementos[i]
+          .querySelector(
+            ".banco details"
+          );
+
+
+      if (detalhe)
+        detalhe.open = true;
 
     }
 
@@ -3607,10 +3975,14 @@ function renderVisivel(
    CONSUMO
 ========================================================= */
 
-function atualizarConsumoVisual(i) {
+function calcularConsumo(i) {
 
   const pop =
     pops[i];
+
+
+  if (!pop)
+    return 0;
 
 
   let consumo = 0;
@@ -3636,6 +4008,17 @@ function atualizarConsumoVisual(i) {
     );
 
 
+  return consumo;
+
+}
+
+
+function atualizarConsumoVisual(i) {
+
+  const consumo =
+    calcularConsumo(i);
+
+
   const elemento =
     document.getElementById(
       `consumo-${i}`
@@ -3648,6 +4031,39 @@ function atualizarConsumoVisual(i) {
       `${consumo.toFixed(2)} A`;
 
   }
+
+
+  const resumo =
+    document.getElementById(
+      `consumo-resumo-${i}`
+    );
+
+
+  if (resumo) {
+
+    resumo.textContent =
+      `${consumo.toFixed(2)} A`;
+
+  }
+
+}
+
+
+/* =========================================================
+   ATUALIZAR MONITORAMENTO
+========================================================= */
+
+function atualizarMonitoramentoVisual(i) {
+
+  /*
+    O cálculo completo será atualizado
+    no próximo render.
+
+    Não fazemos render aqui para não
+    fechar o details de equipamentos.
+  */
+
+  atualizarConsumoVisual(i);
 
 }
 
