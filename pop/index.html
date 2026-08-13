@@ -1011,6 +1011,17 @@ function bancoParaPop(row){
    POP -> BANCO
 ========================================================= */
 
+function dataOuNull(valor){
+
+  const data=String(valor||"").trim();
+
+  // PostgreSQL DATE não aceita "".
+  // Quando não houver data, envia NULL.
+  return data ? data : null;
+
+}
+
+
 function popParaBanco(pop){
 
   return {
@@ -1022,20 +1033,20 @@ function popParaBanco(pop){
     ah:Number(pop.ah)||0,
 
     data_instalacao:
-      pop.dataInstalacao||"",
+      dataOuNull(pop.dataInstalacao),
 
     validade:
-      pop.validade||"",
+      dataOuNull(pop.validade),
 
     baterias:
       Array.isArray(pop.baterias)
         ?pop.baterias:[],
 
     ultima_preventiva:
-      pop.ultimaPreventiva||"",
+      dataOuNull(pop.ultimaPreventiva),
 
     proxima_preventiva:
-      pop.proximaPreventiva||"",
+      dataOuNull(pop.proximaPreventiva),
 
     periodicidade_preventiva:
       Math.round(
