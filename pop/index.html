@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Controle de POPs Autonomia</title>
+<title>Controle de POPs - Autonomia</title>
 
 <link rel="manifest" href="./manifest.json">
 <meta name="theme-color" content="#1f6f43">
@@ -3642,36 +3642,6 @@ async function iniciar(){
 
 iniciar();
 
-</script>
-
-
-<script>
-/* =========================================================
-   DESATIVAR CACHE / SERVICE WORKER
-   Remove qualquer Service Worker antigo deste site e
-   limpa os caches que ele deixou no navegador.
-========================================================= */
-(async function desativarCache() {
-  try {
-    if ("serviceWorker" in navigator) {
-      const registrations = await navigator.serviceWorker.getRegistrations();
-
-      for (const registration of registrations) {
-        await registration.unregister();
-      }
-    }
-
-    if ("caches" in window) {
-      const keys = await caches.keys();
-
-      for (const key of keys) {
-        await caches.delete(key);
-      }
-    }
-  } catch (erro) {
-    console.warn("Não foi possível limpar o cache:", erro);
-  }
-})();
 </script>
 
 </body>
