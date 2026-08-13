@@ -418,13 +418,19 @@ details[open]>summary::before{
 }
 
 .equipamentos-conteudo{
-  padding-top:10px
+  padding-top:10px;
+  overflow-x:auto
+}
+
+.tabela-equipamentos-pop{
+  min-width:900px
 }
 
 /* Patrimônio dentro do POP */
 .patrimonio-pop{
   width:100%;
-  min-width:110px
+  min-width:140px;
+  font-weight:600
 }
 
 /* =========================
@@ -938,8 +944,8 @@ function bancoParaPop(row){
         if(Array.isArray(e)){
           return {
             equipamento_id: e[5] || null,
-            nome: e.nome || "",
-            modelo: e.modelo || "",
+            nome: e[0] || "",
+            modelo: e[1] || "",
             ampere: Number(e[2]) || 0,
             quantidade: Number(e[3]) || 1,
             patrimonio: e[4] || ""
@@ -2839,7 +2845,16 @@ function render(preservarBusca=true){
 
           <div class="equipamentos-conteudo">
 
-            <table>
+            <table class="tabela-equipamentos-pop">
+
+              <colgroup>
+                <col style="width:24%">
+                <col style="width:22%">
+                <col style="width:18%">
+                <col style="width:14%">
+                <col style="width:10%">
+                <col style="width:55px">
+              </colgroup>
 
               <tr>
 
