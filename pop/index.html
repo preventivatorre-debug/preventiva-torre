@@ -1382,6 +1382,7 @@ function atualizarListaEquipamentos(){
         <th>Equipamento</th>
         <th>Modelo</th>
         <th>Ampere</th>
+        <th>Ações</th>
 
       </tr>
 
@@ -1389,7 +1390,7 @@ function atualizarListaEquipamentos(){
 
 
   equipamentosCadastro.forEach(
-    equipamento=>{
+    (equipamento,index)=>{
 
       html+=`
 
@@ -1409,6 +1410,24 @@ function atualizarListaEquipamentos(){
             ${Number(
               equipamento.ampere||0
             ).toFixed(2)} A
+          </td>
+
+          <td>
+            <button
+              class="editar btn-edicao"
+              ${!modoEdicao?"disabled":""}
+              onclick="editarEquipamento(${index})"
+            >
+              ✏️ Editar
+            </button>
+
+            <button
+              class="remove btn-edicao"
+              ${!modoEdicao?"disabled":""}
+              onclick="excluirEquipamento(${index})"
+            >
+              🗑️
+            </button>
           </td>
 
         </tr>
@@ -1436,6 +1455,236 @@ function atualizarListaEquipamentos(){
 
 
   div.innerHTML=html;
+
+}
+
+
+/* =========================================================
+   EDITAR EQUIPAMENTO GLOBAL
+   Atualiza também os vínculos já existentes nos POPs.
+========================================================= */
+
+async function editarEquipamento(index){
+
+  if(!modoEdicao) return;
+
+  const equipamento=equipamentosCadastro[index];
+
+  if(!equipamento) return;
+
+  const nomeAtual=equipamento.nome||"";
+  const modeloAtual=equipamento.modelo||"";
+  const ampereAtual=Number(equipamento.ampere)||0;
+
+  const nome=prompt(
+    "✏️ Nome do equipamento:",
+    nomeAtual
+  );
+
+  if(nome===null) return;
+
+  const nomeFinal=nome.trim();
+
+  if(!nomeFinal){
+    alert("Digite o nome do equipamento.");
+    return;
+  }
+
+  const outro=equipamentosCadastro.find(
+    (e,i)=>
+      i!==index &&
+      String(e.nome||"").trim().toLowerCase()===
+      nomeFinal.toLowerCase()
+  );
+
+  if(outro){
+    alert("⚠️ Já existe outro equipamento com esse nome.");
+    return;
+  }
+
+  const modelo=prompt(
+    "📦 Modelo:",
+    modeloAtual
+  );
+
+  if(modelo===null) return;
+
+  const ampereTexto=prompt(
+    "⚡ Consumo em Ampere:",
+    ampereAtual
+  );
+
+  if(ampereTexto===null) return;
+
+  const ampere=Number(String(ampereTexto).replace(",","."));
+
+  if(!Number.isFinite(ampere)){
+    alert("Digite um valor válido para Ampere.");
+    return;
+  }
+
+  const nomeAnterior=equipamento.nome;
+
+  const {data,error}=await supabaseClient
+    .from("equipamentos_autonomia")
+    .update({
+      nome:nomeFinal,
+      modelo:modelo.trim(),
+      ampere:ampere
+    })
+    .eq("id",equipamento.id)
+    .select()
+    .single();
+
+  if(error){
+    console.error(error);
+    alert("❌ Erro ao editar equipamento: "+error.message);
+    return;
+  }
+
+  equipamentosCadastro[index]=data;
+
+  /*
+   * Atualiza os equipamentos que já estão vinculados aos POPs.
+   * O patrimônio não é alterado.
+   */
+  const popsAlterados=[];
+
+  pops.forEach(pop=>{
+
+    let alterou=false;
+
+    (pop.equipamentos||[]).forEach(e=>{
+
+      const mesmoId=
+        e.equipamento_id &&
+        String(e.equipamento_id)===String(equipamento.id);
+
+      const legado=
+        !e.equipamento_id &&
+        String(e.nome||"").trim().toLowerCase()===
+        String(nomeAnterior||"").trim().toLowerCase();
+
+      if(mesmoId || legado){
+        e.equipamento_id=data.id;
+        e.nome=data.nome;
+        e.modelo=data.modelo||"";
+        e.ampere=Number(data.ampere)||0;
+        alterou=true;
+      }
+
+    });
+
+    if(alterou) popsAlterados.push(pop);
+
+  });
+
+  try{
+
+    for(const pop of popsAlterados){
+      const {error:erroPop}=await supabaseClient
+        .from("pops_autonomia")
+        .upsert(
+          popParaBanco(pop),
+          {onConflict:"id"}
+        );
+
+      if(erroPop) throw erroPop;
+    }
+
+  }catch(errorPop){
+
+    console.error(errorPop);
+    alert(
+      "⚠️ O equipamento foi atualizado no cadastro global, " +
+      "mas houve erro ao atualizar um ou mais POPs: " +
+      errorPop.message
+    );
+
+    criarListaEquipamentos();
+    atualizarListaEquipamentos();
+    render();
+    return;
+
+  }
+
+  existemAlteracoes=false;
+
+  criarListaEquipamentos();
+  atualizarListaEquipamentos();
+  render();
+
+  alert(
+    "✅ Equipamento atualizado com sucesso." +
+    (popsAlterados.length
+      ? `\n\n${popsAlterados.length} POP(s) também foram atualizados.`
+      : "")
+  );
+
+}
+
+
+/* =========================================================
+   EXCLUIR EQUIPAMENTO GLOBAL
+========================================================= */
+
+async function excluirEquipamento(index){
+
+  if(!modoEdicao) return;
+
+  const equipamento=equipamentosCadastro[index];
+
+  if(!equipamento) return;
+
+  const vinculos=[];
+
+  pops.forEach(pop=>{
+    (pop.equipamentos||[]).forEach(e=>{
+      const mesmoId=
+        e.equipamento_id &&
+        String(e.equipamento_id)===String(equipamento.id);
+
+      const mesmoNome=
+        !e.equipamento_id &&
+        String(e.nome||"").trim().toLowerCase()===
+        String(equipamento.nome||"").trim().toLowerCase();
+
+      if(mesmoId || mesmoNome)
+        vinculos.push(pop.nome);
+    });
+  });
+
+  if(vinculos.length){
+    alert(
+      "❌ Não é possível excluir este equipamento.\n\n"+
+      "Ele está vinculado aos seguintes POPs:\n\n"+
+      [...new Set(vinculos)].join("\n")+
+      "\n\nRemova o equipamento dos POPs primeiro."
+    );
+    return;
+  }
+
+  if(!confirm(
+    `Deseja excluir o equipamento "${equipamento.nome}"?`
+  )) return;
+
+  const {error}=await supabaseClient
+    .from("equipamentos_autonomia")
+    .delete()
+    .eq("id",equipamento.id);
+
+  if(error){
+    console.error(error);
+    alert("❌ Erro ao excluir equipamento: "+error.message);
+    return;
+  }
+
+  equipamentosCadastro.splice(index,1);
+
+  criarListaEquipamentos();
+  atualizarListaEquipamentos();
+
+  alert("✅ Equipamento excluído.");
 
 }
 
