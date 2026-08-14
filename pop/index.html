@@ -1962,93 +1962,166 @@ function calcularCapacidadeUtil(
    MONITORAMENTO
 ========================================================= */
 
+function calcularFimGarantia(dataInstalacao){
+
+  if(!dataInstalacao) return null;
+
+  const inicio=new Date(String(dataInstalacao)+"T00:00:00");
+
+  if(isNaN(inicio.getTime())) return null;
+
+  const fim=new Date(inicio);
+  fim.setFullYear(fim.getFullYear()+2);
+
+  return fim;
+
+}
+
+function statusGarantiaBateria(dataInstalacao){
+
+  const fimGarantia=calcularFimGarantia(dataInstalacao);
+
+  if(!fimGarantia){
+    return{
+      classe:"status-sem",
+      texto:"⚪ Garantia não calculada",
+      fimGarantia:null,
+      diasAposGarantia:0
+    };
+  }
+
+  const hoje=new Date();
+  hoje.setHours(0,0,0,0);
+
+  const limiteVermelho=new Date(fimGarantia);
+  limiteVermelho.setMonth(limiteVermelho.getMonth()+18);
+
+  if(hoje>limiteVermelho){
+    return{
+      classe:"status-vencida",
+      texto:"🔴 GARANTIA VENCIDA HÁ MAIS DE 18 MESES",
+      fimGarantia,
+      diasAposGarantia:Math.ceil((hoje-fimGarantia)/86400000)
+    };
+  }
+
+  if(hoje>fimGarantia){
+    return{
+      classe:"status-alerta",
+      texto:"🟠 GARANTIA VENCIDA",
+      fimGarantia,
+      diasAposGarantia:Math.ceil((hoje-fimGarantia)/86400000)
+    };
+  }
+
+  const dias=Math.ceil((fimGarantia-hoje)/86400000);
+
+  return{
+    classe:"status-ok",
+    texto:`🟢 GARANTIA VÁLIDA — ${dias} dias restantes`,
+    fimGarantia,
+    diasAposGarantia:0
+  };
+
+}
+
 function statusMonitoramento(
   idade,
   percentual,
-  autonomia
+  autonomia,
+  garantia
 ){
 
   if(!idade||!idade.totalMeses){
-
     return{
       classe:"monitor-atencao",
       titulo:"⚪ MONITORAMENTO PARCIAL",
       mensagem:
-        "Cadastre a data de instalação do banco."
+        "Cadastre a data de instalação das baterias. A garantia é calculada em 2 anos por bateria."
     };
-
   }
 
+  if(garantia&&garantia.fimGarantia){
+
+    const hoje=new Date();
+    hoje.setHours(0,0,0,0);
+
+    const limite18Meses=new Date(garantia.fimGarantia);
+    limite18Meses.setMonth(limite18Meses.getMonth()+18);
+
+    if(hoje>limite18Meses){
+      return{
+        classe:"monitor-critico",
+        titulo:"🔴 BANCO COM GARANTIA VENCIDA",
+        mensagem:
+          "A garantia da bateria mais antiga venceu há mais de 1 ano e meio. Recomenda-se avaliar o banco e programar a substituição."
+      };
+    }
+
+    if(hoje>garantia.fimGarantia){
+      const dias=Math.ceil((hoje-garantia.fimGarantia)/86400000);
+      return{
+        classe:"monitor-alerta-laranja",
+        titulo:"🟠 ATENÇÃO — GARANTIA VENCIDA",
+        mensagem:
+          `A garantia da bateria mais antiga venceu há ${dias} dias. O banco está no período de atenção de até 18 meses após a garantia.`
+      };
+    }
+  }
 
   if(autonomia>0&&autonomia<2){
-
     return{
       classe:"monitor-critico",
       titulo:"🚨 AUTONOMIA CRÍTICA",
       mensagem:
         "A autonomia estimada está abaixo de 2 horas."
     };
-
   }
-
 
   if(autonomia>0&&autonomia<6){
-
     return{
       classe:"monitor-alerta-laranja",
-      titulo:"🔴 AUTONOMIA MUITO BAIXA",
+      titulo:"🟠 AUTONOMIA REDUZIDA",
       mensagem:
-        "O POP possui poucas horas de autonomia."
+        "A autonomia estimada está abaixo de 6 horas."
     };
-
   }
-
 
   if(percentual<=45){
-
     return{
       classe:"monitor-critico",
-      titulo:"🔴 RISCO NO BANCO DE BATERIAS",
+      titulo:"🔴 CAPACIDADE ESTIMADA MUITO REDUZIDA",
       mensagem:
-        "Banco com mais de 5 anos de uso."
+        "A estimativa indica baixa capacidade disponível. Recomenda-se avaliar o banco com teste técnico."
     };
-
   }
-
 
   if(percentual<=60){
-
     return{
       classe:"monitor-alerta-laranja",
-      titulo:"🟠 BANCO ENVELHECIDO",
+      titulo:"🟠 ATENÇÃO — DESGASTE ESTIMADO",
       mensagem:
-        "Banco com desgaste estimado elevado."
+        "A capacidade nominal permanece a mesma; a redução apresentada é apenas uma estimativa de capacidade disponível."
     };
-
   }
-
 
   if(percentual<=75){
-
     return{
       classe:"monitor-atencao",
-      titulo:"🟡 ATENÇÃO AO BANCO",
+      titulo:"🟡 ATENÇÃO — CAPACIDADE EM REDUÇÃO",
       mensagem:
-        "O banco já apresenta tempo de uso significativo."
+        "Há redução estimada da capacidade disponível. A confirmação deve ser feita por teste técnico."
     };
-
   }
-
 
   return{
     classe:"monitor-normal",
-    titulo:"🟢 BANCO EM CONDIÇÃO NORMAL",
+    titulo:"🟢 BANCO DENTRO DA ESTIMATIVA",
     mensagem:
-      "Autonomia dentro da estimativa atual."
+      "A capacidade nominal está preservada no cadastro e a capacidade disponível estimada está em nível adequado."
   };
 
 }
-
 
 /* =========================================================
    AUTONOMIA
@@ -2441,40 +2514,53 @@ function render(preservarBusca=true){
       );
 
 
+    /*
+     * GARANTIA: cada bateria possui 2 anos de garantia
+     * contados a partir da sua própria data de instalação.
+     * Para o status geral usamos a bateria cuja garantia termina primeiro.
+     */
+    let garantiasBaterias=[];
+
+    if(Array.isArray(pop.baterias)&&pop.baterias.length){
+      garantiasBaterias=pop.baterias
+        .map((b,j)=>({
+          numero:j+1,
+          instalacao:b.dataInstalacao||"",
+          status:statusGarantiaBateria(b.dataInstalacao)
+        }));
+    }else if(pop.dataInstalacao){
+      garantiasBaterias=[{
+        numero:1,
+        instalacao:pop.dataInstalacao,
+        status:statusGarantiaBateria(pop.dataInstalacao)
+      }];
+    }
+
+    const garantiasValidas=garantiasBaterias
+      .filter(g=>g.status.fimGarantia)
+      .sort((a,b)=>a.status.fimGarantia-b.status.fimGarantia);
+
+    const garantiaPrincipal=
+      garantiasValidas.length
+        ?garantiasValidas[0].status
+        :null;
+
+    const validadePrincipal=
+      garantiaPrincipal&&garantiaPrincipal.fimGarantia
+        ?garantiaPrincipal.fimGarantia.toISOString().slice(0,10)
+        :"";
+
     const monitor=
       statusMonitoramento(
         dadosBateria.idade,
         percentual,
-        autonomiaAjustada
+        autonomiaAjustada,
+        garantiaPrincipal
       );
 
-
-    let validadePrincipal=
-      pop.validade||"";
-
-
-    if(
-      Array.isArray(pop.baterias)&&
-      pop.baterias.length
-    ){
-
-      const validades=
-        pop.baterias
-          .map(b=>b.validade)
-          .filter(Boolean)
-          .sort();
-
-
-      if(validades.length)
-        validadePrincipal=validades[0];
-
-    }
-
-
-    const bateria=
-      statusBateria(
-        validadePrincipal
-      );
+    const bateria=garantiaPrincipal
+      ?garantiaPrincipal
+      :statusBateria(validadePrincipal);
 
 
     /* =========================
@@ -2536,33 +2622,19 @@ function render(preservarBusca=true){
           <div>
 
             <label>
-              Validade
+              Garantia (2 anos)
             </label>
 
-            <input
+            <div class="status ${statusGarantiaBateria(bat.dataInstalacao).classe}">
+              ${statusGarantiaBateria(bat.dataInstalacao).texto}
+            </div>
 
-              type="date"
-
-              value="${bat.validade||""}"
-
-              ${!modoEdicao?"disabled":""}
-
-              onchange="
-                pops[${i}]
-                  .baterias[${j}]
-                  .validade=
-                  this.value;
-
-                existemAlteracoes=true;
-
-                renderVisivel(
-                  ${i},
-                  false,
-                  false
-                );
-              "
-
-            >
+            <small>
+              Até:
+              ${statusGarantiaBateria(bat.dataInstalacao).fimGarantia
+                ?formatarData(statusGarantiaBateria(bat.dataInstalacao).fimGarantia.toISOString().slice(0,10))
+                :"cadastre a data de instalação"}
+            </small>
 
           </div>
 
@@ -2700,7 +2772,7 @@ function render(preservarBusca=true){
             <div>
 
               <label>
-                Validade principal
+                Fim da garantia principal
               </label>
 
               <input
@@ -2784,11 +2856,17 @@ function render(preservarBusca=true){
 
             <br>
 
-            📅 Validade considerada:
+            📅 Fim da garantia considerada:
 
             <strong>
               ${formatarData(validadePrincipal)}
             </strong>
+
+            <br>
+
+            <small>
+              Garantia calculada individualmente: 2 anos a partir da instalação de cada bateria.
+            </small>
 
           </div>
 
@@ -2835,7 +2913,7 @@ function render(preservarBusca=true){
             <div class="monitor-card">
 
               <span>
-                📉 Capacidade útil estimada
+                📊 Saúde estimada do banco
               </span>
 
               <strong>
@@ -2848,7 +2926,7 @@ function render(preservarBusca=true){
             <div class="monitor-card">
 
               <span>
-                🔋 Ah úteis estimados
+                🔋 Capacidade disponível estimada
               </span>
 
               <strong>
@@ -2925,6 +3003,35 @@ function render(preservarBusca=true){
             <div>
               ${monitor.mensagem}
             </div>
+
+          </div>
+
+          <div class="info" style="margin-top:10px;">
+
+            <strong>ℹ️ Como interpretar:</strong>
+
+            <br>
+
+            A capacidade nominal cadastrada continua sendo
+            <strong>${ahNominal.toFixed(2)} Ah</strong>.
+            O valor de
+            <strong>${capacidadeUtil.toFixed(2)} Ah</strong>
+            representa somente a capacidade disponível
+            <strong>estimada</strong> considerando o envelhecimento
+            calculado pelo sistema.
+
+            <br><br>
+
+            <strong>🛡️ Garantia:</strong>
+            até a data de validade o banco permanece em condição normal;
+            após o vencimento, o sistema usa <strong>laranja por até 18 meses</strong>
+            e depois <strong>vermelho</strong>.
+
+            <br><br>
+
+            <strong>⚠️ Importante:</strong>
+            esta estimativa não substitui um teste de capacidade,
+            condutância ou descarga controlada das baterias.
 
           </div>
 
