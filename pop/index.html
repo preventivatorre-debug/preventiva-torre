@@ -490,6 +490,32 @@ details[open]>summary::before{
   }
 
 }
+
+/* =========================
+   CARDS DO RESUMO CLICÁVEIS
+========================= */
+
+.resumo-card{
+  cursor:pointer;
+  transition:
+    transform .15s ease,
+    box-shadow .15s ease,
+    background .15s ease;
+}
+
+.resumo-card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 4px 12px rgba(0,0,0,.18);
+}
+
+.resumo-card:active{
+  transform:scale(.98);
+}
+
+.resumo-vencida:hover{
+  background:#fff5f5;
+}
+
 </style>
 </head>
 
@@ -544,10 +570,14 @@ details[open]>summary::before{
     <strong id="preventivasAlerta">0</strong>
   </div>
 
-  <div class="resumo-card resumo-vencida">
-    🔴 Preventivas vencidas
-    <strong id="preventivasVencidas">0</strong>
-  </div>
+<div
+  class="resumo-card resumo-vencida"
+  onclick="mostrarPreventivasVencidas()"
+  title="Clique para ver as preventivas vencidas"
+>
+  🔴 Preventivas vencidas
+  <strong id="preventivasVencidas">0</strong>
+</div>
 
 </div>
 
@@ -722,7 +752,57 @@ function escapeHtml(text){
 /* =========================================================
    DATA
 ========================================================= */
+function mostrarPreventivasVencidas(){
 
+  const busca=document.getElementById("busca");
+
+  // Limpa a pesquisa atual
+  if(busca){
+    busca.value="";
+  }
+
+  const elementos=document.querySelectorAll(".pop");
+
+  let encontrou=false;
+
+  elementos.forEach((elemento,index)=>{
+
+    const pop=pops[index];
+
+    if(!pop) return;
+
+    const status=statusPreventiva(pop);
+
+    if(status.tipo==="vencida"){
+
+      elemento.style.display="block";
+      encontrou=true;
+
+    }else{
+
+      elemento.style.display="none";
+
+    }
+
+  });
+
+  // Se não houver nenhuma vencida
+  if(!encontrou){
+    alert("✅ Não existem preventivas vencidas.");
+    return;
+  }
+
+  // Rola até a lista
+  const container=document.getElementById("pops");
+
+  if(container){
+    container.scrollIntoView({
+      behavior:"smooth",
+      block:"start"
+    });
+  }
+
+}
 function formatarData(data){
 
   if(!data) return "--";
